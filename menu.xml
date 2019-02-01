@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+
+<menu id="apps-accessories-menu" label="Accessories">
+  <item label="Calculator">
+    <action name="Execute">
+      <command>xcalc</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>  
+<!--  <item label="Virtualbox">
+    <action name="Execute">
+      <command>vboxgtk</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+-->
+</menu>
+
+<menu id="apps-editors-menu" label="Editors">
+  <item label="Geany">
+    <action name="Execute">
+      <command>geany</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Intellij Idea 2018.2">
+    <action name="Execute">
+      <command>idea</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-term-menu" label="Terminals">
+  <item label="Rxvt Unicode">
+    <action name="Execute">
+      <command>urxvtc</command>
+    </action>
+  </item>    
+  <item label="Xterm">
+    <action name="Execute"><command>xterm</command></action>
+  </item>
+</menu>
+
+<menu id="apps-net-menu" label="Internet">
+  <item label="Firefox">
+    <action name="Execute">
+      <command>firefox</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+        <wmclass>Firefox</wmclass>
+      </startupnotify>
+    </action>
+  </item>
+  <menu id="apps-net-submenu-vpn" label="VPN">
+	  <!--<separator label="VPN Connections" />-->
+	  <item label="VPN Connection (EURO 1)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s EURO1</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (EURO 2)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s EURO2</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (US 1)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s US1</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (US 2)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s US2</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (CA 1)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s CA1</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (DE)">
+		<action name="Execute">
+		  <command>.local/scripts/vpnbook -s DE</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+  </menu>
+</menu>
+
+<menu id="apps-multimedia-menu" label="Multimedia">
+  <item label="Moc">
+    <action name="Execute">
+      <command>mocp</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="DVD Player">
+    <action name="Execute">
+      <command>mplayer dvdnav://0</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-fileman-menu" label="File Managers">
+  <item label="PCMan File Manager">
+    <action name="Execute">
+      <command>pcmanfm</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-graphics-menu" label="Graphics">
+  <item label="Gimp">
+    <action name="Execute">
+      <command>gimp</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="system-menu" label="System">
+  <item label="Reconfigure Openbox">
+    <action name="Reconfigure" />
+  </item>
+</menu>
+
+<menu id="root-menu" label="Openbox 3">
+  <separator label="Applications" />
+  <menu id="apps-accessories-menu"/>
+  <menu id="apps-editors-menu"/>
+  <menu id="apps-net-menu"/>
+  <menu id="apps-multimedia-menu"/>
+  <menu id="apps-term-menu"/>
+  <menu id="apps-fileman-menu"/>
+  <separator label="System" />
+  <menu id="system-menu"/>
+  <separator />
+  
+  <separator label="Finder" />
+	<item label="Search File(s)">
+		<action name="Execute">
+		<execute>catfish</execute>
+		</action>		
+	</item>
+  <separator />
+  
+  <item label="Switch Off">
+    <action name="Execute">
+	<prompt>Are you sure you want to Switch Off the PC?</prompt>
+    <execute>sudo shutdown -p now</execute>
+    </action>
+  </item>
+  <item label="Restart">
+    <action name="Execute">
+	<prompt>Are you sure you want to Restart the PC?</prompt>  
+    <command>sudo shutdown -r now</command>
+    </action>
+  </item>
+  <item label="Suspend">
+    <action name="Execute">
+	<prompt>Are you sure you want to Suspend the PC?</prompt>
+    <execute>sh -c 'sudo acpiconf -s 3; xlock -mode blank'</execute>
+    </action>
+  </item>
+  <item label="Log Out">
+    <action name="Exit">
+      <prompt>yes</prompt>
+    </action>
+  </item>
+</menu>
+</openbox_menu>

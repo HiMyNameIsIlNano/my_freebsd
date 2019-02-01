@@ -1,0 +1,135 @@
+#!/bin/sh
+
+check_requiremnts(){
+	# Check if git is installed
+	if ! [ -x "$(command -v git)" ]; then
+	  echo 'Error: git is not installed.' >&2
+	  exit 1
+	fi
+}
+
+read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+install_ports(){
+	ports_to_install="$@"
+	
+	# The list of ports must be comma separated with no empty space
+	for port in $(echo $ports_to_install | sed "s/,/ /g")
+	do
+		pkg install $port
+	done	
+}
+
+wait_for_input(){
+	printf 'press [ENTER] to continue'
+	read dummy
+}
+
+work_dir=/tmp/post_install
+config_file=${work_dir}/post_install.config
+git_repo_url=//TODO
+
+while [ "$1" != "" ]; do
+    case $1 in
+		-c | --config )		    shift
+                                config_file=$1
+                                echo $config_file
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+git clone $git_repo_url $work_dir
+# Move to the checkout directory
+cd $work_dir
+
+# Variable Declaration
+base_ports=$(read_property base_ports)
+desktop_ports=$(read_property desktop_ports)
+dev_ports=$(read_property dev_ports)
+is_docker_enabled=$(read_property enable_docker)
+timestamp=$(date +%s)
+
+pkg update
+wait_for_input
+
+echo "Installing base ports..."
+wait_for_input
+install_ports $base_ports
+
+echo "Installing desktop ports..."
+wait_for_input
+install_ports $desktop_ports
+
+echo "Installing development ports..."
+wait_for_input
+install_ports $dev_ports
+ 
+if [ "${is_docker_enabled}" == "true" ]
+then
+	echo "Installing docker ports..."
+	wait_for_input
+	
+	portsnap fetch
+	portsnap extract
+	
+	# Install virtualbox-ose without qt5 support
+	cd /usr/ports/emulators/virtualbox-ose/ && make -DWITHOUT=QT5 install clean
+	
+	docker_ports=vagrant,docker-machine,docker
+	install_ports $docker_ports
+else
+fi
+
+# Groups
+echo "Adding groups..."	
+wait_for_input
+pw groupadd restarter
+pw groupadd installer
+
+# Users
+echo "Adding users..."	
+wait_for_input
+adduser
+
+# Sudoers
+echo "Configuring sudoers..."
+wait_for_input
+echo '' >> /usr/local/etc/sudoers
+echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
+echo '' >> /usr/local/etc/sudoers
+echo '## Members of the group restarter can run shutdown and acpiconf without a password.' >> /usr/local/etc/sudoers
+echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
+echo '' >> /usr/local/etc/sudoers
+echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
+echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+echo '' >> /usr/local/etc/sudoers
+echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
+
+echo "Configuring startup demons and boot options..."
+wait_for_input
+
+# Move to the checkout directory
+cd $work_dir
+
+# Localrules
+# Nothing to do
+
+# rc.conf
+mv /etc/rc.conf /etc/rc.conf.${timestamp}.bak
+cp ./rc.conf /etc/rc.conf
+
+# loader.conf
+mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
+cp ./loader.conf /boot/loader.conf
+
+exit 0

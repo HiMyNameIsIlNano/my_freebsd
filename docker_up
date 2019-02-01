@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd ~/Development/Vagrant/dockervm
+vagrant up

@@ -1,0 +1,152 @@
+#!/bin/sh
+
+check_requiremnts(){
+	# Check if git is installed
+	if ! [ -x "$(command -v git)" ]; then
+	  echo 'Error: git is not installed.' >&2
+	  exit 1
+	fi
+}
+
+read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+wait_for_input(){
+	printf 'press [ENTER] to continue'
+	read dummy
+}
+
+work_dir=/tmp/post_install
+config_file=${work_dir}/post_install.config
+git_repo_url=//TODO
+
+git clone $git_repo_url $work_dir
+# Move to the checkout directory
+cd $work_dir
+
+# Variable Declaration
+is_docker_enabled=$(read_property enable_docker)
+timestamp=$(date +%s)
+
+mkdir -p $HOME/.local/scripts
+mkdir -p $HOME/.config/openbox/Wallpapers
+mkdir -p $HOME/.config/gtk-3.0
+mkdir -p $HOME/.themes
+mkdir -p $HOME/.icons
+mkdir -p $HOME/.config/tint2
+
+# .xinitrc
+touch $HOME/.xinitrc
+echo 'exec openbox-session' >> $HOME/.xinitrc
+
+# tcshrc
+if [ -f "$HOME/.tcshrc" ] 
+then
+	echo "Backing-up .tcshrc"
+	mv $HOME/.tcshrc $HOME/.tcshrc.${timestamp}.bak 
+else
+	echo "Nothing to backup. File .tcshrc does not exist"
+fi
+cp .tcshrc $HOME/.tcshrc
+
+# Xdefaults
+if [ -f "$HOME/.Xdefaults" ] 
+then
+	echo "Backing-up .Xdefaults"
+	mv $HOME/.Xdefaults $HOME/.Xdefaults.${timestamp}.bak 
+else
+	echo "Nothing to backup. File .Xdefaults does not exist"
+fi
+cp .Xdefaults $HOME/.Xdefaults
+
+# Openbox
+if [ -f "$HOME/.config/openbox/autostart.sh" ] 
+then
+	echo "Backing-up autostart.sh"
+	mv $HOME/.config/openbox/autostart.sh $HOME/.config/openbox/autostart.sh.${timestamp}.bak 
+else
+	echo "Nothing to backup. File autostart.sh does not exist"
+fi
+cp ./autostart.sh $HOME/.config/openbox/autostart.sh
+
+if [ -f "$HOME/.config/openbox/rc.xml" ] 
+then
+	echo "Backing-up rc.xml"
+	mv $HOME/.config/openbox/rc.xml $HOME/.config/openbox/rc.xml.${timestamp}.bak 
+else
+	echo "Nothing to backup. File rc.xml does not exist"
+fi
+cp ./rc.xml $HOME/.config/openbox/rc.xml
+
+if [ -f "$HOME/.config/openbox/menu.xml" ] 
+then
+	echo "Backing-up menu.xml"
+	mv $HOME/.config/openbox/menu.xml $HOME/.config/openbox/menu.xml.${timestamp}.bak 
+else
+	echo "Nothing to backup. File rc.xml does not exist"
+fi
+cp ./menu.xml $HOME/.config/openbox/menu.xml
+
+# Wallpaper
+cp ./gray-gradient.png $HOME/.config/openbox/Wallpapers/gray-gradient.png
+cp ./red-gradient.png $HOME/.config/openbox/Wallpapers/red-gradient.png
+
+# tint2
+if [ -f "$HOME/.config/tint2/tint2rc" ] 
+then
+	echo "Backing-up tint2rc"
+	mv $HOME/.config/tint2/tint2rc $HOME/.config/tint2/tint2rc.${timestamp}.bak
+else
+	echo "Nothing to backup. File tint2rc does not exist"
+fi
+cp ./tint2rc $HOME/.config/tint2/tint2rc
+
+# conky
+if [ -f "$HOME/.conkyrc" ] 
+then
+	echo "Backing-up .conkyrc"
+	mv $HOME/.conkyrc $HOME/.conkyrc.${timestamp}.bak 
+else
+	echo "Nothing to backup. File .conkyrc does not exist"
+fi
+cp .conkyrc $HOME/.conkyrc
+
+if [ "${is_docker_enabled}" == "true" ]
+then
+	echo "Installing docker shortcuts..."
+	wait_for_input
+	
+	cp ./docker_up $HOME/.local/scripts/docker_up
+	cp ./docker_down $HOME/.local/scripts/docker_down
+fi
+
+# GTK2 Themes and Icons
+if [ -f "$HOME/.gtk2rc" ] 
+then
+	echo "Backing-up .gtk2rc"
+	mv $HOME/.gtk2rc $HOME/.gtk2rc.${timestamp}.bak 
+else
+	echo "Nothing to backup. File .gtk2rc does not exist"
+fi
+cp .gtk2rc $HOME/.gtk2rc
+cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
+tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz .
+
+# GTK3 Themes and Icons
+if [ -f "$HOME/.config/gtk-3.0/settings.ini" ] 
+then
+	echo "Backing-up settings.ini"
+	mv $HOME/.config/gtk-3.0/settings.ini $HOME/.config/gtk-3.0/settings.${timestamp}.ini
+else 
+	echo "Nothing to backup. File settings.ini does not exist"
+fi
+cp .settings.ini $HOME/.config/gtk-3.0/settings.ini
+
+# Icon Pack
+cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
+tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz .
+
+exit 0
