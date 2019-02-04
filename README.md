@@ -5,6 +5,7 @@ A Simple Script to Configure A Freebsd Openbox Desktop Environment with a Nice L
 This project consists of two scripts for two different phases:
 1. Post Install Configuration;
 2. Desktop Condifuration.
+
 Item 1. will take care of installing a list of programs as defined in the `post_install.config` file and bootstrapping a set of config files and system users. Item 2. will take care of giving the system a nice (or at lest a decent) look&feel. 
 
 ## Post Install Configuration:
