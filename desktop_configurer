@@ -19,13 +19,8 @@ wait_for_input(){
 	read dummy
 }
 
-work_dir=/tmp/post_install
+work_dir=.
 config_file=${work_dir}/post_install.config
-git_repo_url=//TODO
-
-git clone $git_repo_url $work_dir
-# Move to the checkout directory
-cd $work_dir
 
 # Variable Declaration
 is_docker_enabled=$(read_property enable_docker)

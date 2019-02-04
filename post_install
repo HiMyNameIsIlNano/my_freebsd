@@ -29,13 +29,12 @@ wait_for_input(){
 	read dummy
 }
 
-work_dir=/tmp/post_install
+work_dir=.
 config_file=${work_dir}/post_install.config
-git_repo_url=//TODO
 
 while [ "$1" != "" ]; do
     case $1 in
-		-c | --config )		    shift
+	-c | --config )		shift
                                 config_file=$1
                                 echo $config_file
                                 ;;
@@ -48,46 +47,46 @@ while [ "$1" != "" ]; do
     shift
 done
 
-git clone $git_repo_url $work_dir
-# Move to the checkout directory
-cd $work_dir
-
 # Variable Declaration
 base_ports=$(read_property base_ports)
 desktop_ports=$(read_property desktop_ports)
 dev_ports=$(read_property dev_ports)
 is_docker_enabled=$(read_property enable_docker)
+is_init_ports_enabled=$(read_property init_ports)
+is_create_users_enabled=$(read_property create_users)
 timestamp=$(date +%s)
 
 pkg update
 wait_for_input
 
-echo "Installing base ports..."
+echo "Installing base packages..."
 wait_for_input
 install_ports $base_ports
 
-echo "Installing desktop ports..."
+echo "Installing desktop packages..."
 wait_for_input
 install_ports $desktop_ports
 
-echo "Installing development ports..."
+echo "Installing development packages..."
 wait_for_input
 install_ports $dev_ports
  
 if [ "${is_docker_enabled}" == "true" ]
 then
-	echo "Installing docker ports..."
+	echo "Installing docker packages..."
+	wait_for_input
+		
+	docker_ports=virtualbox-ose,vagrant,docker-machine,docker
+	install_ports $docker_ports
+fi
+
+if [ "${is_init_ports_enabled}" == "true" ]
+then
+	echo "Initializng ports..."
 	wait_for_input
 	
 	portsnap fetch
-	portsnap extract
-	
-	# Install virtualbox-ose without qt5 support
-	cd /usr/ports/emulators/virtualbox-ose/ && make -DWITHOUT=QT5 install clean
-	
-	docker_ports=vagrant,docker-machine,docker
-	install_ports $docker_ports
-else
+	portsnap extract	
 fi
 
 # Groups
@@ -99,7 +98,21 @@ pw groupadd installer
 # Users
 echo "Adding users..."	
 wait_for_input
-adduser
+
+if [ "${is_create_users_enabled}" == "true" ]
+then
+	echo "Initializng users..."
+	wait_for_input
+	
+	
+	while
+       		adduser
+       		echo 'Do you want to create another User? [Y/N]'
+		read dummy		
+		[ "${dummy}" == "Y" ]
+	do :;  done	
+fi
+
 
 # Sudoers
 echo "Configuring sudoers..."
