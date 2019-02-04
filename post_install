@@ -90,7 +90,7 @@ then
 fi
 
 # Groups
-echo "Adding groups..."	
+echo "Adding 'restarter' and 'installer' groups..."	
 wait_for_input
 pw groupadd restarter
 pw groupadd installer
@@ -104,13 +104,8 @@ then
 	echo "Initializng users..."
 	wait_for_input
 	
+       	adduser
 	
-	while
-       		adduser
-       		echo 'Do you want to create another User? [Y/N]'
-		read dummy		
-		[ "${dummy}" == "Y" ]
-	do :;  done	
 fi
 
 
@@ -138,11 +133,23 @@ cd $work_dir
 # Nothing to do
 
 # rc.conf
-mv /etc/rc.conf /etc/rc.conf.${timestamp}.bak
+if [ -f "/etc/rc.conf" ] 
+then
+	echo "Backing-up rc.conf"
+	mv /etc/rc.conf /etc/rc.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File rc.conf does not exist"
+fi
 cp ./rc.conf /etc/rc.conf
 
 # loader.conf
-mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
+if [ -f "/boot/loader.conf" ] 
+then
+	echo "Backing-up loader.conf"
+	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File loader.conf does not exist"
+fi
 cp ./loader.conf /boot/loader.conf
 
 exit 0
