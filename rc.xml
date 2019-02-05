@@ -344,7 +344,7 @@
         <enabled>true</enabled>
         <name>Finder</name>
       </startupnotify>
-      <command>xterm -title "Test" -hold -e "${HOME}/Development/scripts/finder"</command>
+      <command>fsearch</command>
     </action>
   </keybind>
   <!-- Firefox: Default Profile -->
@@ -395,16 +395,6 @@
         <name>vpnbook</name>
       </startupnotify>
       <command>.local/scripts/vpnbook -s DE</command>
-    </action>
-  </keybind>
-  <!-- Blu-Ray: Play blu-ray -->
-  <keybind key="W-b">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>mpv</name>
-      </startupnotify>
-      <command>play-stream</command>
     </action>
   </keybind>
   <!-- Idea: exceute Idea -->
