@@ -33,10 +33,19 @@ mkdir -p $HOME/.themes
 mkdir -p $HOME/.icons
 mkdir -p $HOME/.config/tint2
 
+echo "Start configuring Openbox Desktop Look & Feel..."
+wait_for_input
 # .xinitrc
-touch $HOME/.xinitrc
+if [ -f "$HOME/.xinitrc" ] 
+then
+	echo "Backing-up .xinitrc"
+	mv $HOME/.xinitc $HOME/.xinitrc.${timestamp}.bak 
+else
+	echo "Nothing to backup. File .xinitrc does not exist"
+fi
 echo 'exec openbox-session' >> $HOME/.xinitrc
 
+wait_for_input
 # tcshrc
 if [ -f "$HOME/.tcshrc" ] 
 then
@@ -45,8 +54,9 @@ then
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
-cp .tcshrc $HOME/.tcshrc
+cp ./tcshrc $HOME/.tcshrc
 
+wait_for_input
 # Xdefaults
 if [ -f "$HOME/.Xdefaults" ] 
 then
@@ -55,8 +65,9 @@ then
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
-cp .Xdefaults $HOME/.Xdefaults
+cp ./Xdefaults $HOME/.Xdefaults
 
+wait_for_input
 # Openbox
 if [ -f "$HOME/.config/openbox/autostart.sh" ] 
 then
@@ -65,8 +76,10 @@ then
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
-cp ./autostart.sh $HOME/.config/openbox/autostart.sh
+cp ./autostart $HOME/.config/openbox/autostart.sh
+chmod 744 $HOME/.config/openbox/autostart.sh
 
+wait_for_input
 if [ -f "$HOME/.config/openbox/rc.xml" ] 
 then
 	echo "Backing-up rc.xml"
@@ -76,6 +89,7 @@ else
 fi
 cp ./rc.xml $HOME/.config/openbox/rc.xml
 
+wait_for_input
 if [ -f "$HOME/.config/openbox/menu.xml" ] 
 then
 	echo "Backing-up menu.xml"
@@ -85,10 +99,14 @@ else
 fi
 cp ./menu.xml $HOME/.config/openbox/menu.xml
 
+echo "Copying Openbox Desktop Wallpapers..."
+wait_for_input
 # Wallpaper
 cp ./gray-gradient.png $HOME/.config/openbox/Wallpapers/gray-gradient.png
 cp ./red-gradient.png $HOME/.config/openbox/Wallpapers/red-gradient.png
 
+echo "Copying Tint2 Configuration Files..."
+wait_for_input
 # tint2
 if [ -f "$HOME/.config/tint2/tint2rc" ] 
 then
@@ -99,6 +117,8 @@ else
 fi
 cp ./tint2rc $HOME/.config/tint2/tint2rc
 
+echo "Copying Conky Configuration Files..."
+wait_for_input
 # conky
 if [ -f "$HOME/.conkyrc" ] 
 then
@@ -107,17 +127,10 @@ then
 else
 	echo "Nothing to backup. File .conkyrc does not exist"
 fi
-cp .conkyrc $HOME/.conkyrc
+cp ./conkyrc $HOME/.conkyrc
 
-if [ "${is_docker_enabled}" == "true" ]
-then
-	echo "Installing docker shortcuts..."
-	wait_for_input
-	
-	cp ./docker_up $HOME/.local/scripts/docker_up
-	cp ./docker_down $HOME/.local/scripts/docker_down
-fi
-
+echo "Copying gtk2/gtk3 Configuration Files..."
+wait_for_input
 # GTK2 Themes and Icons
 if [ -f "$HOME/.gtk2rc" ] 
 then
@@ -126,7 +139,7 @@ then
 else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
-cp .gtk2rc $HOME/.gtk2rc
+cp gtk2rc $HOME/.gtk2rc
 cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz .
 
@@ -138,8 +151,10 @@ then
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
-cp .settings.ini $HOME/.config/gtk-3.0/settings.ini
+cp settings.ini $HOME/.config/gtk-3.0/settings.ini
 
+echo "Copying Icon Pack Files..."
+wait_for_input
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz .

@@ -78,6 +78,17 @@ then
 		
 	docker_ports=virtualbox-ose,vagrant,docker-machine,docker
 	install_ports $docker_ports
+	
+	echo "Installing docker configuration..."
+	wait_for_input
+	mkdir -p $HOME/Development/Vagrant/dockervm
+	cp Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
+	
+	echo "Installing docker shortcuts..."
+	wait_for_input
+	mkdir -p $HOME/.local/scripts
+	cp ./docker_up $HOME/.local/scripts/docker_up
+	cp ./docker_down $HOME/.local/scripts/docker_down
 fi
 
 if [ "${is_init_ports_enabled}" == "true" ]
