@@ -132,14 +132,14 @@ cp ./conkyrc $HOME/.conkyrc
 echo "Copying gtk2/gtk3 Configuration Files..."
 wait_for_input
 # GTK2 Themes and Icons
-if [ -f "$HOME/.gtk2rc" ] 
+if [ -f "$HOME/.gtkrc-2.0" ] 
 then
-	echo "Backing-up .gtk2rc"
-	mv $HOME/.gtk2rc $HOME/.gtk2rc.${timestamp}.bak 
+	echo "Backing-up .gtkrc-2.0"
+	mv $HOME/.gtkrc-2.0 $HOME/.gtkrc-2.0.${timestamp}.bak 
 else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
-cp gtk2rc $HOME/.gtk2rc
+cp gtkrc-2.0 $HOME/.gtkrc-2.0
 cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 

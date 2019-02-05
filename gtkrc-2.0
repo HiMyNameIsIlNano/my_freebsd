@@ -5,4 +5,4 @@ gtk-font-name="Sans 8"
 gtk-icon-theme-name = "ultra-flat-icons-orange" 
 
 include "$HOME/.themes/Siva Flat Dark Borderless/gtk-2.0/gtkrc"
-include "/home/User/.gtkrc.mine"
+include "$HOME/.gtkrc.mine"
