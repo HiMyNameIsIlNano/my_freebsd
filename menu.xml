@@ -183,7 +183,7 @@
   <separator label="Finder" />
 	<item label="Search File(s)">
 		<action name="Execute">
-		<execute>catfish</execute>
+		<execute>fsearch</execute>
 		</action>		
 	</item>
   <separator />
