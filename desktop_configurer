@@ -3,8 +3,10 @@
 check_requiremnts(){
 	# Check if git is installed
 	if ! [ -x "$(command -v git)" ]; then
-	  echo 'Error: git is not installed.' >&2
-	  exit 1
+		echo 'Error: git is not installed.' >&2
+		exit 1
+	else
+		echo "Requirement check was successful! All the necessary dependencies to run this script are already installer!"
 	fi
 }
 
