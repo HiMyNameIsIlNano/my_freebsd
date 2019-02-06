@@ -23,7 +23,6 @@ wait_for_input(){
 
 is_user_allowed_to_update(){
 	group=$(id -G -n $USER | grep -o "installer")
-	echo "User Membeship: ${group}"
 	if [ "${group}" == "installer" ]; then
 		echo true
 	else
@@ -183,6 +182,7 @@ wait_for_input
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
+is_user_allowed=$(is_user_allowed_to_update)
 if [ "${is_user_allowed}" == "true" ]; then
 	# Install Update Script
 	echo "Copying Update Scripts under $HOME/.local/scripts..."
