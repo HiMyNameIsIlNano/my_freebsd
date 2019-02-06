@@ -22,7 +22,7 @@ wait_for_input(){
 }
 
 is_user_allowed_to_update(){
-	group=$(id -G -n $(USER) | grep -o "installer")
+	group=$(id -G -n $USER | grep -o "installer")
 	if [ "${group}" == "installer" ]; then
 		echo true
 	else
