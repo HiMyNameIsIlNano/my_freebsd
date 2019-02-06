@@ -6,7 +6,7 @@ check_requiremnts(){
 		echo 'Error: git is not installed.' >&2
 		exit 1
 	else
-		echo "Requirement check was successful! All the necessary dependencies to run this script are already installer!"
+		echo "Requirement check was successful! All the necessary dependencies to run this script are already installed!"
 	fi
 }
 
@@ -48,6 +48,7 @@ mkdir -p $HOME/.icons
 mkdir -p $HOME/.config/tint2
 
 echo "Start configuring Openbox Desktop Look & Feel..."
+echo "Copying .xinitrc under $HOME"
 wait_for_input
 # .xinitrc
 if [ -f "$HOME/.xinitrc" ] 
@@ -57,9 +58,9 @@ then
 else
 	echo "Nothing to backup. File .xinitrc does not exist"
 fi
-echo "Copying .xinitrc under $HOME"
 echo 'exec openbox-session' >> $HOME/.xinitrc
 
+echo "Copying .tcshrc under $HOME"
 wait_for_input
 # tcshrc
 if [ -f "$HOME/.tcshrc" ] 
@@ -69,9 +70,9 @@ then
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
-echo "Copying .tcshrc under $HOME"
 cp ./tcshrc $HOME/.tcshrc
 
+echo "Copying .Xdefaults under $HOME"
 wait_for_input
 # Xdefaults
 if [ -f "$HOME/.Xdefaults" ] 
@@ -81,9 +82,9 @@ then
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
-echo "Copying .Xdefaults under $HOME"
 cp ./Xdefaults $HOME/.Xdefaults
 
+echo "Copying autostart.sh under $HOME/.config/openbox"
 wait_for_input
 # Openbox
 if [ -f "$HOME/.config/openbox/autostart.sh" ] 
@@ -93,10 +94,10 @@ then
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
-echo "Copying autostart.sh under $HOME/.config/openbox"
 cp ./autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
+echo "Copying rc.xml under $HOME/.config/openbox"
 wait_for_input
 if [ -f "$HOME/.config/openbox/rc.xml" ] 
 then
@@ -105,9 +106,9 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-echo "Copying rc.xml under $HOME/.config/openbox"
 cp ./rc.xml $HOME/.config/openbox/rc.xml
 
+echo "Copying menu.xml under $HOME/.config/openbox"
 wait_for_input
 if [ -f "$HOME/.config/openbox/menu.xml" ] 
 then
@@ -116,7 +117,6 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-echo "Copying menu.xml under $HOME/.config/openbox"
 cp ./menu.xml $HOME/.config/openbox/menu.xml
 
 echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
@@ -125,7 +125,7 @@ wait_for_input
 cp ./grey-gradient.png $HOME/.config/openbox/Wallpapers/grey-gradient.png
 cp ./red-gradient.jpg $HOME/.config/openbox/Wallpapers/red-gradient.jpg
 
-echo "Copying Tint2 Configuration Files..."
+echo "Copying tint2rc under HOME/.config/tint2"
 wait_for_input
 # tint2
 if [ -f "$HOME/.config/tint2/tint2rc" ] 
@@ -149,6 +149,7 @@ else
 fi
 cp ./conkyrc $HOME/.conkyrc
 
+
 echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
 wait_for_input
 # GTK2 Themes and Icons
@@ -163,6 +164,8 @@ cp gtkrc-2.0 $HOME/.gtkrc-2.0
 cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
+echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
+wait_for_input
 # GTK3 Themes and Icons
 if [ -f "$HOME/.config/gtk-3.0/settings.ini" ] 
 then
@@ -171,7 +174,6 @@ then
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
-echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
 cp settings.ini $HOME/.config/gtk-3.0/settings.ini
 
 echo "Copying Icon Pack Files under $HOME/.icons..."
@@ -186,7 +188,7 @@ if [ "${is_user_allowed}" == "true" ]; then
 	git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	sh /tmp/update_script_${timestamp}/install
 else
-	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${whoami} is not memeber of the group installer..."
+	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as" ${whoami} "is not memeber of the group installer..."
 fi	
 		
 exit 0
