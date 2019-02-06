@@ -188,7 +188,7 @@ if [ "${is_user_allowed}" == "true" ]; then
 	git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	sh /tmp/update_script_${timestamp}/install
 else
-	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as" ${whoami} "is not memeber of the group installer..."
+	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
 fi	
 		
 exit 0
