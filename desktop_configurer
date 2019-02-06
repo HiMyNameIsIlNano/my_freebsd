@@ -19,6 +19,15 @@ wait_for_input(){
 	read dummy
 }
 
+is_user_allowed_to_update(){
+	group=$(id -G -n $(whoami) | grep -o "installer")
+	if [ "${group}" == "installer" ]; then
+		echo true
+	else
+		echo false
+	fi
+}
+
 work_dir=.
 config_file=${work_dir}/post_install.config
 
@@ -169,9 +178,13 @@ wait_for_input
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
-# Install Update Script
-echo "Copying Update Scripts under $HOME/.local/scripts..."
-git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
-sh /tmp/update_script_${timestamp}/install
-
+if [ "${is_user_allowed}" == "true" ]; then
+	# Install Update Script
+	echo "Copying Update Scripts under $HOME/.local/scripts..."
+	git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
+	sh /tmp/update_script_${timestamp}/install
+else
+	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${whoami} is not memeber of the group installer..."
+fi	
+		
 exit 0
