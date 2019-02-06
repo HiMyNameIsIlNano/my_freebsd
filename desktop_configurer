@@ -186,7 +186,7 @@ is_user_allowed=$(is_user_allowed_to_update)
 if [ "${is_user_allowed}" == "true" ]; then
 	# Install Update Script
 	echo "Copying Update Scripts under $HOME/.local/scripts..."
-	git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
+	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	sh /tmp/update_script_${timestamp}/install
 else
 	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
