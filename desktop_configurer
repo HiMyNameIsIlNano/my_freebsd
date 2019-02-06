@@ -22,6 +22,9 @@ wait_for_input(){
 work_dir=.
 config_file=${work_dir}/post_install.config
 
+# Check if GIT is istalled
+check_requiremnts
+
 # Variable Declaration
 is_docker_enabled=$(read_property enable_docker)
 timestamp=$(date +%s)
@@ -43,6 +46,7 @@ then
 else
 	echo "Nothing to backup. File .xinitrc does not exist"
 fi
+echo "Copying .xinitrc under $HOME"
 echo 'exec openbox-session' >> $HOME/.xinitrc
 
 wait_for_input
@@ -54,6 +58,7 @@ then
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
+echo "Copying .tcshrc under $HOME"
 cp ./tcshrc $HOME/.tcshrc
 
 wait_for_input
@@ -65,6 +70,7 @@ then
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
+echo "Copying .Xdefaults under $HOME"
 cp ./Xdefaults $HOME/.Xdefaults
 
 wait_for_input
@@ -76,6 +82,7 @@ then
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
+echo "Copying autostart.sh under $HOME/.config/openbox"
 cp ./autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
@@ -87,6 +94,7 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
+echo "Copying rc.xml under $HOME/.config/openbox"
 cp ./rc.xml $HOME/.config/openbox/rc.xml
 
 wait_for_input
@@ -97,9 +105,10 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
+echo "Copying menu.xml under $HOME/.config/openbox"
 cp ./menu.xml $HOME/.config/openbox/menu.xml
 
-echo "Copying Openbox Desktop Wallpapers..."
+echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
 wait_for_input
 # Wallpaper
 cp ./grey-gradient.png $HOME/.config/openbox/Wallpapers/grey-gradient.png
@@ -117,7 +126,7 @@ else
 fi
 cp ./tint2rc $HOME/.config/tint2/tint2rc
 
-echo "Copying Conky Configuration Files..."
+echo "Copying Conky Configuration Files under $HOME..."
 wait_for_input
 # conky
 if [ -f "$HOME/.conkyrc" ] 
@@ -129,7 +138,7 @@ else
 fi
 cp ./conkyrc $HOME/.conkyrc
 
-echo "Copying gtk2/gtk3 Configuration Files..."
+echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
 wait_for_input
 # GTK2 Themes and Icons
 if [ -f "$HOME/.gtkrc-2.0" ] 
@@ -151,12 +160,18 @@ then
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
+echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
 cp settings.ini $HOME/.config/gtk-3.0/settings.ini
 
-echo "Copying Icon Pack Files..."
+echo "Copying Icon Pack Files under $HOME/.icons..."
 wait_for_input
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
+
+# Install Update Script
+echo "Copying Update Scripts under $HOME/.local/scripts..."
+git https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
+sh /tmp/update_script_${timestamp}/install
 
 exit 0
