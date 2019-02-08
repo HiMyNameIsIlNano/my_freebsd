@@ -1,11 +1,15 @@
 #!/bin/sh
 
-check_requiremnts(){
-	# Check if git is installed
-	if ! [ -x "$(command -v git)" ]; then
-	  echo 'Error: git is not installed.' >&2
+is_installed(){
+	if ! [ -x "$(command -v $1)" ]; then
+	  echo 'Error: $1 is not installed.' >&2
 	  exit 1
 	fi
+}
+
+check_requirements(){
+	# Check if git is installed
+	is_installed git
 }
 
 read_property(){
@@ -54,6 +58,7 @@ dev_ports=$(read_property dev_ports)
 is_docker_enabled=$(read_property enable_docker)
 is_init_ports_enabled=$(read_property init_ports)
 is_create_users_enabled=$(read_property create_users)
+is_setup_vpn_enabled=$(read_property setup_vpn)
 timestamp=$(date +%s)
 
 pkg update
@@ -78,17 +83,15 @@ then
 		
 	docker_ports=virtualbox-ose,vagrant,docker-machine,docker
 	install_ports $docker_ports
-	
-	echo "Installing docker configuration..."
+fi
+
+if [ "${is_setup_vpn_enabled}" == "true" ]
+then
+	echo "Installing openvpn packages..."
 	wait_for_input
-	mkdir -p $HOME/Development/Vagrant/dockervm
-	cp Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
-	
-	echo "Installing docker shortcuts..."
-	wait_for_input
-	mkdir -p $HOME/.local/scripts
-	cp ./docker_up $HOME/.local/scripts/docker_up
-	cp ./docker_down $HOME/.local/scripts/docker_down
+		
+	openvpn_ports=openvpn,curl,sudo,tesseract,ImageMagick7-nox11
+	install_ports $openvpn_ports	
 fi
 
 if [ "${is_init_ports_enabled}" == "true" ]
@@ -105,6 +108,7 @@ echo "Adding 'restarter' and 'installer' groups..."
 wait_for_input
 pw groupadd restarter
 pw groupadd installer
+pw groupadd vpnstarter
 
 # Users
 echo "Adding users..."	
@@ -114,9 +118,7 @@ if [ "${is_create_users_enabled}" == "true" ]
 then
 	echo "Initializng users..."
 	wait_for_input
-	
-       	adduser
-	
+	adduser	
 fi
 
 
@@ -131,6 +133,9 @@ echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/
 echo '' >> /usr/local/etc/sudoers
 echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
 echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+echo '' >> /usr/local/etc/sudoers
+echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
+echo '%installer ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
 echo '' >> /usr/local/etc/sudoers
 echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
 

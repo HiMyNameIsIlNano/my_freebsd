@@ -1,13 +1,5 @@
 #!/bin/sh
 
-check_requiremnts(){
-	# Check if git is installed
-	if ! [ -x "$(command -v git)" ]; then
-	  echo 'Error: git is not installed.' >&2
-	  exit 1
-	fi
-}
-
 read_property(){
 	input="$@"
 	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
@@ -19,11 +11,37 @@ wait_for_input(){
 	read dummy
 }
 
+is_installed(){
+	echo "Checking if $1 is installed..."
+	if ! [ -x "$(command -v $1)" ]; then
+	  echo 'Error: $1 is not installed.' >&2
+	  exit 1
+	fi
+}
+
+check_requiremnts(){
+	echo "Checking general Requirements..."
+	# Check if git is installed
+	is_installed git
+}
+
+check_docker_requirements(){
+	echo "Checking docker Requirements..."
+	# Check if docker, virtualbox, vagrant are installed
+	is_installed virtualbox-ose
+	is_installed vagrant
+	is_installed docker-machine
+}
+
 work_dir=.
 config_file=${work_dir}/post_install.config
 
+# Check General Requirements
+check_requiremnts
+
 # Variable Declaration
 is_docker_enabled=$(read_property enable_docker)
+is_setup_vpn_enabled=$(read_property setup_vpn)
 timestamp=$(date +%s)
 
 mkdir -p $HOME/.local/scripts
@@ -158,5 +176,30 @@ wait_for_input
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
+
+if [ "${is_docker_enabled}" == "true" ]
+then
+	check_docker_requirements
+		
+	echo "Installing docker configuration..."
+	wait_for_input
+	mkdir -p $HOME/Development/Vagrant/dockervm
+	cp Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
+	
+	echo "Installing docker shortcuts..."
+	wait_for_input
+	mkdir -p $HOME/.local/scripts
+	cp ./docker_up $HOME/.local/scripts/docker_up
+	cp ./docker_down $HOME/.local/scripts/docker_down
+fi
+
+if [ "${is_setup_vpn_enabled}" == "true" ]
+then
+	echo "Installing openvpn scripts..."
+	wait_for_input
+		
+	git https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook
+	# Add Installer
+fi
 
 exit 0

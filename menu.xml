@@ -11,7 +11,7 @@
       </startupnotify>
     </action>
   </item>  
-<!--  <item label="Virtualbox">
+  <item label="Virtualbox">
     <action name="Execute">
       <command>vboxgtk</command>
       <startupnotify>
@@ -19,21 +19,12 @@
       </startupnotify>
     </action>
   </item>
--->
 </menu>
 
 <menu id="apps-editors-menu" label="Editors">
   <item label="Geany">
     <action name="Execute">
       <command>geany</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-  </item>
-  <item label="Intellij Idea 2018.2">
-    <action name="Execute">
-      <command>idea</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
