@@ -23,7 +23,7 @@ is_user_allowed_to_update(){
 is_installed(){
 	echo "Checking if $1 is installed..."
 	if ! [ -x "$(command -v $1)" ]; then
-	  echo 'Error: $1 is not installed.' >&2
+	  echo "Error: $1 is not installed." >&2
 	  exit 1
 	fi
 }
