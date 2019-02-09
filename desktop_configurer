@@ -11,6 +11,15 @@ wait_for_input(){
 	read dummy
 }
 
+is_user_allowed_to_update(){
+	group=$(id -G -n $USER | grep -o "installer")
+	if [ "${group}" == "installer" ]; then
+		echo true
+	else
+		echo false
+	fi
+}
+
 is_installed(){
 	echo "Checking if $1 is installed..."
 	if ! [ -x "$(command -v $1)" ]; then
@@ -36,10 +45,11 @@ check_docker_requirements(){
 work_dir=.
 config_file=${work_dir}/post_install.config
 
-# Check General Requirements
+# Check if git is istalled
 check_requiremnts
 
 # Variable Declaration
+is_user_allowed_to_update=$(is_user_allowed_to_update)
 is_docker_enabled=$(read_property enable_docker)
 is_setup_vpn_enabled=$(read_property setup_vpn)
 timestamp=$(date +%s)
@@ -52,6 +62,7 @@ mkdir -p $HOME/.icons
 mkdir -p $HOME/.config/tint2
 
 echo "Start configuring Openbox Desktop Look & Feel..."
+echo "Copying .xinitrc under $HOME"
 wait_for_input
 # .xinitrc
 if [ -f "$HOME/.xinitrc" ] 
@@ -63,6 +74,7 @@ else
 fi
 echo 'exec openbox-session' >> $HOME/.xinitrc
 
+echo "Copying .tcshrc under $HOME"
 wait_for_input
 # tcshrc
 if [ -f "$HOME/.tcshrc" ] 
@@ -74,6 +86,7 @@ else
 fi
 cp ./tcshrc $HOME/.tcshrc
 
+echo "Copying .Xdefaults under $HOME"
 wait_for_input
 # Xdefaults
 if [ -f "$HOME/.Xdefaults" ] 
@@ -85,6 +98,7 @@ else
 fi
 cp ./Xdefaults $HOME/.Xdefaults
 
+echo "Copying autostart.sh under $HOME/.config/openbox"
 wait_for_input
 # Openbox
 if [ -f "$HOME/.config/openbox/autostart.sh" ] 
@@ -97,6 +111,7 @@ fi
 cp ./autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
+echo "Copying rc.xml under $HOME/.config/openbox"
 wait_for_input
 if [ -f "$HOME/.config/openbox/rc.xml" ] 
 then
@@ -107,6 +122,7 @@ else
 fi
 cp ./rc.xml $HOME/.config/openbox/rc.xml
 
+echo "Copying menu.xml under $HOME/.config/openbox"
 wait_for_input
 if [ -f "$HOME/.config/openbox/menu.xml" ] 
 then
@@ -117,13 +133,13 @@ else
 fi
 cp ./menu.xml $HOME/.config/openbox/menu.xml
 
-echo "Copying Openbox Desktop Wallpapers..."
+echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
 wait_for_input
 # Wallpaper
 cp ./grey-gradient.png $HOME/.config/openbox/Wallpapers/grey-gradient.png
 cp ./red-gradient.jpg $HOME/.config/openbox/Wallpapers/red-gradient.jpg
 
-echo "Copying Tint2 Configuration Files..."
+echo "Copying tint2rc under HOME/.config/tint2"
 wait_for_input
 # tint2
 if [ -f "$HOME/.config/tint2/tint2rc" ] 
@@ -135,7 +151,7 @@ else
 fi
 cp ./tint2rc $HOME/.config/tint2/tint2rc
 
-echo "Copying Conky Configuration Files..."
+echo "Copying Conky Configuration Files under $HOME..."
 wait_for_input
 # conky
 if [ -f "$HOME/.conkyrc" ] 
@@ -147,7 +163,8 @@ else
 fi
 cp ./conkyrc $HOME/.conkyrc
 
-echo "Copying gtk2/gtk3 Configuration Files..."
+
+echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
 wait_for_input
 # GTK2 Themes and Icons
 if [ -f "$HOME/.gtkrc-2.0" ] 
@@ -161,6 +178,8 @@ cp gtkrc-2.0 $HOME/.gtkrc-2.0
 cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
+echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
+wait_for_input
 # GTK3 Themes and Icons
 if [ -f "$HOME/.config/gtk-3.0/settings.ini" ] 
 then
@@ -171,7 +190,7 @@ else
 fi
 cp settings.ini $HOME/.config/gtk-3.0/settings.ini
 
-echo "Copying Icon Pack Files..."
+echo "Copying Icon Pack Files under $HOME/.icons..."
 wait_for_input
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
@@ -198,8 +217,32 @@ then
 	echo "Installing openvpn scripts..."
 	wait_for_input
 		
-	git https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook
-	# Add Installer
+	git clone https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook_${timestamp}
+	cd /tmp/vpnbook_${timestamp}
+	sh install
+	
+	cmd="(sleep 20 && $HOME/.local/scripts/vpnbook -s FR1) &"
+	if [ -d "${HOME}/.config/openbox" ]; then  
+	if grep -Fxq "${cmd}" ${HOME}/.config/openbox/autostart.sh
+		then
+			echo "No need to add vpnbook to autostart.sh as it is already present"
+		else
+			echo ${cmd} >> ${HOME}/.config/openbox/autostart.sh
+		fi
+	fi
+
 fi
 
+if [ "${is_user_allowed_to_update}" == "true" ]; then
+	# Install Update Script
+	echo "Installing Update Scripts under $HOME/.local/scripts..."
+	wait_for_input
+	
+	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
+	cd /tmp/update_script_${timestamp}
+	sh install
+else
+	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
+fi	
+		
 exit 0

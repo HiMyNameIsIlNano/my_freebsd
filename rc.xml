@@ -394,7 +394,7 @@
         <enabled>true</enabled>
         <name>vpnbook</name>
       </startupnotify>
-      <command>.local/scripts/vpnbook -s DE</command>
+      <command>.local/scripts/vpnbook -s DE4</command>
     </action>
   </keybind>
   <!-- Idea: exceute Idea -->

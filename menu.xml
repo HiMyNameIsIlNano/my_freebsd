@@ -55,18 +55,18 @@
   </item>
   <menu id="apps-net-submenu-vpn" label="VPN">
 	  <!--<separator label="VPN Connections" />-->
-	  <item label="VPN Connection (EURO 1)">
+	  <item label="VPN Connection (EURO PL226)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s EURO1</command>
+		  <command>$HOME/.local/scripts/vpnbook -s PL226</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
 		  </startupnotify>
 		</action>
 	  </item>
-	  <item label="VPN Connection (EURO 2)">
+	  <item label="VPN Connection (FR1)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s EURO2</command>
+		  <command>$HOME/.local/scripts/vpnbook -s FR1</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
@@ -75,7 +75,7 @@
 	  </item>
 	  <item label="VPN Connection (US 1)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s US1</command>
+		  <command>$HOME/.local/scripts/vpnbook -s US1</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
@@ -84,16 +84,16 @@
 	  </item>
 	  <item label="VPN Connection (US 2)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s US2</command>
+		  <command>$HOME/.local/scripts/vpnbook -s US2</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
 		  </startupnotify>
 		</action>
 	  </item>
-	  <item label="VPN Connection (CA 1)">
+	  <item label="VPN Connection (CA 222)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s CA1</command>
+		  <command>$HOME/.local/scripts/vpnbook -s CA222</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
@@ -102,7 +102,7 @@
 	  </item>
 	  <item label="VPN Connection (DE)">
 		<action name="Execute">
-		  <command>.local/scripts/vpnbook -s DE</command>
+		  <command>$HOME/.local/scripts/vpnbook -s DE4</command>
 		  <startupnotify>
 			<enabled>yes</enabled>
 			<wmclass>Script</wmclass>
