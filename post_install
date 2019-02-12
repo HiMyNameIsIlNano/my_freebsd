@@ -107,7 +107,7 @@ then
 fi
 
 # Groups
-echo "Adding 'restarter' and 'installer' groups..."	
+echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
 wait_for_input
 pw groupadd restarter
 pw groupadd installer
