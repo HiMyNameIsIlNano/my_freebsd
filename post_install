@@ -142,7 +142,7 @@ echo '%installer ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/su
 echo '' >> /usr/local/etc/sudoers
 echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
 
-echo "Configuring startup demons and boot options..."
+echo "Configuring startup daemons and boot options..."
 wait_for_input
 
 # Move to the checkout directory
