@@ -136,8 +136,7 @@ cp ./menu.xml $HOME/.config/openbox/menu.xml
 echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
 wait_for_input
 # Wallpaper
-cp ./grey-gradient.png $HOME/.config/openbox/Wallpapers/grey-gradient.png
-cp ./red-gradient.jpg $HOME/.config/openbox/Wallpapers/red-gradient.jpg
+cp ./grey-gradient.png $HOME/.config/openbox/Wallpapers/*-backgorund.jpg
 
 echo "Copying tint2rc under HOME/.config/tint2"
 wait_for_input
