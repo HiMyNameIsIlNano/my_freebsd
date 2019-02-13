@@ -229,7 +229,7 @@ then
 			echo ${cmd} >> ${HOME}/.config/openbox/autostart.sh
 		fi
 	fi
-
+	rm -r /tmp/vpnbook_${timestamp}
 fi
 
 if [ "${is_user_allowed_to_update}" == "true" ]; then
@@ -240,6 +240,7 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	cd /tmp/update_script_${timestamp}
 	sh install
+	rm -r /tmp/update_script_${timestamp}
 else
 	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
 fi	
