@@ -175,7 +175,7 @@ else
 fi
 cp gtkrc-2.0 $HOME/.gtkrc-2.0
 cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
-tar xvzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
+tar xzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
 echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
 wait_for_input
@@ -193,7 +193,7 @@ echo "Copying Icon Pack Files under $HOME/.icons..."
 wait_for_input
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
-tar xvzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
+tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
 if [ "${is_docker_enabled}" == "true" ]
 then
@@ -231,7 +231,7 @@ then
 	fi
 	echo "Cleaning Temporary Files..."
 	cd
-	rm -r /tmp/vpnbook_${timestamp}
+	rm -rf /tmp/vpnbook_${timestamp}
 fi
 
 if [ "${is_user_allowed_to_update}" == "true" ]; then
@@ -244,7 +244,7 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	sh install
 	echo "Cleaning Temporary Files..."
 	cd
-	rm -r /tmp/update_script_${timestamp}
+	rm -rf /tmp/update_script_${timestamp}
 else
 	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
 fi	
