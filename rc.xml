@@ -297,8 +297,8 @@
   </keybind>
   
   <!-- Keybindings for running applications -->
-  <!-- Firefox: Default Profile -->
-  <keybind key="W-f">
+  <!-- Firefox: Default Profile 
+  <keybind key="W-b">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -306,8 +306,8 @@
       </startupnotify>
       <command>firefox -P "default"</command>
     </action>
-  </keybind>
-  <!-- Firefox: Tor Profile -->
+  </keybind> -->
+  <!-- Firefox: Tor Profile 
   <keybind key="W-t">
     <action name="Execute">
       <startupnotify>
@@ -316,9 +316,9 @@
       </startupnotify>
       <command>firefox -P "tor-bundle"</command>
     </action>
-  </keybind>
+  </keybind> -->
   <!-- Geany -->
-  <keybind key="W-g">
+  <keybind key="W-e">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -328,7 +328,7 @@
     </action>
   </keybind>
   <!-- File System Home -->
-  <keybind key="W-p">
+  <keybind key="W-f">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -347,7 +347,7 @@
       <command>fsearch</command>
     </action>
   </keybind>
-  <!-- Firefox: Default Profile -->
+  <!-- Firefox: Default Profile 
   <keybind key="W-n">
     <action name="Execute">
       <startupnotify>
@@ -356,7 +356,17 @@
       </startupnotify>
       <command>firefox -P "default" http://web.airdroid.com/</command>
     </action>
-  </keybind>
+  </keybind> -->
+  <!-- Chromium -->
+  <keybind key="W-b">
+    <action name="Execute">
+      <startupnotify>
+        <enabled>true</enabled>
+        <name>Chromium</name>
+      </startupnotify>
+      <command>chromium</command>
+    </action>
+  </keybind> 
   <!-- Lock Screen -->
   <keybind key="W-l">
     <action name="Execute">
@@ -398,7 +408,7 @@
     </action>
   </keybind>
   <!-- Idea: exceute Idea -->
-  <keybind key="W-i">
+  <keybind key="W-d">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -408,7 +418,7 @@
     </action>
   </keybind>
   <!-- XTerm: execute Xterm -->
-  <keybind key="W-x">
+  <keybind key="W-t">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>

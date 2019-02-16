@@ -93,7 +93,7 @@ then
 	echo "Installing openvpn packages..."
 	wait_for_input
 		
-	openvpn_ports=openvpn,curl,sudo,tesseract,ImageMagick7-nox11
+	openvpn_ports=openvpn,curl,sudo
 	install_ports $openvpn_ports	
 fi
 

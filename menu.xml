@@ -44,12 +44,12 @@
 </menu>
 
 <menu id="apps-net-menu" label="Internet">
-  <item label="Firefox">
+  <item label="Chromium">
     <action name="Execute">
-      <command>firefox</command>
+      <command>chromium</command>
       <startupnotify>
         <enabled>yes</enabled>
-        <wmclass>Firefox</wmclass>
+        <wmclass>Chromium</wmclass>
       </startupnotify>
     </action>
   </item>
