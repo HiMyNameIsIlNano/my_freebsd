@@ -171,4 +171,7 @@ else
 fi
 cp ./loader.conf /boot/loader.conf
 
+echo "### IMPORTANT NOTE ###"
+echo "Plase make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
+
 exit 0
