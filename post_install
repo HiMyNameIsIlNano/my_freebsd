@@ -78,6 +78,10 @@ install_ports $desktop_ports
 echo "Installing development packages..."
 wait_for_input
 install_ports $dev_ports
+
+# TODO: add check for openjdk
+echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
  
 if [ "${is_docker_enabled}" == "true" ]
 then
