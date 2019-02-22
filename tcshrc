@@ -17,6 +17,8 @@ if ($?prompt) then
 	set history = 100
 	set savehist = 100
 	set autolist = TAB
+	set JAVA_HOME=/usr/local/openjdk8/bin
+	set path = ($path $HOME/bin ${JAVA_HOME})
 	set mail = (/var/mail/$USER)
 	setenv LSCOLORS ExGxdxdxCxDxDxBxBxegeg
 	if ( $?tcsh ) then
