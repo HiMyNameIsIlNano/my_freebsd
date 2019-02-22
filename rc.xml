@@ -358,7 +358,7 @@
     </action>
   </keybind> -->
   <!-- Chromium -->
-  <keybind key="W-b">
+  <keybind key="W-w">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
