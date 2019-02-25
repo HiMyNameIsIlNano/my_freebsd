@@ -142,7 +142,7 @@ echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
 echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
 echo '' >> /usr/local/etc/sudoers
 echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
-echo '%installer ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
+echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
 echo '' >> /usr/local/etc/sudoers
 echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
 
