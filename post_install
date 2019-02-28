@@ -24,13 +24,43 @@ install_ports(){
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo $ports_to_install | sed "s/,/ /g")
 	do
-		pkg install $port
+		pkg install -y $port
 	done	
 }
 
 wait_for_input(){
 	printf 'press [ENTER] to continue'
 	read dummy
+}
+
+is_installed_java(){
+	java_version="$@"
+	
+	echo "Checking if java is installed..."
+	if ! [ -x "$(command -v java)" ]; then
+	  echo "Error: $1 is not installed." >&2
+	  return 1
+    else
+		# Check if Java Version is 1.8
+		version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F. '{printf("%03d%03d",$1,$2);}')
+		if [ $version == ${java_version} ] ; then
+			return 0
+		else
+			echo "Java Version ${java_version} is not installed"
+			return 1
+		fi
+	fi
+}
+
+post_config_java8(){
+	is_installed_java 001008
+	
+	if [ $? -eq 0 ] ; then
+		echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+		echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+	else
+		echo "Java Version is not 1.8"
+	fi
 }
 
 work_dir=.
@@ -79,9 +109,8 @@ echo "Installing development packages..."
 wait_for_input
 install_ports $dev_ports
 
-# TODO: add check for openjdk
-echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
-echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+# Finilize Java8 Configuration
+post_config_java8
  
 if [ "${is_docker_enabled}" == "true" ]
 then

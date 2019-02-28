@@ -195,6 +195,18 @@ wait_for_input
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
+# Geany Themes
+if [ -d "$HOME/.config/geany" ] 
+then
+	echo "Installing geany themes..."
+	wait_for_input
+		
+	git clone https://github.com/geany/geany-themes.git /tmp/geany_themes_${timestamp}
+	mkdir -p $HOME/.config/geany/colorschemes/
+	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ $HOME/.config/geany/colorschemes/
+	rm -rf /tmp/geany_themes_${timestamp}
+fi
+
 if [ "${is_docker_enabled}" == "true" ]
 then
 	check_docker_requirements
