@@ -181,9 +181,6 @@ wait_for_input
 # Move to the checkout directory
 cd $work_dir
 
-# Localrules
-# Nothing to do
-
 # rc.conf
 if [ -f "/etc/rc.conf" ] 
 then
@@ -193,6 +190,12 @@ else
 	echo "Nothing to backup. File rc.conf does not exist"
 fi
 cp ./rc.conf /etc/rc.conf
+
+# Localrules
+echo '[localrules=5]' >> /etc/devfs.rules
+echo "add path 'da*' mode 0660 group operator" >> /etc/devfs.rules 
+echo 'devfs_system_ruleset="localrules"' >> /etc/rc.conf
+echo 'vfs.usermount=1' >> /etc/sysctl.conf
 
 # loader.conf
 if [ -f "/boot/loader.conf" ] 
@@ -204,7 +207,11 @@ else
 fi
 cp ./loader.conf /boot/loader.conf
 
-echo "### IMPORTANT NOTE ###"
+echo "### IMPORTANT NOTE 1. ###"
 echo "Plase make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
+echo "pw group mod video -m {userNameHere1,userNameHere2,...}"
+echo "### IMPORTANT NOTE 2. ###"
+echo "Also make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
+echo "pw group mod operator -m {userNameHere1,userNameHere2,...}"
 
 exit 0
