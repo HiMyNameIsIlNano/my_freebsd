@@ -1,0 +1,35 @@
+########################
+# Custom Configuration #
+########################
+
+# Support needed for Xorg (Mouse and Keyboard)
+hald_enable="YES"
+dbus_enable="YES"
+acpi_sony_enable="YES"
+
+powerd_flags="-a hiadaptive -b adaptive"
+performance_cx_lowest="Cmax"
+economy_cx_lowest="Cmax"
+
+# TOR Settings
+#tor_enable="YES"
+#polipo_enable="YES"
+#privoxy_enable="YES"
+
+# Screensaver
+saver="blank"
+blanktime="300"
+
+# Virtualbox kernel module that allow bridged or host-only networking (necessary for Docker)
+vboxnet_enable="YES"
+#vboxguest_enable="YES"
+vboxservice_enable="YES"
+
+background_dhclient="YES"
+sendmail_enable="NONE"
+
+# Firewall Rules
+#firewall_enable="YES"
+#firewall_script="/usr/local/etc/ipfw.rules"
+
+kld_list="/boot/modules/i915kms.ko"
