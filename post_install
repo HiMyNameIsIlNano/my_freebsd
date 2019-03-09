@@ -185,11 +185,11 @@ cd $work_dir
 if [ -f "/etc/rc.conf" ] 
 then
 	echo "Backing-up rc.conf"
-	mv /etc/rc.conf /etc/rc.conf.${timestamp}.bak
+	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
 else
 	echo "Nothing to backup. File rc.conf does not exist"
 fi
-cp ./rc.conf /etc/rc.conf
+cat ./rc.conf.delta >> /etc/rc.conf
 
 # Localrules
 echo '[localrules=5]' >> /etc/devfs.rules
