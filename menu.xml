@@ -10,6 +10,14 @@
         <enabled>yes</enabled>
       </startupnotify>
     </action>
+  </item>
+  <item label="Processes">
+    <action name="Execute">
+      <command>htop</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
   </item>  
   <item label="Virtualbox">
     <action name="Execute">

@@ -32,15 +32,15 @@ sh desktop_configurer
 ```
 
 ## Further Configuration Possibilities:
-As mentioned above, both `post_install` and `desktop_configurer` are driven by a configuration file named `post_install.config`. The `post_install.config` is a simple `json` file containing a list programs and flags used for the configuration of the desktop. The meaning of each configuration item is described below:
+As mentioned above, both `post_install` and `desktop_configurer` are driven by a configuration file named `post_install.config`. The `post_install.config` is a simple `json` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
 
-1. base_ports: A catgeory of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with no empty space between the items;
-2. desktop_ports: A catgeory of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with no empty space between the items;
-3. office_ports: A catgeory of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with no empty space between the items;
-4. dev_ports: A catgeory of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with no empty space between the items;
+1. base_ports: A catgeory of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+2. desktop_ports: A catgeory of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+3. office_ports: A catgeory of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+4. dev_ports: A catgeory of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 5. enable_docker: A flag that enables and configures Docker and a set of utility commands for a specific user. Allowed values: {true|false};
 6. init_ports: A flag that enables and checks out the FreeBSD ports tree. Allowed values: {true|false};
 7. create_users: A flag that enables the configuration of additional users on the system. Allowed values: {true|false}: 
 8. setup_vpn: A flag that enables the configuration of a set of tools to connect to a set of public OpenVPN Servers (see: https://www.vpnbook.com/freevpn). Allowed values:{true|false}   
 
-The differentiation between `base_ports`, `desktop_ports`, `office_ports` and `dev_ports` it is just a logical one and it has no real technical reason. If one wants to add a port to the configuration it can be added to any of the ports list described above. It should go without saying that the list of ports can be changed and extended to ones' personal taste. The only aim of such configuration is to keep the set of installed ports to the bare minimum while still providing a decent desktop experience.     
+The differentiation between `base_ports`, `desktop_ports`, `office_ports` and `dev_ports` is just a logical one and it has no real technical reason. If one wants to add a port to the configuration, it can be added to any of the ports list described above. It should go without saying that the list of ports can be changed and extended to ones' personal taste. The only aim of such configuration is to keep the set of installed ports to the bare minimum, while still providing a decent desktop experience.     
