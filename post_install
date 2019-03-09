@@ -29,7 +29,7 @@ install_ports(){
 }
 
 wait_for_input(){
-	printf 'press [ENTER] to continue'
+	printf 'press [ENTER] to continue...'
 	read dummy
 }
 
@@ -88,6 +88,7 @@ check_requiremnts
 base_ports=$(read_property base_ports)
 desktop_ports=$(read_property desktop_ports)
 dev_ports=$(read_property dev_ports)
+office_ports=$(read_property office_ports)
 is_docker_enabled=$(read_property enable_docker)
 is_init_ports_enabled=$(read_property init_ports)
 is_create_users_enabled=$(read_property create_users)
@@ -104,6 +105,10 @@ install_ports $base_ports
 echo "Installing desktop packages..."
 wait_for_input
 install_ports $desktop_ports
+
+echo "Installing office packages..."
+wait_for_input
+install_ports $office_ports
 
 echo "Installing development packages..."
 wait_for_input
