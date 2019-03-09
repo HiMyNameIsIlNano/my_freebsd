@@ -60,6 +60,7 @@ mkdir -p $HOME/.config/gtk-3.0
 mkdir -p $HOME/.themes
 mkdir -p $HOME/.icons
 mkdir -p $HOME/.config/tint2
+mkdir -p $HOME/.config/geany
 
 echo "Start configuring Openbox Desktop Look & Feel..."
 echo "Copying .xinitrc under $HOME"
