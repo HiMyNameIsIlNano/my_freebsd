@@ -13,7 +13,7 @@
   </item>
   <item label="Processes">
     <action name="Execute">
-      <command>htop</command>
+      <command>xterm -e "htop"</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
