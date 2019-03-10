@@ -121,14 +121,6 @@
 </menu>
 
 <menu id="apps-multimedia-menu" label="Multimedia">
-  <item label="Moc">
-    <action name="Execute">
-      <command>mocp</command>
-      <startupnotify>
-        <enabled>yes</enabled>
-      </startupnotify>
-    </action>
-  </item>
   <item label="DVD Player">
     <action name="Execute">
       <command>mplayer dvdnav://0</command>
@@ -143,6 +135,25 @@
   <item label="PCMan File Manager">
     <action name="Execute">
       <command>pcmanfm</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-office-menu" label="Office Suite">
+  <item label="Abiword">
+    <action name="Execute">
+      <command>abiword</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Gnumeric">
+    <action name="Execute">
+      <command>gnumeric</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
@@ -170,6 +181,7 @@
 <menu id="root-menu" label="Openbox 3">
   <separator label="Applications" />
   <menu id="apps-accessories-menu"/>
+  <menu id="apps-office-menu"/>
   <menu id="apps-editors-menu"/>
   <menu id="apps-net-menu"/>
   <menu id="apps-multimedia-menu"/>
