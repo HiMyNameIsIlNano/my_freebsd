@@ -63,6 +63,24 @@ post_config_java8(){
 	fi
 }
 
+add_user_to_group(){
+	local group="$@"
+	local user
+	local dummy=Y
+	
+	while
+		printf "Which user would you like to add to group ${group}? "
+		read user
+	
+		echo "Adding user ${user} to group ${group}..."
+		pw group mod ${group} -m ${user}	
+		
+		printf "Do you want to add another user to group ${group}? [Y/n]"
+		read dummy
+		[ "${dummy}" == "Y" ]            # test the limit of the loop.
+	do :;  done	
+}
+
 work_dir=.
 config_file=${work_dir}/post_install.config
 
@@ -95,8 +113,19 @@ is_create_users_enabled=$(read_property create_users)
 is_setup_vpn_enabled=$(read_property setup_vpn)
 timestamp=$(date +%s)
 
-pkg update
+# Users
+echo "Adding users..."	
 wait_for_input
+
+if [ "${is_create_users_enabled}" == "true" ]
+then
+	echo "Initializng users..."
+	wait_for_input
+	adduser	
+fi
+
+echo "Updating package DB..."
+pkg update
 
 echo "Installing base packages..."
 wait_for_input
@@ -122,7 +151,7 @@ then
 	echo "Installing docker packages..."
 	wait_for_input
 		
-	docker_ports=virtualbox-ose,vagrant,docker-machine,docker
+	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
 	install_ports $docker_ports
 fi
 
@@ -150,18 +179,6 @@ wait_for_input
 pw groupadd restarter
 pw groupadd installer
 pw groupadd vpnstarter
-
-# Users
-echo "Adding users..."	
-wait_for_input
-
-if [ "${is_create_users_enabled}" == "true" ]
-then
-	echo "Initializng users..."
-	wait_for_input
-	adduser	
-fi
-
 
 # Sudoers
 echo "Configuring sudoers..."
@@ -212,11 +229,15 @@ else
 fi
 cp ./loader.conf /boot/loader.conf
 
-echo "### IMPORTANT NOTE 1. ###"
-echo "Plase make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
-echo "pw group mod video -m {userNameHere1,userNameHere2,...}"
-echo "### IMPORTANT NOTE 2. ###"
-echo "Also make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
-echo "pw group mod operator -m {userNameHere1,userNameHere2,...}"
+echo "### IMPORTANT NOTE ###"
+echo "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
+add_user_to_group video
+
+echo "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
+add_user_to_group operator
+
+echo "Make sure that all the users are part of the 'vboxusers' group, otherwise it won't be possible for the user(s) to launch virtualbox"
+add_user_to_group vboxusers
+
 
 exit 0
