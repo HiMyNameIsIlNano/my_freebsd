@@ -11,7 +11,7 @@
       </startupnotify>
     </action>
   </item>
-  <item label="Processes">
+  <item label="Process Monitor">
     <action name="Execute">
       <command>xterm -e "htop"</command>
       <startupnotify>
@@ -19,20 +19,28 @@
       </startupnotify>
     </action>
   </item>  
-  <item label="Virtualbox">
+</menu>
+
+<menu id="apps-development-menu" label="Development Tools">
+  <item label="Geany">
     <action name="Execute">
-      <command>vboxgtk</command>
+      <command>geany</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
     </action>
   </item>
-</menu>
-
-<menu id="apps-editors-menu" label="Editors">
-  <item label="Geany">
+  <item label="NetBeans IDE">
     <action name="Execute">
-      <command>geany</command>
+      <command>netbeans</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Virtualbox">
+    <action name="Execute">
+      <command>virtualbox</command>
       <startupnotify>
         <enabled>yes</enabled>
       </startupnotify>
@@ -182,7 +190,7 @@
   <separator label="Applications" />
   <menu id="apps-accessories-menu"/>
   <menu id="apps-office-menu"/>
-  <menu id="apps-editors-menu"/>
+  <menu id="apps-development-menu"/>
   <menu id="apps-net-menu"/>
   <menu id="apps-multimedia-menu"/>
   <menu id="apps-term-menu"/>
