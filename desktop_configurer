@@ -11,6 +11,12 @@ wait_for_input(){
 	read dummy
 }
 
+wait_for_seconds(){
+	local seconds="$@"
+	printf "waiting ${seconds} before continuing..."
+	sleep ${seconds}
+}
+
 is_user_allowed_to_update(){
 	group=$(id -G -n $USER | grep -o "installer")
 	if [ "${group}" == "installer" ]; then
@@ -66,7 +72,7 @@ mkdir -p $HOME/.config/geany
 
 echo "Start configuring Openbox Desktop Look & Feel..."
 echo "Copying .xinitrc under $HOME"
-wait_for_input
+wait_for_seconds 5
 # .xinitrc
 if [ -f "$HOME/.xinitrc" ] 
 then
@@ -78,7 +84,7 @@ fi
 echo 'exec openbox-session' >> $HOME/.xinitrc
 
 echo "Copying .tcshrc under $HOME"
-wait_for_input
+wait_for_seconds 5
 # tcshrc
 if [ -f "$HOME/.tcshrc" ] 
 then
@@ -90,7 +96,7 @@ fi
 cp ./tcshrc $HOME/.tcshrc
 
 echo "Copying .Xdefaults under $HOME"
-wait_for_input
+wait_for_seconds 5
 # Xdefaults
 if [ -f "$HOME/.Xdefaults" ] 
 then
@@ -102,7 +108,7 @@ fi
 cp ./Xdefaults $HOME/.Xdefaults
 
 echo "Copying autostart.sh under $HOME/.config/openbox"
-wait_for_input
+wait_for_seconds 5
 # Openbox
 if [ -f "$HOME/.config/openbox/autostart.sh" ] 
 then
@@ -115,7 +121,7 @@ cp ./autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
 echo "Copying rc.xml under $HOME/.config/openbox"
-wait_for_input
+wait_for_seconds 5
 if [ -f "$HOME/.config/openbox/rc.xml" ] 
 then
 	echo "Backing-up rc.xml"
@@ -126,7 +132,7 @@ fi
 cp ./rc.xml $HOME/.config/openbox/rc.xml
 
 echo "Copying menu.xml under $HOME/.config/openbox"
-wait_for_input
+wait_for_seconds 5
 if [ -f "$HOME/.config/openbox/menu.xml" ] 
 then
 	echo "Backing-up menu.xml"
@@ -137,12 +143,12 @@ fi
 cp ./menu.xml $HOME/.config/openbox/menu.xml
 
 echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
-wait_for_input
+wait_for_seconds 5
 # Wallpaper
 cp ./*-background.jpg $HOME/.config/openbox/Wallpapers/
 
 echo "Copying tint2rc under HOME/.config/tint2"
-wait_for_input
+wait_for_seconds 5
 # tint2
 if [ -f "$HOME/.config/tint2/tint2rc" ] 
 then
@@ -154,7 +160,7 @@ fi
 cp ./tint2rc $HOME/.config/tint2/tint2rc
 
 echo "Copying Conky Configuration Files under $HOME..."
-wait_for_input
+wait_for_seconds 5
 # conky
 if [ -f "$HOME/.conkyrc" ] 
 then
@@ -167,7 +173,7 @@ cp ./conkyrc $HOME/.conkyrc
 
 
 echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
-wait_for_input
+wait_for_seconds 5
 # GTK2 Themes and Icons
 if [ -f "$HOME/.gtkrc-2.0" ] 
 then
@@ -181,7 +187,7 @@ cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderl
 tar xzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
 echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
-wait_for_input
+wait_for_seconds 5
 # GTK3 Themes and Icons
 if [ -f "$HOME/.config/gtk-3.0/settings.ini" ] 
 then
@@ -193,7 +199,7 @@ fi
 cp settings.ini $HOME/.config/gtk-3.0/settings.ini
 
 echo "Copying Icon Pack Files under $HOME/.icons..."
-wait_for_input
+wait_for_seconds 5
 # Icon Pack
 cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
@@ -202,7 +208,7 @@ tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 if [ -d "$HOME/.config/geany" ] 
 then
 	echo "Installing geany themes..."
-	wait_for_input
+	wait_for_seconds 5
 		
 	git clone https://github.com/geany/geany-themes.git /tmp/geany_themes_${timestamp}
 	mkdir -p $HOME/.config/geany/colorschemes/
@@ -218,12 +224,12 @@ then
 	check_docker_requirements
 		
 	echo "Installing docker configuration..."
-	wait_for_input
+	wait_for_seconds 5
 	mkdir -p $HOME/Development/Vagrant/dockervm
 	cp Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
 	
 	echo "Installing docker shortcuts..."
-	wait_for_input
+	wait_for_seconds 5
 	mkdir -p $HOME/.local/scripts
 	cp ./docker_up $HOME/.local/scripts/docker_up
 	cp ./docker_down $HOME/.local/scripts/docker_down
@@ -232,7 +238,7 @@ fi
 if [ "${is_setup_vpn_enabled}" == "true" ]
 then
 	echo "Installing openvpn scripts..."
-	wait_for_input
+	wait_for_seconds 5
 		
 	git clone https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook_${timestamp}
 	cd /tmp/vpnbook_${timestamp}
@@ -255,7 +261,7 @@ fi
 if [ "${is_user_allowed_to_update}" == "true" ]; then
 	# Install Update Script
 	echo "Installing Update Scripts under $HOME/.local/scripts..."
-	wait_for_input
+	wait_for_seconds 5
 	
 	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	cd /tmp/update_script_${timestamp}

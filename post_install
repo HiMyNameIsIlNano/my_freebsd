@@ -33,6 +33,12 @@ wait_for_input(){
 	read dummy
 }
 
+wait_for_seconds(){
+	local seconds="$@"
+	printf "waiting ${seconds} before continuing..."
+	sleep ${seconds}
+}
+
 is_installed_java(){
 	java_version="$@"
 	
@@ -115,12 +121,12 @@ timestamp=$(date +%s)
 
 # Users
 echo "Adding users..."	
-wait_for_input
+wait_for_seconds 5
 
 if [ "${is_create_users_enabled}" == "true" ]
 then
 	echo "Initializng users..."
-	wait_for_input
+	wait_for_seconds 5
 	adduser	
 fi
 
@@ -128,19 +134,19 @@ echo "Updating package DB..."
 pkg update
 
 echo "Installing base packages..."
-wait_for_input
+wait_for_seconds 5
 install_ports $base_ports
 
 echo "Installing desktop packages..."
-wait_for_input
+wait_for_seconds 5
 install_ports $desktop_ports
 
 echo "Installing office packages..."
-wait_for_input
+wait_for_seconds 5
 install_ports $office_ports
 
 echo "Installing development packages..."
-wait_for_input
+wait_for_seconds 5
 install_ports $dev_ports
 
 # Finilize Java8 Configuration
@@ -149,7 +155,7 @@ post_config_java8
 if [ "${is_docker_enabled}" == "true" ]
 then
 	echo "Installing docker packages..."
-	wait_for_input
+	wait_for_seconds 5
 		
 	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
 	install_ports $docker_ports
@@ -158,7 +164,7 @@ fi
 if [ "${is_setup_vpn_enabled}" == "true" ]
 then
 	echo "Installing openvpn packages..."
-	wait_for_input
+	wait_for_seconds 5
 		
 	openvpn_ports=openvpn,curl,sudo
 	install_ports $openvpn_ports	
@@ -167,7 +173,7 @@ fi
 if [ "${is_init_ports_enabled}" == "true" ]
 then
 	echo "Initializng ports..."
-	wait_for_input
+	wait_for_seconds 5
 	
 	portsnap fetch
 	portsnap extract	
@@ -175,14 +181,14 @@ fi
 
 # Groups
 echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
-wait_for_input
+wait_for_seconds 5
 pw groupadd restarter
 pw groupadd installer
 pw groupadd vpnstarter
 
 # Sudoers
 echo "Configuring sudoers..."
-wait_for_input
+wait_for_seconds 5
 echo '' >> /usr/local/etc/sudoers
 echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
 echo '' >> /usr/local/etc/sudoers
@@ -198,7 +204,7 @@ echo '' >> /usr/local/etc/sudoers
 echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
 
 echo "Configuring startup daemons and boot options..."
-wait_for_input
+wait_for_seconds 5
 
 # Move to the checkout directory
 cd $work_dir
