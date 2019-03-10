@@ -35,8 +35,7 @@ wait_for_input(){
 
 wait_for_seconds(){
 	local seconds="$@"
-	echo "waiting ${seconds} before continuing..."
-	echo -e "\n"
+	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
 
@@ -76,13 +75,13 @@ add_user_to_group(){
 	local dummy=Y
 	
 	while
-		printf "Which user would you like to add to group ${group}? "
+		printf "Which user would you like to add to group ${group}?: "
 		read user
 	
 		echo "Adding user ${user} to group ${group}..."
 		pw group mod ${group} -m ${user}	
 		
-		printf "Do you want to add another user to group ${group}? [Y/n]"
+		printf "Do you want to add another user to group ${group}? [Y/n]: "
 		read dummy
 		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done	
