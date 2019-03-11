@@ -1,3 +1,4 @@
+
 ########################
 # Custom Configuration #
 ########################
@@ -29,7 +30,6 @@ background_dhclient="YES"
 sendmail_enable="NONE"
 
 # Firewall Rules
-#firewall_enable="YES"
-#firewall_script="/usr/local/etc/ipfw.rules"
+pf_enable="YES"
 
 kld_list="/boot/modules/i915kms.ko"
