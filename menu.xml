@@ -184,6 +184,32 @@
   <item label="Reconfigure Openbox">
     <action name="Reconfigure" />
   </item>
+  <menu id="openbox-conf-submenu-edit" label="Edit Openbox Config">
+	  <item label="Edit menu.xml">
+		<action name="Execute">
+		  <command>geany .config/openbox/menu.xml</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="Edit rc.xml">
+		<action name="Execute">
+		  <command>geany .config/openbox/rc.xml</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="Edit autostart.sh">
+		<action name="Execute">
+		  <command>geany .config/openbox/autostart.sh</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+  </menu>
 </menu>
 
 <menu id="root-menu" label="Openbox 3">
