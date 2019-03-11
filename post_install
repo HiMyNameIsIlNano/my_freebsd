@@ -219,6 +219,16 @@ else
 fi
 cat ./rc.conf.delta >> /etc/rc.conf
 
+# pf.conf
+if [ -f "/etc/pf.conf" ] 
+then
+	echo "Backing-up pf.conf"
+	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File pf.conf does not exist"
+fi
+cp ./pf.conf /etc/pf.conf
+
 # Localrules
 echo '[localrules=5]' >> /etc/devfs.rules
 echo "add path 'da*' mode 0660 group operator" >> /etc/devfs.rules 
