@@ -35,7 +35,7 @@ wait_for_input(){
 
 wait_for_seconds(){
 	local seconds="$@"
-	printf "waiting ${seconds} before continuing..."
+	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
 
@@ -75,13 +75,13 @@ add_user_to_group(){
 	local dummy=Y
 	
 	while
-		printf "Which user would you like to add to group ${group}? "
+		printf "Which user would you like to add to group ${group}?: "
 		read user
 	
 		echo "Adding user ${user} to group ${group}..."
 		pw group mod ${group} -m ${user}	
 		
-		printf "Do you want to add another user to group ${group}? [Y/n]"
+		printf "Do you want to add another user to group ${group}? [Y/n]: "
 		read dummy
 		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done	
@@ -118,6 +118,13 @@ is_init_ports_enabled=$(read_property init_ports)
 is_create_users_enabled=$(read_property create_users)
 is_setup_vpn_enabled=$(read_property setup_vpn)
 timestamp=$(date +%s)
+
+# Groups
+echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
+wait_for_seconds 5
+pw groupadd restarter
+pw groupadd installer
+pw groupadd vpnstarter
 
 # Users
 echo "Adding users..."	
@@ -179,13 +186,6 @@ then
 	portsnap extract	
 fi
 
-# Groups
-echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
-wait_for_seconds 5
-pw groupadd restarter
-pw groupadd installer
-pw groupadd vpnstarter
-
 # Sudoers
 echo "Configuring sudoers..."
 wait_for_seconds 5
@@ -242,8 +242,16 @@ add_user_to_group video
 echo "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
 add_user_to_group operator
 
-echo "Make sure that all the users are part of the 'vboxusers' group, otherwise it won't be possible for the user(s) to launch virtualbox"
+echo "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
 add_user_to_group vboxusers
 
+echo "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
+add_user_to_group restarter
+
+echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+add_user_to_group installer
+
+echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
+add_user_to_group vpnstarter
 
 exit 0

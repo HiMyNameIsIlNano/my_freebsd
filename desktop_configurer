@@ -13,7 +13,7 @@ wait_for_input(){
 
 wait_for_seconds(){
 	local seconds="$@"
-	printf "waiting ${seconds} before continuing..."
+	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
 
@@ -43,7 +43,8 @@ check_requiremnts(){
 check_docker_requirements(){
 	echo "Checking docker Requirements..."
 	# Check if docker, virtualbox, vagrant are installed
-	is_installed virtualbox
+	# TODO: Check if this is not necessary anymore as moved to virtualbox-ose-nox11
+	# is_installed virtualbox
 	is_installed vagrant
 	is_installed docker-machine
 }
