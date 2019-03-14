@@ -245,7 +245,7 @@ then
 	cd /tmp/vpnbook_${timestamp}
 	sh install
 	
-	cmd="(sleep 20 && $HOME/.local/scripts/vpnbook -s FR1) &"
+	cmd="(sleep 20 && /home/Developer/.local/scripts/vpnbook_wrapper -s US1) &"
 	if [ -d "${HOME}/.config/openbox" ]; then  
 	if grep -Fxq "${cmd}" ${HOME}/.config/openbox/autostart.sh
 		then
