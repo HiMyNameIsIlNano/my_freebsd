@@ -227,13 +227,13 @@ then
 	echo "Installing docker configuration..."
 	wait_for_seconds 5
 	mkdir -p $HOME/Development/Vagrant/dockervm
-	cp Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
+	cp ./Openbox/Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
 	
 	echo "Installing docker shortcuts..."
 	wait_for_seconds 5
 	mkdir -p $HOME/.local/scripts
-	cp ./docker_up $HOME/.local/scripts/docker_up
-	cp ./docker_down $HOME/.local/scripts/docker_down
+	cp ./Openbox/docker_up $HOME/.local/scripts/docker_up
+	cp ./Openbox/docker_down $HOME/.local/scripts/docker_down
 fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
