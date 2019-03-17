@@ -1,6 +1,0 @@
-# Default Font
-gtk-font-name="Sans 8"
-
-# Sets the icon theme and gtk2 theme
-gtk-icon-theme-name = "ultra-flat-icons-orange" 
-gtk-theme-name="Siva Flat Dark Borderless"

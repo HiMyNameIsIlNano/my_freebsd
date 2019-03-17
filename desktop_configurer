@@ -94,7 +94,7 @@ then
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
-cp ./tcshrc $HOME/.tcshrc
+cp ./Openbox/tcshrc $HOME/.tcshrc
 
 echo "Copying .Xdefaults under $HOME"
 wait_for_seconds 5
@@ -106,7 +106,7 @@ then
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
-cp ./Xdefaults $HOME/.Xdefaults
+cp ./Openbox/Xdefaults $HOME/.Xdefaults
 
 echo "Copying autostart.sh under $HOME/.config/openbox"
 wait_for_seconds 5
@@ -118,7 +118,7 @@ then
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
-cp ./autostart $HOME/.config/openbox/autostart.sh
+cp ./Openbox/autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
 echo "Copying rc.xml under $HOME/.config/openbox"
@@ -130,7 +130,7 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./rc.xml $HOME/.config/openbox/rc.xml
+cp ./Openbox/rc.xml $HOME/.config/openbox/rc.xml
 
 echo "Copying menu.xml under $HOME/.config/openbox"
 wait_for_seconds 5
@@ -141,12 +141,12 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./menu.xml $HOME/.config/openbox/menu.xml
+cp ./Openbox/menu.xml $HOME/.config/openbox/menu.xml
 
 echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
 wait_for_seconds 5
 # Wallpaper
-cp ./*-background.jpg $HOME/.config/openbox/Wallpapers/
+cp ./Wallpapers/*-background.jpg $HOME/.config/openbox/Wallpapers/
 
 echo "Copying tint2rc under HOME/.config/tint2"
 wait_for_seconds 5
@@ -158,7 +158,7 @@ then
 else
 	echo "Nothing to backup. File tint2rc does not exist"
 fi
-cp ./tint2rc $HOME/.config/tint2/tint2rc
+cp ./Openbox/tint2rc $HOME/.config/tint2/tint2rc
 
 echo "Copying Conky Configuration Files under $HOME..."
 wait_for_seconds 5
@@ -170,7 +170,7 @@ then
 else
 	echo "Nothing to backup. File .conkyrc does not exist"
 fi
-cp ./conkyrc $HOME/.conkyrc
+cp ./Openbox/conkyrc $HOME/.conkyrc
 
 
 echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
@@ -183,8 +183,8 @@ then
 else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
-cp gtkrc-2.0 $HOME/.gtkrc-2.0
-cp ./my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
+cp ./Openbox/gtkrc-2.0 $HOME/.gtkrc-2.0
+cp ./Openbox/my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
 echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
@@ -197,12 +197,12 @@ then
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
-cp settings.ini $HOME/.config/gtk-3.0/settings.ini
+cp ./Openbox/settings.ini $HOME/.config/gtk-3.0/settings.ini
 
 echo "Copying Icon Pack Files under $HOME/.icons..."
 wait_for_seconds 5
 # Icon Pack
-cp ./ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
+cp ./Openbox/ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
 # Geany Themes

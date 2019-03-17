@@ -217,7 +217,7 @@ then
 else
 	echo "Nothing to backup. File rc.conf does not exist"
 fi
-cat ./rc.conf.delta >> /etc/rc.conf
+cat ./Freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
 if [ -f "/etc/pf.conf" ] 
@@ -227,7 +227,7 @@ then
 else
 	echo "Nothing to backup. File pf.conf does not exist"
 fi
-cp ./pf.conf /etc/pf.conf
+cp ./Freebsd/pf.conf /etc/pf.conf
 
 # Localrules
 echo '[localrules=5]' >> /etc/devfs.rules
@@ -243,7 +243,7 @@ then
 else
 	echo "Nothing to backup. File loader.conf does not exist"
 fi
-cp ./loader.conf /boot/loader.conf
+cp ./Freebsd/loader.conf /boot/loader.conf
 
 echo "### IMPORTANT NOTE ###"
 echo "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
