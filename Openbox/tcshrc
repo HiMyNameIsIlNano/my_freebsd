@@ -1,0 +1,35 @@
+if ($?prompt) then
+	# An interactive shell -- set some stuff up
+	alias ls 'ls -FG'
+	alias ll 'ls -laFG'
+	alias playdvd 'mplayer dvdnav://0'
+	alias vpnbook	$HOME/.local/scripts/vpnbook
+	alias dockervm_up '$HOME/.local/scripts/docker_up'
+	alias dockervm_down '$HOME/.local/scripts/docker_down'
+	alias export_docker 'eval `docker-machine env boot2docker-vbox`'
+	alias docker_start 'dockervm_up && export_docker'
+	alias docker_machine_info 'docker-machine env boot2docker-vbox'
+	alias docker_env_info 'env | grep DOCKER'
+	alias docker_remove_imgs 'docker rmi `docker images -q`'
+	alias docker_remove_vols 'docker volume rm -f `docker volume ls -f dangling=true -q`'
+	alias docker_reset 'docker_remove_imgs && docker_remove_vols'
+	set filec
+	set history = 100
+	set savehist = 100
+	set autolist = TAB
+	set JAVA_HOME=/usr/local/openjdk8/bin
+	set path = ($path $HOME/bin ${JAVA_HOME})
+	set mail = (/var/mail/$USER)
+	setenv LSCOLORS ExGxdxdxCxDxDxBxBxegeg
+	if ( $?tcsh ) then
+		bindkey "^W" backward-delete-word
+		bindkey -k up history-search-backward
+		bindkey -k down history-search-forward
+		if ($uid) then
+			set prompt = "%{\033[32m%}%B<%n@%{\033[33m%}%m%{\033[33m%}>%b%{\033[0m%}%/ # "
+			# set prompt="%n@%M%/> "
+		endif
+	endif
+endif
+
+

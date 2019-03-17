@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+
+<menu id="apps-accessories-menu" label="Accessories">
+  <item label="Calculator">
+    <action name="Execute">
+      <command>xcalc</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Process Monitor">
+    <action name="Execute">
+      <command>xterm -e "htop"</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>  
+</menu>
+
+<menu id="apps-development-menu" label="Development Tools">
+  <item label="Geany">
+    <action name="Execute">
+      <command>geany</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="NetBeans IDE">
+    <action name="Execute">
+      <command>netbeans</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Virtualbox">
+    <action name="Execute">
+      <command>virtualbox</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-term-menu" label="Terminals">
+  <item label="Rxvt Unicode">
+    <action name="Execute">
+      <command>urxvtc</command>
+    </action>
+  </item>    
+  <item label="Xterm">
+    <action name="Execute"><command>xterm</command></action>
+  </item>
+</menu>
+
+<menu id="apps-net-menu" label="Internet">
+  <item label="Chromium">
+    <action name="Execute">
+      <command>chrome</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+        <wmclass>Chromium</wmclass>
+      </startupnotify>
+    </action>
+  </item>
+  <menu id="apps-net-submenu-vpn" label="VPN">
+	  <!--<separator label="VPN Connections" />-->
+	  <item label="VPN Connection (EURO PL226)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s PL226</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (FR1)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s FR1</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (US 1)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s US1</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (US 2)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s US2</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (CA 222)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s CA222</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="VPN Connection (DE)">
+		<action name="Execute">
+		  <command>$HOME/.local/scripts/vpnbook -s DE4</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+			<wmclass>Script</wmclass>
+		  </startupnotify>
+		</action>
+	  </item>
+  </menu>
+</menu>
+
+<menu id="apps-multimedia-menu" label="Multimedia">
+  <item label="DVD Player">
+    <action name="Execute">
+      <command>mplayer dvdnav://0</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-fileman-menu" label="File Managers">
+  <item label="PCMan File Manager">
+    <action name="Execute">
+      <command>pcmanfm</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-office-menu" label="Office Suite">
+  <item label="Abiword">
+    <action name="Execute">
+      <command>abiword</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+  <item label="Gnumeric">
+    <action name="Execute">
+      <command>gnumeric</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="apps-graphics-menu" label="Graphics">
+  <item label="Gimp">
+    <action name="Execute">
+      <command>gimp</command>
+      <startupnotify>
+        <enabled>yes</enabled>
+      </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="system-menu" label="System">
+  <item label="Reconfigure Openbox">
+    <action name="Reconfigure" />
+  </item>
+  <menu id="openbox-conf-submenu-edit" label="Edit Openbox Config">
+	  <item label="Edit menu.xml">
+		<action name="Execute">
+		  <command>geany .config/openbox/menu.xml</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="Edit rc.xml">
+		<action name="Execute">
+		  <command>geany .config/openbox/rc.xml</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+	  <item label="Edit autostart.sh">
+		<action name="Execute">
+		  <command>geany .config/openbox/autostart.sh</command>
+		  <startupnotify>
+			<enabled>yes</enabled>
+		  </startupnotify>
+		</action>
+	  </item>
+  </menu>
+</menu>
+
+<menu id="root-menu" label="Openbox 3">
+  <separator label="Applications" />
+  <menu id="apps-accessories-menu"/>
+  <menu id="apps-office-menu"/>
+  <menu id="apps-development-menu"/>
+  <menu id="apps-net-menu"/>
+  <menu id="apps-multimedia-menu"/>
+  <menu id="apps-term-menu"/>
+  <menu id="apps-fileman-menu"/>
+  <separator label="System" />
+  <menu id="system-menu"/>
+  <separator />
+  
+  <separator label="Finder" />
+	<item label="Search File(s)">
+		<action name="Execute">
+		<execute>fsearch</execute>
+		</action>		
+	</item>
+  <separator />
+  
+  <item label="Switch Off">
+    <action name="Execute">
+	<prompt>Are you sure you want to Switch Off the PC?</prompt>
+    <execute>sudo shutdown -p now</execute>
+    </action>
+  </item>
+  <item label="Restart">
+    <action name="Execute">
+	<prompt>Are you sure you want to Restart the PC?</prompt>  
+    <command>sudo shutdown -r now</command>
+    </action>
+  </item>
+  <item label="Suspend">
+    <action name="Execute">
+	<prompt>Are you sure you want to Suspend the PC?</prompt>
+    <execute>sh -c 'sudo acpiconf -s 3; xlock -mode blank'</execute>
+    </action>
+  </item>
+  <item label="Log Out">
+    <action name="Exit">
+      <prompt>yes</prompt>
+    </action>
+  </item>
+</menu>
+</openbox_menu>

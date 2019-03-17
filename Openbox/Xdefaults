@@ -1,0 +1,96 @@
+!urxvt------------------------------------------------------------------
+
+RootTerm.geometry: 140x52
+urxvt*foreground: #f2f2f2
+urxvt*background: #101010
+urxvt*color0: #101010
+urxvt*color1: #f13a21
+urxvt*color2: #93f91d
+urxvt*color3: #ffd00a
+urxvt*color4: #004f9e
+urxvt*color5: #ec0048
+urxvt*color6: #2aa7e7
+urxvt*color7: #f2f2f2
+urxvt*color8: #1d202f
+urxvt*color9: #ff361e
+urxvt*color10: #ffc005
+urxvt*color11: #93ff00
+urxvt*color12: #0071ff
+urxvt*color13: #ef0051
+urxvt*color14: #4bb8fd
+urxvt*color15: #a020f0
+urxvt*transparent: true
+urxvt*shading: 100
+urxvt*font: xft:Bitstream\ Vera\ Sans\ Mono:style=roman:pixelsize=13
+urxvt*scrollBar: false
+
+!xcalc------------------------------------------------------------------
+
+xcalc*geometry:                        200x275
+xcalc.ti.bevel.background:             #111111
+xcalc.ti.bevel.screen.background:      #000000
+xcalc.ti.bevel.screen.DEG.background:  #000000
+xcalc.ti.bevel.screen.DEG.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.GRAD.background: #000000
+xcalc.ti.bevel.screen.GRAD.foreground: LightSeaGreen
+xcalc.ti.bevel.screen.RAD.background:  #000000
+xcalc.ti.bevel.screen.RAD.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.INV.background:  #000000
+xcalc.ti.bevel.screen.INV.foreground:  Red
+xcalc.ti.bevel.screen.LCD.background:  #000000
+xcalc.ti.bevel.screen.LCD.foreground:  LightSeaGreen
+xcalc.ti.bevel.screen.LCD.shadowWidth: 0
+xcalc.ti.bevel.screen.M.background:    #000000
+xcalc.ti.bevel.screen.M.foreground:    LightSeaGreen
+xcalc.ti.bevel.screen.P.background:    #000000
+xcalc.ti.bevel.screen.P.foreground:    Yellow
+xcalc.ti.Command.foreground:  White
+xcalc.ti.Command.background:  #777777
+xcalc.ti.button5.background:  Orange3
+xcalc.ti.button19.background: #611161
+xcalc.ti.button18.background: #611161
+xcalc.ti.button20.background: #611111
+!uncomment to change label on division button
+!xcalc.ti.button20.label:      /
+xcalc.ti.button25.background: #722222
+xcalc.ti.button30.background: #833333
+xcalc.ti.button35.background: #944444
+xcalc.ti.button40.background: #a55555
+xcalc.ti.button22.background: #222262
+xcalc.ti.button23.background: #222262
+xcalc.ti.button24.background: #222272
+xcalc.ti.button27.background: #333373
+xcalc.ti.button28.background: #333373
+xcalc.ti.button29.background: #333373
+xcalc.ti.button32.background: #444484
+xcalc.ti.button33.background: #444484
+xcalc.ti.button34.background: #444484
+xcalc.ti.button37.background: #555595
+xcalc.ti.button38.background: #555595
+xcalc.ti.button39.background: #555595
+XCalc*Cursor:                 hand2
+XCalc*ShapeStyle:             rectangle
+
+!xterm------------------------------------------------------------------
+
+XTerm*faceName:     xft:Bitstream\ Vera\ Sans\ Mono:style=roman:pixelsize=13
+
+XTerm*foreground:   #cccccc
+XTerm*background:   #262425
+XTerm*cursorColor:  #cccccc
+XTerm*color0:       #1e1a1b
+XTerm*color8:       #403a3d
+XTerm*color1:       #9e7e8b
+XTerm*color9:       #da5189
+XTerm*color2:       #8caa94
+XTerm*color10:      #66e487
+XTerm*color3:       #d6c9a1
+XTerm*color11:      #debe5c
+XTerm*color4:       #9dbdc9
+XTerm*color12:      #71c2e0
+XTerm*color5:       #c99cc5
+XTerm*color13:      #e871dd
+XTerm*color6:       #a4afce
+XTerm*color14:      #607fd9
+XTerm*color7:       #c0c0c0
+XTerm*color15:      #ffffff
