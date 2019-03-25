@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Begin Functions
 is_installed(){
 	if ! [ -x "$(command -v $1)" ]; then
 	  echo "Error: $1 is not installed." >&2
@@ -86,6 +87,7 @@ add_user_to_group(){
 		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done	
 }
+# End Functions
 
 work_dir=.
 config_file=${work_dir}/post_install.config
