@@ -247,7 +247,7 @@ then
 	
 	cmd="(sleep 20 && ${HOME}/.local/scripts/vpnbook_wrapper -s US1) &"
 	if [ -d "${HOME}/.config/openbox" ]; then  
-	if grep -Fxq "${cmd}" ${HOME}/.config/openbox/autostart.sh
+		if grep -Fxq "${cmd}" ${HOME}/.config/openbox/autostart.sh
 		then
 			echo "No need to add vpnbook to autostart.sh as it is already present"
 		else
