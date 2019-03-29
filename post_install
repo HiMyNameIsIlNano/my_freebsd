@@ -266,4 +266,8 @@ add_user_to_group installer
 echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
 add_user_to_group vpnstarter
 
+echo "### Restart computer now... ###"
+wait_for_input
+shutdown -r now
+
 exit 0
