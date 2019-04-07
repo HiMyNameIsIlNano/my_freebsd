@@ -83,11 +83,10 @@ fi
 if [[ "${download_kernel}" == "true" ]]
 then
 	echo "Downloading kernel source..."
-	# TODO: check source folder
 	if [[ -d /usr/src ]]
 	then
 	    # backup folder
-	    echo "I am here..."
+	    mv /usr/src /usr/src_${timestamp}
 	fi
 	sh ./download_kernel
 fi
@@ -123,7 +122,7 @@ echo "Configuring startup daemons and boot options..."
 __wait_for_seconds 5
 
 # Move to the checkout directory
-cd $work_dir
+cd ${work_dir}
 
 # rc.conf
 if [[ -f "/etc/rc.conf" ]]
