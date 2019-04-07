@@ -10,7 +10,7 @@ __init_ports() {
 	portsnap fetch
 	portsnap extract	
 	
-	cd /usr/ports/devel/ccache
+	cd /usr/ports/devel/ccache BATCH=yes
 	make install clean
 	
 	echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
@@ -61,7 +61,7 @@ __install_ports(){
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
 		local port_dir=get_port_dir $port
-		cd ${port_dir} && make install clean
+		cd ${port_dir} && make install clean BATCH=yes
 	done	
 }
 # End Functions
