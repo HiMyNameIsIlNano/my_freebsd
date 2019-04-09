@@ -17,7 +17,8 @@ __check_requirements(){
 	then
         printf "Do you want to add install git? [Y/n]: "
 		read dummy
-		if [ "${dummy}" == "Y" ] then
+		if [ "${dummy}" == "Y" ]
+		then
 		    __install_ports git
 		else
 		    exit 1
