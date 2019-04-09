@@ -3,14 +3,26 @@
 # Begin Functions
 __is_installed(){
 	if ! [ -x "$(command -v $1)" ]; then
-	  echo "Error: $1 is not installed." >&2
-	  exit 1
+        echo "Error: $1 is not installed." >&2
+        return 1
+    else
+        return 0
 	fi
 }
 
 __check_requirements(){
 	# Check if git is installed
 	__is_installed git
+	if [ $? -eq 1]
+	then
+        printf "Do you want to add install git? [Y/n]: "
+		read dummy
+		if [ "${dummy}" == "Y" ] then
+		    __install_ports git
+		else
+		    exit 1
+		fi
+	fi
 }
 
 read_property(){

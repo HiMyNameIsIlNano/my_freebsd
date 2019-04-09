@@ -27,14 +27,26 @@ __init_ports() {
 	
 __is_installed(){
 	if ! [ -x "$(command -v $1)" ]; then
-	  echo "Error: $1 is not installed." >&2
-	  exit 1
+	    echo "Error: $1 is not installed." >&2
+        return 1
+    else
+        return 0
 	fi
 }
 
 __check_requirements(){
 	# Check if git is installed
 	__is_installed git
+	if [ $? -eq 1]
+	then
+        printf "Do you want to add install git? [Y/n]: "
+		read dummy
+		if [ "${dummy}" == "Y" ] then
+		    __install_ports git
+		else
+		    exit 1
+		fi
+	fi
 }
 
 __wait_for_seconds(){
@@ -100,12 +112,14 @@ base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
+# TODO: read value from property file
+ccache_size=5G
 
 work_dir=.
 config_file=${work_dir}/post_install.config
 
 # Init Ports tree and Ramdisk for faster compilation
-__init_ports 5G
+__init_ports ${ccache_size}
 
 echo "Initializing Ports Tree..."
 echo "Installing ports..."

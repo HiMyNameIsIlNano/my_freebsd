@@ -42,7 +42,7 @@ __add_user_to_group(){
 		
 		printf "Do you want to add another user to group ${group}? [Y/n]: "
 		read dummy
-		[[ "${dummy}" == "Y" ]]            # test the limit of the loop.
+		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done	
 }
 # End Functions
