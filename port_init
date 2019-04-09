@@ -73,7 +73,7 @@ __install_ports(){
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
-		local port_dir=get_port_dir $port
+		local port_dir=__get_port_dir $port
 		cd ${port_dir} && make install clean BATCH=yes
 	done	
 }
