@@ -37,7 +37,7 @@ __is_installed(){
 __check_requirements(){
 	# Check if git is installed
 	__is_installed git
-	if [ $? -eq 1]
+	if [ $? -eq 1 ]
 	then
         printf "Do you want to add install git? [Y/n]: "
 		read dummy
