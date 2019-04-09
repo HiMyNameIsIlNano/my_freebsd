@@ -26,7 +26,7 @@ __init_ports() {
 }
 	
 __is_installed(){
-	if ! [[ -x "$(command -v $1)" ]]; then
+	if ! [ -x "$(command -v $1)" ]; then
 	  echo "Error: $1 is not installed." >&2
 	  exit 1
 	fi
@@ -82,7 +82,7 @@ while [[ "$1" != "" ]]; do
 done
 
 # Check if GIT is istalled
-check_requiremnts 
+__check_requirements
  
 # Variable Declaration
 base_ports=$(__read_property base_ports)

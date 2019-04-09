@@ -125,7 +125,7 @@ __install_ports $dev_ports
 # Finilize Java8 Configuration
 __post_config_java8
 
-if [[ "${is_docker_enabled}" == "true" ]]
+if [ "${is_docker_enabled}" == "true" ]
 then
 	echo "Installing docker packages..."
 	__wait_for_seconds 5
@@ -134,7 +134,7 @@ then
 	__install_ports $docker_ports
 fi
 
-if [[ "${is_setup_vpn_enabled}" == "true" ]]
+if [ "${is_setup_vpn_enabled}" == "true" ]
 then
 	echo "Installing openvpn packages..."
 	__wait_for_seconds 5
@@ -143,7 +143,7 @@ then
 	__install_ports $openvpn_ports
 fi
 
-if [[ "${is_init_ports_enabled}" == "true" ]]
+if [ "${is_init_ports_enabled}" == "true" ]
 then
 	echo "Initializng ports..."
 	__wait_for_seconds 5

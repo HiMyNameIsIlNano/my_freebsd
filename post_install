@@ -73,17 +73,17 @@ pw groupadd vpnstarter
 echo "Adding users..."	
 __wait_for_seconds 5
 
-if [[ "${is_create_users_enabled}" == "true" ]]
+if [ "${is_create_users_enabled}" == "true" ]
 then
 	echo "Initializing users..."
 	__wait_for_seconds 5
 	adduser	
 fi
 
-if [[ "${download_kernel}" == "true" ]]
+if [ "${download_kernel}" == "true" ]
 then
 	echo "Downloading kernel source..."
-	if [[ -d /usr/src ]]
+	if [ -d /usr/src ]
 	then
 	    # backup folder
 	    mv /usr/src /usr/src_${timestamp}
@@ -91,12 +91,12 @@ then
 	sh ./download_kernel
 fi
 
-if [[ ${port_system} == "PKG" ]]
+if [ ${port_system} == "PKG" ]
 then
 	sh ./pkg_init
 fi
 
-if [[ ${port_system} == "PORT" ]]
+if [ ${port_system} == "PORT" ]
 then
 	sh ./port_init
 fi
@@ -125,7 +125,7 @@ __wait_for_seconds 5
 cd ${work_dir}
 
 # rc.conf
-if [[ -f "/etc/rc.conf" ]]
+if [ -f "/etc/rc.conf" ]
 then
 	echo "Backing-up rc.conf"
 	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
@@ -135,7 +135,7 @@ fi
 cat ./Freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
-if [[ -f "/etc/pf.conf" ]]
+if [ -f "/etc/pf.conf" ]
 then
 	echo "Backing-up pf.conf"
 	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
@@ -151,7 +151,7 @@ echo 'devfs_system_ruleset="localrules"' >> /etc/rc.conf
 echo 'vfs.usermount=1' >> /etc/sysctl.conf
 
 # loader.conf
-if [[ -f "/boot/loader.conf" ]]
+if [ -f "/boot/loader.conf" ]
 then
 	echo "Backing-up loader.conf"
 	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
