@@ -74,7 +74,7 @@ __post_config_java8(){
 work_dir=.
 config_file=${work_dir}/post_install.config
 
-while [[ "$1" != "" ]]; do
+while [ "$1" != "" ]; do
     case $1 in
 	    -c | --config )		    shift
                                 config_file=$1
