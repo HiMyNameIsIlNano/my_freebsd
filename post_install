@@ -18,6 +18,16 @@ __wait_for_seconds(){
 	sleep ${seconds}
 }
 
+__add_group() {
+    local l_group="$@"
+
+    if [ $(getent group ${l_group}) ]; then
+      echo "${l_group} group will not be added as it already exists..."
+    else
+      pw groupadd ${l_group}
+    fi
+}
+
 __add_user_to_group(){
 	local group="$@"
 	local user
@@ -65,9 +75,9 @@ timestamp=$(date +%s)
 # Groups
 echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
 __wait_for_seconds 5
-pw groupadd restarter
-pw groupadd installer
-pw groupadd vpnstarter
+__add_group restarter
+__add_group installer
+__add_group vpnstarter
 
 # Users
 echo "Adding users..."	
@@ -94,29 +104,45 @@ fi
 if [ ${port_system} == "PKG" ]
 then
 	sh ./pkg_init
+	if [ $? -eq 1 ]
+    then
+        exit 1
+    fi
 fi
 
 if [ ${port_system} == "PORT" ]
 then
 	sh ./port_init
+	if [ $? -eq 1 ]
+    then
+        exit 1
+    fi
 fi
 
 # Sudoers
-echo "Configuring sudoers..."
-__wait_for_seconds 5
-echo '' >> /usr/local/etc/sudoers
-echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
-echo '' >> /usr/local/etc/sudoers
-echo '## Members of the group restarter can run shutdown and acpiconf without a password.' >> /usr/local/etc/sudoers
-echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
-echo '' >> /usr/local/etc/sudoers
-echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
-echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
-echo '' >> /usr/local/etc/sudoers
-echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
-echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
-echo '' >> /usr/local/etc/sudoers
-echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
+if [ -f "/usr/local/etc/sudoers" ]
+then
+	echo "Backing-up sudoers"
+	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
+
+    echo "Configuring sudoers..."
+    __wait_for_seconds 5
+    echo '' >> /usr/local/etc/sudoers
+    echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
+    echo '' >> /usr/local/etc/sudoers
+    echo '## Members of the group restarter can run shutdown and acpiconf without a password.' >> /usr/local/etc/sudoers
+    echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
+    echo '' >> /usr/local/etc/sudoers
+    echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
+    echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+    echo '' >> /usr/local/etc/sudoers
+    echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
+    echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
+    echo '' >> /usr/local/etc/sudoers
+    echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
+else
+	echo "Nothing to do. File sudoers does not exist"
+fi
 
 echo "Configuring startup daemons and boot options..."
 __wait_for_seconds 5

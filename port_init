@@ -64,6 +64,17 @@ __install_ports(){
 		cd ${port_dir} && make install clean BATCH=yes
 	done	
 }
+
+__post_config_java8(){
+	__is_installed_java 001008
+
+	if [ $? -eq 0 ] ; then
+		echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+		echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+	else
+		echo "Java Version is not 1.8"
+	fi
+}
 # End Functions
 
 while [ "$1" != "" ]; do
@@ -81,7 +92,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-# Check if GIT is istalled
+# Check if GIT is installed
 __check_requirements
  
 # Variable Declaration
@@ -112,5 +123,8 @@ __install_ports ${office_ports}
 echo "Installing development ports..."
 __wait_for_seconds 5
 __install_ports ${dev_ports}
- 
+
+# Finalize Java8 Configuration
+__post_config_java8
+
 exit 0

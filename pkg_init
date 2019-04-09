@@ -122,7 +122,7 @@ echo "Installing development packages..."
 __wait_for_seconds 5
 __install_ports $dev_ports
 
-# Finilize Java8 Configuration
+# Finalize Java8 Configuration
 __post_config_java8
 
 if [ "${is_docker_enabled}" == "true" ]

@@ -34,10 +34,10 @@ sh desktop_configurer
 ## Further Configuration Possibilities:
 As mentioned above, both `post_install` and `desktop_configurer` are driven by a configuration file named `post_install.config`. The `post_install.config` is a simple `json` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
 
-1. base_ports: A catgeory of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with NO EMPTY SPACE between the items;
-2. desktop_ports: A catgeory of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
-3. office_ports: A catgeory of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
-4. dev_ports: A catgeory of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+1. base_ports: A category of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+2. desktop_ports: A category of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+3. office_ports: A category of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+4. dev_ports: A category of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 5. enable_docker: A flag that enables and configures Docker and a set of utility commands for a specific user. Allowed values: {true|false};
 6. port_system: An Enum type that defines the preferred way for installing programs on the system. Allowed values : {PKG|PORT}
 7. download_kernel: A flag that enables the download of the kernel sources. Allowed values: {true|false};
