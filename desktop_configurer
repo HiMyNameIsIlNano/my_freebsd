@@ -210,7 +210,9 @@ if [ -d "$HOME/.config/geany" ]
 then
 	echo "Installing geany themes..."
 	wait_for_seconds 5
-		
+
+    # TODO: use this instead
+    # fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
 	git clone https://github.com/geany/geany-themes.git /tmp/geany_themes_${timestamp}
 	mkdir -p $HOME/.config/geany/colorschemes/
 	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ $HOME/.config/geany/colorschemes/
@@ -240,7 +242,8 @@ if [ "${is_setup_vpn_enabled}" == "true" ]
 then
 	echo "Installing openvpn scripts..."
 	wait_for_seconds 5
-		
+
+	# fetch --no-verify-hostname --no-verify-peer -o /tmp/vpnbook.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/vpnbook/tarball/master
 	git clone https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook_${timestamp}
 	cd /tmp/vpnbook_${timestamp}
 	sh install
@@ -263,7 +266,8 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	# Install Update Script
 	echo "Installing Update Scripts under $HOME/.local/scripts..."
 	wait_for_seconds 5
-	
+
+	# fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
 	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
 	cd /tmp/update_script_${timestamp}
 	sh install

@@ -10,9 +10,8 @@ __init_ports() {
 	portsnap fetch
 	portsnap extract	
 	
-	cd /usr/ports/devel/ccache BATCH=yes
-	make install clean
-	
+	__install_ports ccache
+
 	echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
 	echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
 	echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
