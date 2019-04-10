@@ -90,6 +90,9 @@ __post_config_java8(){
 }
 # End Functions
 
+work_dir=.
+config_file=${work_dir}/post_install.config
+
 while [ "$1" != "" ]; do
     case $1 in
 	-c | --config )		shift
@@ -111,9 +114,6 @@ desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
 ccache_size=$(__read_property ccache_size)
-
-work_dir=.
-config_file=${work_dir}/post_install.config
 
 # Init Ports tree and Ramdisk for faster compilation
 __init_ports ${ccache_size}
