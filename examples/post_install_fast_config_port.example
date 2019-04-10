@@ -4,6 +4,7 @@
 "dev_ports":openjdk8,maven33,npm,git,vim,netbeans
 "enable_docker":true
 "port_system":PORT
+"ccache_size":5G
 "download_kernel":false
 "create_users":false
 "setup_vpn":true

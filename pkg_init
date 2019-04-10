@@ -102,9 +102,6 @@ while [ "$1" != "" ]; do
     shift
 done
 
-# Check if GIT is installed
-__check_requirements
-
 # Variable Declaration
 base_ports=$(read_property base_ports)
 desktop_ports=$(read_property desktop_ports)
