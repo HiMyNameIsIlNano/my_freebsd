@@ -80,18 +80,16 @@ __add_group installer
 __add_group vpnstarter
 
 # Users
-echo "Adding users..."	
-__wait_for_seconds 5
-
 if [ "${is_create_users_enabled}" == "true" ]
 then
-	echo "Initializing users..."
 	__wait_for_seconds 5
-	adduser	
+	echo "Initializing users..."
+	adduser
 fi
 
 if [ "${download_kernel}" == "true" ]
 then
+    __wait_for_seconds 5
 	echo "Downloading kernel source..."
 	if [ -d /usr/src ]
 	then
@@ -103,6 +101,7 @@ fi
 
 if [ ${port_system} == "PKG" ]
 then
+    __wait_for_seconds 5
 	sh ./pkg_init
 	if [ $? -eq 1 ]
     then
@@ -112,6 +111,7 @@ fi
 
 if [ ${port_system} == "PORT" ]
 then
+	__wait_for_seconds 5
 	sh ./port_init
 	if [ $? -eq 1 ]
     then
@@ -122,11 +122,10 @@ fi
 # Sudoers
 if [ -f "/usr/local/etc/sudoers" ]
 then
-	echo "Backing-up sudoers"
+    echo "Backing-up sudoers"
 	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
 
     echo "Configuring sudoers..."
-    __wait_for_seconds 5
     echo '' >> /usr/local/etc/sudoers
     echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
     echo '' >> /usr/local/etc/sudoers
@@ -158,7 +157,7 @@ then
 else
 	echo "Nothing to backup. File rc.conf does not exist"
 fi
-cat ./Freebsd/rc.conf.delta >> /etc/rc.conf
+cat ./freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
 if [ -f "/etc/pf.conf" ]
@@ -168,7 +167,7 @@ then
 else
 	echo "Nothing to backup. File pf.conf does not exist"
 fi
-cp ./Freebsd/pf.conf /etc/pf.conf
+cp ./freebsd/pf.conf /etc/pf.conf
 
 # Localrules
 echo '[localrules=5]' >> /etc/devfs.rules
@@ -184,26 +183,32 @@ then
 else
 	echo "Nothing to backup. File loader.conf does not exist"
 fi
-cp ./Freebsd/loader.conf /boot/loader.conf
+cp ./freebsd/loader.conf /boot/loader.conf
 
 echo "### IMPORTANT NOTE ###"
 echo "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
 __add_user_to_group video
+clear
 
 echo "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
 __add_user_to_group operator
+clear
 
 echo "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
 __add_user_to_group vboxusers
+clear
 
 echo "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
 __add_user_to_group restarter
+clear
 
 echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
 __add_user_to_group installer
+clear
 
 echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
 __add_user_to_group vpnstarter
+clear
 
 echo "### Restart computer now... ###"
 __wait_for_input

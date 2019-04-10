@@ -1,7 +1,7 @@
 #!/bin/sh
 (sleep 2 && tint2) &
 (sleep 2 && conky) &
-feh --bg-scale $HOME/.config/openbox/Wallpapers/red-background.jpg &
+feh --bg-scale $HOME/.config/openbox/wallpapers/red-background.jpg &
 
 urxvtd -q -f -o &
 (sleep 2 && urxvtc) &

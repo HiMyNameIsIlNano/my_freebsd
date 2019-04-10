@@ -64,7 +64,7 @@ geany_java_tag_version=openjdk8-8u66-b01.java.tags
 timestamp=$(date +%s)
 
 mkdir -p $HOME/.local/scripts
-mkdir -p $HOME/.config/openbox/Wallpapers
+mkdir -p $HOME/.config/openbox/wallpapers
 mkdir -p $HOME/.config/gtk-3.0
 mkdir -p $HOME/.themes
 mkdir -p $HOME/.icons
@@ -94,7 +94,7 @@ then
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
-cp ./Openbox/tcshrc $HOME/.tcshrc
+cp ./openbox/tcshrc $HOME/.tcshrc
 
 echo "Copying .Xdefaults under $HOME"
 wait_for_seconds 5
@@ -106,7 +106,7 @@ then
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
-cp ./Openbox/Xdefaults $HOME/.Xdefaults
+cp ./openbox/Xdefaults $HOME/.Xdefaults
 
 echo "Copying autostart.sh under $HOME/.config/openbox"
 wait_for_seconds 5
@@ -118,7 +118,7 @@ then
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
-cp ./Openbox/autostart $HOME/.config/openbox/autostart.sh
+cp ./openbox/autostart $HOME/.config/openbox/autostart.sh
 chmod 744 $HOME/.config/openbox/autostart.sh
 
 echo "Copying rc.xml under $HOME/.config/openbox"
@@ -130,7 +130,7 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./Openbox/rc.xml $HOME/.config/openbox/rc.xml
+cp ./openbox/rc.xml $HOME/.config/openbox/rc.xml
 
 echo "Copying menu.xml under $HOME/.config/openbox"
 wait_for_seconds 5
@@ -141,12 +141,12 @@ then
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./Openbox/menu.xml $HOME/.config/openbox/menu.xml
+cp ./openbox/menu.xml $HOME/.config/openbox/menu.xml
 
-echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/Wallpapers..."
+echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/wallpapers..."
 wait_for_seconds 5
 # Wallpaper
-cp ./Wallpapers/*-background.jpg $HOME/.config/openbox/Wallpapers/
+cp ./wallpapers/*-background.jpg $HOME/.config/openbox/wallpapers/
 
 echo "Copying tint2rc under HOME/.config/tint2"
 wait_for_seconds 5
@@ -158,7 +158,7 @@ then
 else
 	echo "Nothing to backup. File tint2rc does not exist"
 fi
-cp ./Openbox/tint2rc $HOME/.config/tint2/tint2rc
+cp ./openbox/tint2rc $HOME/.config/tint2/tint2rc
 
 echo "Copying Conky Configuration Files under $HOME..."
 wait_for_seconds 5
@@ -170,7 +170,7 @@ then
 else
 	echo "Nothing to backup. File .conkyrc does not exist"
 fi
-cp ./Openbox/conkyrc $HOME/.conkyrc
+cp ./openbox/conkyrc $HOME/.conkyrc
 
 
 echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
@@ -183,8 +183,8 @@ then
 else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
-cp ./Openbox/gtkrc-2.0 $HOME/.gtkrc-2.0
-cp ./Openbox/my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
+cp ./openbox/gtkrc-2.0 $HOME/.gtkrc-2.0
+cp ./openbox/my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
 tar xzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
 
 echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
@@ -197,12 +197,12 @@ then
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
-cp ./Openbox/settings.ini $HOME/.config/gtk-3.0/settings.ini
+cp ./openbox/settings.ini $HOME/.config/gtk-3.0/settings.ini
 
 echo "Copying Icon Pack Files under $HOME/.icons..."
 wait_for_seconds 5
 # Icon Pack
-cp ./Openbox/ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
+cp ./openbox/ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
 tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
 
 # Geany Themes
@@ -227,13 +227,13 @@ then
 	echo "Installing docker configuration..."
 	wait_for_seconds 5
 	mkdir -p $HOME/Development/Vagrant/dockervm
-	cp ./Openbox/Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
+	cp ./openbox/Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
 	
 	echo "Installing docker shortcuts..."
 	wait_for_seconds 5
 	mkdir -p $HOME/.local/scripts
-	cp ./Openbox/docker_up $HOME/.local/scripts/docker_up
-	cp ./Openbox/docker_down $HOME/.local/scripts/docker_down
+	cp ./openbox/docker_up $HOME/.local/scripts/docker_up
+	cp ./openbox/docker_down $HOME/.local/scripts/docker_down
 fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
