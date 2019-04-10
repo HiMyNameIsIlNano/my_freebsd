@@ -20,7 +20,8 @@ __init_ports() {
 	mkdir /ram
 	echo 'none /ram tmpfs rw,size=2147483648 0 0' >> /etc/fstab
 	mount /ram
-	
+
+	mkdir -p ~/.ccache
 	echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
 	echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
 }
