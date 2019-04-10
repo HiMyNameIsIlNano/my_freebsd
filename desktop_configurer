@@ -34,17 +34,10 @@ is_installed(){
 	fi
 }
 
-check_requiremnts(){
-	echo "Checking general Requirements..."
-	# Check if git is installed
-	is_installed git
-}
-
 check_docker_requirements(){
 	echo "Checking docker Requirements..."
 	# Check if docker, virtualbox, vagrant are installed
-	# TODO: Check if this is not necessary anymore as moved to virtualbox-ose-nox11
-	# is_installed virtualbox
+	is_installed virtualbox
 	is_installed vagrant
 	is_installed docker-machine
 }
@@ -52,8 +45,20 @@ check_docker_requirements(){
 work_dir=.
 config_file=${work_dir}/post_install.config
 
-# Check if git is istalled
-check_requiremnts
+while [ "$1" != "" ]; do
+    case $1 in
+	    -c | --config )		    shift
+                                config_file=$1
+                                echo ${config_file}
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
 
 # Variable Declaration
 is_user_allowed_to_update=$(is_user_allowed_to_update)
@@ -211,9 +216,10 @@ then
 	echo "Installing geany themes..."
 	wait_for_seconds 5
 
-    # TODO: use this instead
-    # fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
-	git clone https://github.com/geany/geany-themes.git /tmp/geany_themes_${timestamp}
+    fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
+	mkdir /tmp/geany_themes_${timestamp}
+	tar xvzf geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
+
 	mkdir -p $HOME/.config/geany/colorschemes/
 	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ $HOME/.config/geany/colorschemes/
 	rm -rf /tmp/geany_themes_${timestamp}
@@ -243,8 +249,10 @@ then
 	echo "Installing openvpn scripts..."
 	wait_for_seconds 5
 
-	# fetch --no-verify-hostname --no-verify-peer -o /tmp/vpnbook.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/vpnbook/tarball/master
-	git clone https://github.com/HiMyNameIsIlNano/vpnbook.git /tmp/vpnbook_${timestamp}
+	fetch --no-verify-hostname --no-verify-peer -o /tmp/vpnbook.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/vpnbook/tarball/master
+	mkdir /tmp/vpnbook_${timestamp}
+	tar xvzf vpnbook.tar.gz --strip=1 -C /tmp/vpnbook_${timestamp}
+
 	cd /tmp/vpnbook_${timestamp}
 	sh install
 	
@@ -267,8 +275,10 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	echo "Installing Update Scripts under $HOME/.local/scripts..."
 	wait_for_seconds 5
 
-	# fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
-	git clone https://github.com/HiMyNameIsIlNano/update_script.git /tmp/update_script_${timestamp}
+	fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
+    mkdir /tmp/update_script_${timestamp}
+    tar xvzf update_script.tar.gz --strip=1 -C /tmp/update_script_${timestamp}
+
 	cd /tmp/update_script_${timestamp}
 	sh install
 	echo "Cleaning Temporary Files..."
