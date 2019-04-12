@@ -91,7 +91,6 @@ timestamp=$(date +%s)
 
 # Groups
 echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
-__wait_for_seconds 5
 __add_group restarter
 __add_group installer
 __add_group vpnstarter
