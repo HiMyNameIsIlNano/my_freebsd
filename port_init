@@ -3,26 +3,65 @@
 # Begin Functions
 __init_ports() {
 	local max_size="$1"
+	local timestamp=$(date +%s)
 	
 	echo "Initializing ports..."
 	__wait_for_seconds 5
-	
-	portsnap fetch
-	portsnap extract	
-	
+
+	if [ ! -d /usr/ports ]
+	then
+	    portsnap update
+    else
+        portsnap fetch
+        portsnap extract
+	fi
+
 	__install_ports ccache
 
-	echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
-	echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
-	echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
-	
-	mkdir /ram
-	echo 'none /ram tmpfs rw,size=2147483648 0 0' >> /etc/fstab
+    if [ -f /etc/make.conf ]
+    then
+        echo "Backing-up /etc/make.conf"
+        cp /etc/make.conf /etc/make.conf.${timestamp}.bak
+    fi
+
+    __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
+    if [ $? -eq 0 ]
+    then
+        echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
+    fi
+
+	__check_if_key_in_file CCACHE_DIR /etc/make.conf
+	if [ $? -eq 0 ]
+    then
+	    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
+	fi
+
+	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
+	if [ $? -eq 0 ]
+    then
+	    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+	fi
+
+	mkdir -p /ram
+	__check_if_key_in_file /ram /etc/fstab
+	if [ $? -eq 0 ]
+    then
+	    echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
+    fi
 	mount /ram
 
 	mkdir -p ~/.ccache
-	echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
-	echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
+	__check_if_key_in_file max_size ~/.ccache/ccache.conf
+	if [ $? -eq 0 ]
+    then
+	    echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
+	fi
+
+	__check_if_key_in_file cache_dir ~/.ccache/ccache.conf
+    if [ $? -eq 0 ]
+    then
+	    echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
+    fi
 }
 	
 __is_installed(){
@@ -32,6 +71,36 @@ __is_installed(){
     else
         return 0
 	fi
+}
+
+__check_if_key_in_file() {
+    local key="$1"
+    local file="$2"
+
+    if [ -f ${file} ]
+    then
+        if grep -Fxq "${key}" ${file}
+            then
+                return 0
+            else
+                return 1
+        fi
+    fi
+
+    return 0
+}
+
+# TODO: NOT USED YET
+__add_key_to_file() {
+    local key="$1"
+    local file="$2"
+    local cmd="$3"
+
+    __check_if_key_in_file ${key} ${file}
+    if [ $? -eq 0 ]
+    then
+        echo "${cmd}" >> ${file}
+    fi
 }
 
 __check_requirements(){
@@ -82,8 +151,17 @@ __post_config_java8(){
 	__is_installed_java 001008
 
 	if [ $? -eq 0 ] ; then
-		echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
-		echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+		__check_if_key_in_file /dev/fd /etc/fstab
+        if [ $? -eq 0 ]
+        then
+		    echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+		fi
+
+        __check_if_key_in_file /proc /etc/fstab
+		if [ $? -eq 0 ]
+        then
+		    echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+        fi
 	else
 		echo "Java Version is not 1.8"
 	fi
