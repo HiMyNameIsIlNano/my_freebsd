@@ -3,8 +3,7 @@
 __check_if_port_installed() {
     local port="$1"
 
-    if ! pkg info ${port} ;
-    then
+    if ! pkg info ${port} > /dev/null 2>&1; then
         echo "${port} not installed"
     else
         echo "${port} installed"
@@ -43,7 +42,6 @@ then
 else
     echo "WITH_CCACHE_BUILD is NOT present"
 fi
-
 
 __check_if_port_installed git
 __check_if_port_installed firefox
