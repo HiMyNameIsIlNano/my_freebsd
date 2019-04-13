@@ -1,0 +1,46 @@
+#!/bin/sh
+
+__check_if_port_installed() {
+    local port="$1"
+
+    if ! pkg info ${port} ;
+    then
+        echo "${port} not installed"
+    else
+        echo "${port} installed"
+    fi
+}
+
+
+
+__check_if_key_in_file() {
+    local key="$1"
+    local file="$2"
+
+    if [ -f ${file} ]
+    then
+        if grep -Fxq "${key}" ${file}
+        then
+            return 0
+        else
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+__check_if_key_in_file CCACHE_DIR /etc/make.conf
+if [ $? -eq 0 ]
+then
+    echo "CCACHE_DIR is present"
+fi
+
+__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
+if [ $? -eq 0 ]
+then
+    echo "WITH_CCACHE_BUILD is present"
+fi
+
+__check_if_port_installed git
+__check_if_port_installed firefox

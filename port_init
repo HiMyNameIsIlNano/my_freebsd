@@ -25,7 +25,6 @@ __init_ports() {
     fi
 
     __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
-    if [ $? -eq 0 ]
     then
         echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
     fi
@@ -80,10 +79,10 @@ __check_if_key_in_file() {
     if [ -f ${file} ]
     then
         if grep -Fxq "${key}" ${file}
-            then
-                return 0
-            else
-                return 1
+        then
+            return 0
+        else
+            return 1
         fi
     fi
 
@@ -145,6 +144,25 @@ __install_ports(){
 		local port_dir=$(__get_port_dir $port)
 		cd ${port_dir} && make install clean BATCH=yes
 	done	
+}
+
+__is_installed_java(){
+	java_version="$@"
+
+	echo "Checking if java is installed..."
+	if ! [ -x "$(command -v java)" ]; then
+	  echo "Error: $1 is not installed." >&2
+	  return 1
+    else
+		# Check if Java Version is 1.8
+		version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F. '{printf("%03d%03d",$1,$2);}')
+		if [ $version == ${java_version} ] ; then
+			return 0
+		else
+			echo "Java Version ${java_version} is not installed"
+			return 1
+		fi
+	fi
 }
 
 __post_config_java8(){

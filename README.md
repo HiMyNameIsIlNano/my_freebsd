@@ -45,3 +45,6 @@ As mentioned above, both `post_install` and `desktop_configurer` are driven by a
 9. setup_vpn: A flag that enables the configuration of a set of tools to connect to a set of public OpenVPN Servers (see: https://www.vpnbook.com/freevpn). Allowed values:{true|false}   
 
 The differentiation between `base_ports`, `desktop_ports`, `office_ports` and `dev_ports` is just a logical one and it has no real technical reason. If one wants to add a port to the configuration, it can be added to any of the ports list described above. It should go without saying that the list of ports can be changed and extended to ones' personal taste. The only aim of such configuration is to keep the set of installed ports to the bare minimum, while still providing a decent desktop experience.     
+
+## Examples:
+The project comes with some already pre-defined configuration files that can be used as an example to further customize the installation. The examples can be found in the `examples` folder.
