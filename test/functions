@@ -29,6 +29,12 @@ __check_if_key_in_file() {
     return 0
 }
 
+if [ -f ./test_result ]
+then
+    rm ./test_result
+fi
+touch ./test_result
+
 __check_if_key_in_file CCACHE_DIR /etc/make.conf
 if [ $? -eq 0 ]
 then
