@@ -22,6 +22,8 @@ __init_ports() {
     then
         echo "Backing-up /etc/make.conf"
         cp /etc/make.conf /etc/make.conf.${timestamp}.bak
+    else
+        touch /etc/make.conf
     fi
 
     __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
