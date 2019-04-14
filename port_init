@@ -137,6 +137,14 @@ __check_if_port_installed() {
     fi
 }
 
+__is_command_installed(){
+	if ! [ -x "$(command -v $1)" ]; then
+	    return 0
+    else
+        return 1
+	fi
+}
+
 __install_ports(){
 	local ports_to_install="$@"
 	# The list of ports must be comma separated with no empty space
