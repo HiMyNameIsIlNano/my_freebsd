@@ -25,6 +25,7 @@ __init_ports() {
     fi
 
     __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
+    if [ $? -eq 0 ]
     then
         echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
     fi
@@ -61,15 +62,8 @@ __init_ports() {
     then
 	    echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
     fi
-}
-	
-__is_installed(){
-	if ! [ -x "$(command -v $1)" ]; then
-	    echo "Error: $1 is not installed." >&2
-        return 1
-    else
-        return 0
-	fi
+
+    return 0
 }
 
 __check_if_key_in_file() {
@@ -102,22 +96,6 @@ __add_key_to_file() {
     fi
 }
 
-__check_requirements(){
-	# Check if git is installed
-	__is_installed git
-	if [ $? -eq 1 ]
-	then
-        printf "Do you want to install git? [Y/n]: "
-		read dummy
-		if [ "${dummy}" == "Y" ]
-		then
-		    __install_ports git
-		else
-		    exit 1
-		fi
-	fi
-}
-
 __wait_for_seconds(){
 	local seconds="$@"
 	echo "waiting ${seconds} seconds before continuing..."
@@ -136,39 +114,37 @@ __get_port_dir() {
 	echo ${port_dir##*|}
 }
 
+__check_if_port_installed() {
+    local port="$1"
+
+    if ! pkg info ${port} > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 __install_ports(){
 	local ports_to_install="$@"
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
-		local port_dir=$(__get_port_dir $port)
-		cd ${port_dir} && make install clean BATCH=yes
+	    __check_if_port_installed ${port}
+	    if [ $? -eq 0 ]
+	    then
+	    	local port_dir=$(__get_port_dir $port)
+		    cd ${port_dir} && make install clean BATCH=yes
+        else
+            echo "${port} already installed on the system"
+	    fi
 	done	
 }
 
-__is_installed_java(){
-	java_version="$@"
+__post_config_java(){
+    local java_port_name="$1"
+	__check_if_port_installed ${java_port_name}
 
-	echo "Checking if java is installed..."
-	if ! [ -x "$(command -v java)" ]; then
-	  echo "Error: $1 is not installed." >&2
-	  return 1
-    else
-		# Check if Java Version is 1.8
-		version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | awk -F. '{printf("%03d%03d",$1,$2);}')
-		if [ $version == ${java_version} ] ; then
-			return 0
-		else
-			echo "Java Version ${java_version} is not installed"
-			return 1
-		fi
-	fi
-}
-
-__post_config_java8(){
-	__is_installed_java 001008
-
-	if [ $? -eq 0 ] ; then
+	if [ $? -eq 1 ] ; then
 		__check_if_key_in_file /dev/fd /etc/fstab
         if [ $? -eq 0 ]
         then
@@ -181,7 +157,7 @@ __post_config_java8(){
 		    echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
         fi
 	else
-		echo "Java Version is not 1.8"
+		echo "${java_port_name} is not installed on the system"
 	fi
 }
 # End Functions
@@ -191,7 +167,7 @@ config_file=${work_dir}/post_install.config
 
 while [ "$1" != "" ]; do
     case $1 in
-	-c | --config )		shift
+	    -c | --config )		    shift
                                 config_file=$1
                                 echo ${config_file}
                                 ;;
@@ -209,6 +185,8 @@ base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
+is_docker_enabled=$(read_property enable_docker)
+is_setup_vpn_enabled=$(read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
 
 # Init Ports tree and Ramdisk for faster compilation
@@ -232,6 +210,24 @@ __wait_for_seconds 5
 __install_ports ${dev_ports}
 
 # Finalize Java8 Configuration
-__post_config_java8
+__post_config_java openjdk8
+
+if [ "${is_docker_enabled}" == "true" ]
+then
+	echo "Installing docker packages..."
+	__wait_for_seconds 5
+
+	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
+	__install_ports $docker_ports
+fi
+
+if [ "${is_setup_vpn_enabled}" == "true" ]
+then
+	echo "Installing openvpn packages..."
+	__wait_for_seconds 5
+
+	openvpn_ports=openvpn,curl,sudo
+	__install_ports $openvpn_ports
+fi
 
 exit 0
