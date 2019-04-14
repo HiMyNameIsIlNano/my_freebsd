@@ -187,8 +187,8 @@ base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
-is_docker_enabled=$(read_property enable_docker)
-is_setup_vpn_enabled=$(read_property setup_vpn)
+is_docker_enabled=$(__read_property enable_docker)
+is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
 
 # Init Ports tree and Ramdisk for faster compilation

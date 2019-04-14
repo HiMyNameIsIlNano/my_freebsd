@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Begin Functions
-read_property(){
+__read_property(){
 	input="$@"
 	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
 	echo ${temp##*|}
@@ -110,12 +110,12 @@ while [ "$1" != "" ]; do
 done
 
 # Variable Declaration
-base_pkgs=$(read_property base_ports)
-desktop_pkgs=$(read_property desktop_ports)
-dev_pkgs=$(read_property dev_ports)
-office_pkgs=$(read_property office_ports)
-is_docker_enabled=$(read_property enable_docker)
-is_setup_vpn_enabled=$(read_property setup_vpn)
+base_pkgs=$(__read_property base_ports)
+desktop_pkgs=$(__read_property desktop_ports)
+dev_pkgs=$(__read_property dev_ports)
+office_pkgs=$(__read_property office_ports)
+is_docker_enabled=$(__read_property enable_docker)
+is_setup_vpn_enabled=$(__read_property setup_vpn)
 timestamp=$(date +%s)
 
 echo "Initializing PKG System..."
