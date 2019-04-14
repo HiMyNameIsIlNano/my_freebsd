@@ -86,11 +86,10 @@ __check_if_key_in_file() {
 
     if [ -f ${file} ]
     then
-        if grep -Fq "${key}" ${file}
-        then
-            return 0
-        else
+        if grep -Fq "${key}" "${file}"; then
             return 1
+        else
+            return 0
         fi
     fi
 
