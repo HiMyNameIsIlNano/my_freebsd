@@ -15,9 +15,9 @@ __check_if_key_in_file() {
     then
         if grep -Fxq "${key}" ${file}
         then
-            return 0
-        else
             return 1
+        else
+            return 0
         fi
     fi
 

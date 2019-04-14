@@ -31,7 +31,7 @@ __init_ports() {
     then
         echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
     else
-        echo "Key WRKDIRPREFIX not found in /etc/make.conf"
+        echo "Key WRKDIRPREFIX already in /etc/make.conf"
     fi
 
 	__check_if_key_in_file CCACHE_DIR /etc/make.conf
@@ -39,7 +39,7 @@ __init_ports() {
     then
 	    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
     else
-        echo "Key CCACHE_DIR not found in /etc/make.conf"
+        echo "Key CCACHE_DIR already in /etc/make.conf"
 	fi
 
 	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
@@ -47,7 +47,7 @@ __init_ports() {
     then
 	    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
     else
-        echo "Key WITH_CCACHE_BUILD not found in /etc/make.conf"
+        echo "Key WITH_CCACHE_BUILD already in /etc/make.conf"
 	fi
 
 	mkdir -p /ram
@@ -55,6 +55,8 @@ __init_ports() {
 	if [ $? -eq 0 ]
     then
 	    echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
+    else
+        echo "Key /ram already in /etc/fstab"
     fi
 	mount /ram
 
@@ -63,12 +65,16 @@ __init_ports() {
 	if [ $? -eq 0 ]
     then
 	    echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
+    else
+        echo "Key max_size already in ~/.ccache/ccache.conf"
 	fi
 
 	__check_if_key_in_file cache_dir ~/.ccache/ccache.conf
     if [ $? -eq 0 ]
     then
 	    echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
+    else
+        echo "Key cache_dir already in ~/.ccache/ccache.conf"
     fi
 
     return 0
@@ -82,9 +88,9 @@ __check_if_key_in_file() {
     then
         if grep -Fxq "${key}" ${file}
         then
-            return 0
-        else
             return 1
+        else
+            return 0
         fi
     fi
 
