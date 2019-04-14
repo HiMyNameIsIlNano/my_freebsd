@@ -30,18 +30,24 @@ __init_ports() {
     if [ $? -eq 0 ]
     then
         echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
+    else
+        echo "Key WRKDIRPREFIX not found in /etc/make.conf"
     fi
 
 	__check_if_key_in_file CCACHE_DIR /etc/make.conf
 	if [ $? -eq 0 ]
     then
 	    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
+    else
+        echo "Key CCACHE_DIR not found in /etc/make.conf"
 	fi
 
 	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
 	if [ $? -eq 0 ]
     then
 	    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+    else
+        echo "Key WITH_CCACHE_BUILD not found in /etc/make.conf"
 	fi
 
 	mkdir -p /ram
