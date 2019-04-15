@@ -191,7 +191,6 @@ while [ "$1" != "" ]; do
     case $1 in
 	    -c | --config )		    shift
                                 config_file=$1
-                                echo ${config_file}
                                 ;;
         -h | --help )           usage
                                 exit
