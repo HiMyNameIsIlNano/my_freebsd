@@ -14,9 +14,9 @@ __init_ports() {
     else
         portsnap fetch
         portsnap extract
-        pkg info
-	fi
+    fi
 
+    pkg info
 	__install_ports ccache
 
     if [ -f /etc/make.conf ]
