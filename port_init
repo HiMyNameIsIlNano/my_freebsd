@@ -14,6 +14,7 @@ __init_ports() {
     else
         portsnap fetch
         portsnap extract
+        pkg info
 	fi
 
 	__install_ports ccache
