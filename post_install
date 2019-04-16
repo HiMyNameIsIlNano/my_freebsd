@@ -45,6 +45,14 @@ __check_if_key_in_file() {
     return 0
 }
 
+__is_command_installed(){
+	if ! [ -x "$(command -v $1)" ]; then
+	    return 0
+    else
+        return 1
+	fi
+}
+
 __add_user_to_group(){
 	local group="$@"
 	local user
@@ -113,6 +121,12 @@ then
 	    mv /usr/src /usr/src_${timestamp}
 	fi
 	sh ./download_kernel
+fi
+
+__is_command_installed pkg
+if [ $? -eq 0 ]
+then
+    pkg info
 fi
 
 if [ ${port_system} == "PKG" ]

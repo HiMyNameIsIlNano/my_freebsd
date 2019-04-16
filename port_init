@@ -16,7 +16,6 @@ __init_ports() {
         portsnap extract
     fi
 
-    pkg info
 	__install_ports ccache
 
     if [ -f /etc/make.conf ]
@@ -148,6 +147,8 @@ __is_command_installed(){
 
 __install_ports(){
 	local ports_to_install="$@"
+
+	mount /ram
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
@@ -160,7 +161,10 @@ __install_ports(){
         else
             echo "${port} already installed on the system"
 	    fi
-	done	
+	done
+
+	ccache -C
+	umount /ram
 }
 
 __post_config_java(){
