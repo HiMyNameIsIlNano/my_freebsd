@@ -2,11 +2,7 @@
 
 # Begin Functions
 __init_ports() {
-	local max_size="$1"
-	local timestamp=$(date +%s)
-	
 	echo "Initializing ports..."
-	__wait_for_seconds 5
 
 	if [ -d /usr/ports ]
 	then
@@ -16,7 +12,16 @@ __init_ports() {
         portsnap extract
     fi
 
-	__install_ports ccache
+	return 0
+}
+
+__config_ccache() {
+    echo "Initializing ccache..."
+
+	local max_size="$1"
+    local timestamp=$(date +%s)
+
+    __install_ports ccache
 
     if [ -f /etc/make.conf ]
     then
@@ -24,14 +29,6 @@ __init_ports() {
         cp /etc/make.conf /etc/make.conf.${timestamp}.bak
     else
         touch /etc/make.conf
-    fi
-
-    __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
-    if [ $? -eq 0 ]
-    then
-        echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
-    else
-        echo "Key WRKDIRPREFIX already in /etc/make.conf"
     fi
 
 	__check_if_key_in_file CCACHE_DIR /etc/make.conf
@@ -49,16 +46,6 @@ __init_ports() {
     else
         echo "Key WITH_CCACHE_BUILD already in /etc/make.conf"
 	fi
-
-	mkdir -p /ram
-	__check_if_key_in_file /ram /etc/fstab
-	if [ $? -eq 0 ]
-    then
-	    echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
-    else
-        echo "Key /ram already in /etc/fstab"
-    fi
-	mount /ram
 
 	mkdir -p ~/.ccache
 	__check_if_key_in_file max_size ~/.ccache/ccache.conf
@@ -80,6 +67,46 @@ __init_ports() {
     return 0
 }
 
+__config_ramdisk() {
+    echo "Initializing ramdisk..."
+
+    local timestamp=$(date +%s)
+
+    if [ -f /etc/fstab ]
+    then
+        echo "Backing-up /etc/fstab"
+        cp /etc/fstab /etc/fstab.${timestamp}.bak
+    else
+        touch /etc/fstab
+    fi
+
+    mkdir -p /ram
+	__check_if_key_in_file /ram /etc/fstab
+	if [ $? -eq 0 ]
+    then
+	    echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
+    else
+        echo "Key /ram already in /etc/fstab"
+    fi
+
+    if [ -f /etc/make.conf ]
+    then
+        echo "Backing-up /etc/make.conf"
+        cp /etc/make.conf /etc/make.conf.${timestamp}.bak
+    else
+        touch /etc/make.conf
+    fi
+
+    __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
+    if [ $? -eq 0 ]
+    then
+        echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
+    else
+        echo "Key WRKDIRPREFIX already in /etc/make.conf"
+    fi
+
+}
+
 __check_if_key_in_file() {
     local key="$1"
     local file="$2"
@@ -94,19 +121,6 @@ __check_if_key_in_file() {
     fi
 
     return 0
-}
-
-# TODO: NOT USED YET
-__add_key_to_file() {
-    local key="$1"
-    local file="$2"
-    local cmd="$3"
-
-    __check_if_key_in_file ${key} ${file}
-    if [ $? -eq 0 ]
-    then
-        echo "${cmd}" >> ${file}
-    fi
 }
 
 __wait_for_seconds(){
@@ -145,10 +159,18 @@ __is_command_installed(){
 	fi
 }
 
-__install_ports(){
+__install_ports_from_ramdisk(){
 	local ports_to_install="$@"
 
 	mount /ram
+	__install_ports ${ports_to_install}
+	ccache -C
+	umount /ram
+}
+
+__install_ports(){
+	local ports_to_install="$@"
+
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
@@ -156,15 +178,11 @@ __install_ports(){
 	    if [ $? -eq 0 ]
 	    then
 	    	local port_dir=$(__get_port_dir $port)
-	    	echo ${port_dir}
-		    cd ${port_dir} && make install clean BATCH=yes
+	    	cd ${port_dir} && make install clean BATCH=yes
         else
             echo "${port} already installed on the system"
 	    fi
 	done
-
-	ccache -C
-	umount /ram
 }
 
 __post_config_java(){
@@ -215,45 +233,46 @@ is_docker_enabled=$(__read_property enable_docker)
 is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
 
-# Init Ports tree and Ramdisk for faster compilation
-__init_ports ${ccache_size}
+__init_ports
+__config_ccache ${ccache_size}
 
-echo "Initializing Ports Tree..."
-echo "Installing ports..."
 __wait_for_seconds 5
+# The installation of the base ports will trigger the installation of some ports that will kill the ramdisk.
+# The base ports will therefore be installed using the normal filesystem.
 __install_ports ${base_ports}
+__config_ramdisk
 
-echo "Installing desktop ports..."
 __wait_for_seconds 5
-__install_ports ${desktop_ports}
+echo "Installing desktop ports..."
+__install_ports_from_ramdisk ${desktop_ports}
 
 echo "Installing office ports..."
 __wait_for_seconds 5
-__install_ports ${office_ports}
+__install_ports_from_ramdisk ${office_ports}
 
 echo "Installing development ports..."
 __wait_for_seconds 5
-__install_ports ${dev_ports}
+__install_ports_from_ramdisk ${dev_ports}
 
 # Finalize Java8 Configuration
 __post_config_java openjdk8
 
 if [ "${is_docker_enabled}" == "true" ]
 then
-	echo "Installing docker packages..."
+	echo "Installing docker ports..."
 	__wait_for_seconds 5
 
 	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
-	__install_ports $docker_ports
+	__install_ports_from_ramdisk ${docker_ports}
 fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
 then
-	echo "Installing openvpn packages..."
+	echo "Installing openvpn ports..."
 	__wait_for_seconds 5
 
-	openvpn_ports=openvpn,curl,sudo
-	__install_ports $openvpn_ports
+	openvpn_pkgs=openvpn,curl,sudo
+	__install_ports_from_ramdisk ${openvpn_pkgs}
 fi
 
 exit 0
