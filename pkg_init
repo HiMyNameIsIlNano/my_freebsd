@@ -126,13 +126,13 @@ echo "Installing base packages..."
 __wait_for_seconds 5
 __install_pkgs ${base_pkgs}
 
-echo "Installing desktop packages..."
-__wait_for_seconds 5
-__install_pkgs ${desktop_pkgs}
-
 echo "Installing browser ports..."
 __wait_for_seconds 5
 __install_pkgs ${browser_ports}
+
+echo "Installing desktop packages..."
+__wait_for_seconds 5
+__install_pkgs ${desktop_pkgs}
 
 echo "Installing office packages..."
 __wait_for_seconds 5

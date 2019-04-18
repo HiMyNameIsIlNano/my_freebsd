@@ -237,10 +237,16 @@ ccache_size=$(__read_property ccache_size)
 __init_ports
 __config_ccache ${ccache_size}
 
+echo "Installing base ports..."
 __wait_for_seconds 5
 # The installation of the base ports will trigger the installation of some ports that will kill the ramdisk.
 # The base ports will therefore be installed using the normal filesystem.
 __install_ports ${base_ports}
+
+echo "Installing browser ports..."
+__wait_for_seconds 5
+__install_ports ${browser_ports}
+
 __config_ramdisk
 
 __wait_for_seconds 5
@@ -250,10 +256,6 @@ __install_ports_from_ramdisk ${desktop_ports}
 echo "Installing office ports..."
 __wait_for_seconds 5
 __install_ports_from_ramdisk ${office_ports}
-
-echo "Installing browser ports..."
-__wait_for_seconds 5
-__install_ports ${browser_ports}
 
 echo "Installing development ports..."
 __wait_for_seconds 5
