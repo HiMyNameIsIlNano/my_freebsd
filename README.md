@@ -37,12 +37,13 @@ As mentioned above, both `post_install` and `desktop_configurer` are driven by a
 1. base_ports: A category of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 2. desktop_ports: A category of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 3. office_ports: A category of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
-4. dev_ports: A category of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
-5. enable_docker: A flag that enables and configures Docker and a set of utility commands for a specific user. Allowed values: {true|false};
-6. port_system: An Enum type that defines the preferred way for installing programs on the system. Allowed values : {PKG|PORT}
-7. download_kernel: A flag that enables the download of the kernel sources. Allowed values: {true|false};
-8. create_users: A flag that enables the configuration of additional users on the system. Allowed values: {true|false}: 
-9. setup_vpn: A flag that enables the configuration of a set of tools to connect to a set of public OpenVPN Servers (see: https://www.vpnbook.com/freevpn). Allowed values:{true|false}   
+4. browser_ports: A category of ports used to configure the browsers (e.g. firefox). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+5. dev_ports: A category of ports used to configure the development tools system wide (e.g. java, maven, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
+6. enable_docker: A flag that enables and configures Docker and a set of utility commands for a specific user. Allowed values: {true|false};
+7. port_system: An Enum type that defines the preferred way for installing programs on the system. Allowed values : {PKG|PORT}
+8. download_kernel: A flag that enables the download of the kernel sources. Allowed values: {true|false};
+9. create_users: A flag that enables the configuration of additional users on the system. Allowed values: {true|false}: 
+10. setup_vpn: A flag that enables the configuration of a set of tools to connect to a set of public OpenVPN Servers (see: https://www.vpnbook.com/freevpn). Allowed values:{true|false}   
 
 The differentiation between `base_ports`, `desktop_ports`, `office_ports` and `dev_ports` is just a logical one and it has no real technical reason. If one wants to add a port to the configuration, it can be added to any of the ports list described above. It should go without saying that the list of ports can be changed and extended to ones' personal taste. The only aim of such configuration is to keep the set of installed ports to the bare minimum, while still providing a decent desktop experience.     
 

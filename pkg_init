@@ -113,6 +113,7 @@ base_pkgs=$(__read_property base_ports)
 desktop_pkgs=$(__read_property desktop_ports)
 dev_pkgs=$(__read_property dev_ports)
 office_pkgs=$(__read_property office_ports)
+browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
 is_setup_vpn_enabled=$(__read_property setup_vpn)
 timestamp=$(date +%s)
@@ -128,6 +129,10 @@ __install_pkgs ${base_pkgs}
 echo "Installing desktop packages..."
 __wait_for_seconds 5
 __install_pkgs ${desktop_pkgs}
+
+echo "Installing browser ports..."
+__wait_for_seconds 5
+__install_pkgs ${browser_ports}
 
 echo "Installing office packages..."
 __wait_for_seconds 5

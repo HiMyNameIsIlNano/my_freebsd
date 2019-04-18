@@ -229,6 +229,7 @@ base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
+browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
 is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
@@ -249,6 +250,10 @@ __install_ports_from_ramdisk ${desktop_ports}
 echo "Installing office ports..."
 __wait_for_seconds 5
 __install_ports_from_ramdisk ${office_ports}
+
+echo "Installing browser ports..."
+__wait_for_seconds 5
+__install_ports ${browser_ports}
 
 echo "Installing development ports..."
 __wait_for_seconds 5
