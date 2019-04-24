@@ -218,7 +218,7 @@ then
 
     fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
 	mkdir /tmp/geany_themes_${timestamp}
-	tar xvzf geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
+	tar xvzf /tmp/geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
 
 	mkdir -p $HOME/.config/geany/colorschemes/
 	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ $HOME/.config/geany/colorschemes/
@@ -251,7 +251,7 @@ then
 
 	fetch --no-verify-hostname --no-verify-peer -o /tmp/vpnbook.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/vpnbook/tarball/master
 	mkdir /tmp/vpnbook_${timestamp}
-	tar xvzf vpnbook.tar.gz --strip=1 -C /tmp/vpnbook_${timestamp}
+	tar xvzf /tmp/vpnbook.tar.gz --strip=1 -C /tmp/vpnbook_${timestamp}
 
 	cd /tmp/vpnbook_${timestamp}
 	sh install
@@ -277,7 +277,7 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 
 	fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
     mkdir /tmp/update_script_${timestamp}
-    tar xvzf update_script.tar.gz --strip=1 -C /tmp/update_script_${timestamp}
+    tar xvzf /tmp/update_script.tar.gz --strip=1 -C /tmp/update_script_${timestamp}
 
 	cd /tmp/update_script_${timestamp}
 	sh install
