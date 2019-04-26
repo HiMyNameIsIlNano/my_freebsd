@@ -1,0 +1,111 @@
+#!/bin/sh
+
+# Begin Functions
+__read_property(){
+    input="$@"
+    temp=`cat ${config_file} | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+    echo ${temp##*|}
+}
+
+__check_if_pkg_installed() {
+    local pkg="$1"
+
+    if ! pkg info ${pkg} > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+__check_if_port_installed() {
+    local port="$1"
+
+    if ! pkg info ${port} > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+__get_port_dir() {
+    local port_name="$1"
+    local port_dir=$(whereis -q ${port_name})
+    echo ${port_dir##*|}
+}
+
+__install_pkgs(){
+    pkgs_to_install="$@"
+
+    # The list of ports must be comma separated with no empty space
+    for pkg in $(echo $pkgs_to_install | sed "s/,/ /g")
+    do
+        __check_if_pkg_installed ${pkg}
+        if [ $? -eq 0 ]
+        then
+            pkg install -y ${pkg}
+        else
+            echo "${pkg} already installed on the system"
+        fi
+    done
+}
+
+__install_ports(){
+    local ports_to_install="$@"
+
+    # The list of ports must be comma separated with no empty space
+    for port in $(echo ${ports_to_install} | sed "s/,/ /g")
+    do
+        __check_if_port_installed ${port}
+        if [ $? -eq 0 ]
+        then
+            local port_dir=$(__get_port_dir $port)
+            cd ${port_dir} && make install clean BATCH=yes
+        else
+            echo "${port} already installed on the system"
+        fi
+    done
+}
+
+__check_requirements() {
+local port_system="$1"
+local vscode_pkgs=wget,git,yarn,python2.7
+
+if [ ${port_system} == "PKG" ]
+then
+    __install_pkgs ${vscode_pkgs}
+fi
+
+if [ ${port_system} == "PORT" ]
+then
+    __install_ports ${vscode_pkgs}
+fi
+}
+# End Functions
+
+work_dir=.
+config_file=${work_dir}/post_install.config
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -c | --config ) shift
+        config_file=$1
+        ;;
+        -h | --help ) usage
+        exit
+        ;;
+        * ) usage
+        exit 1
+    esac
+    shift
+done
+
+port_system=$(__read_property port_system)
+
+__check_requirements ${port_system}
+fetch --no-verify-hostname --no-verify-peer -o /tmp/electron-v2.0.1-freebsd-x64.tar.gz https://api.github.com/repos/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/tarball/master
+mkdir /tmp/electron-v2.0.1-freebsd-x64
+tar xvzf /tmp/electron-v2.0.1-freebsd-x64.tar.gz --strip=1 -C /tmp/electron-v2.0.1-freebsd-x64
+cp ./patch/vscode_buildv1.26.0.sh.diff /tmp/electron-v2.0.1-freebsd-x64/vscode/
+cd /tmp/electron-v2.0.1-freebsd-x64/vscode
+patch < vscode_buildv1.26.0.sh.diff
+sh vscode_buildv1.26.0.sh
