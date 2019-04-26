@@ -233,6 +233,7 @@ browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
 is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
+is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 
 __init_ports
 __config_ccache ${ccache_size}
@@ -280,6 +281,18 @@ then
 
 	openvpn_pkgs=openvpn,curl,sudo
 	__install_ports_from_ramdisk ${openvpn_pkgs}
+fi
+
+if [ "${is_virtualbox_guest}" == "true" ]
+then
+	echo "Optimizing Virtualbox Guest..."
+	__wait_for_seconds 5
+
+    openbox_guest_pkgs=virtualbox-ose-additions
+	__install_ports_from_ramdisk ${openbox_guest_pkgs}
+
+    echo 'vboxguest_enable="YES"' >> /etc/rc.conf
+    cp ./openbox/xorg/xorg.conf /etc/X11/
 fi
 
 exit 0

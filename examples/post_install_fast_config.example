@@ -9,3 +9,4 @@
 "download_kernel":false
 "create_users":false
 "setup_vpn":true
+"is_virtualbox_guest":true

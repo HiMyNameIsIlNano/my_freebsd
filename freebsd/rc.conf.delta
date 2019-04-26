@@ -23,7 +23,6 @@ blanktime="300"
 
 # Virtualbox kernel module that allow bridged or host-only networking (necessary for Docker)
 vboxnet_enable="YES"
-#vboxguest_enable="YES"
 vboxservice_enable="YES"
 
 background_dhclient="YES"
