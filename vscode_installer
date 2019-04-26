@@ -38,7 +38,7 @@ __check_requirements() {
         return_code=1
     fi
 
-    __check_if_pkg_installed python2.7
+    __check_if_pkg_installed python27
     if [ $? -eq 0 ]
     then
         return_code=1
