@@ -1,5 +1,5 @@
 --- vscode_buildv1.26.0.sh.orig	2019-04-26 12:09:03.821573083 +0200
-+++ vscode_buildv1.26.0.sh	2019-04-26 15:12:34.206679984 +0200
++++ vscode_buildv1.26.0.sh	2019-04-26 16:18:20.295593442 +0200
 @@ -1,33 +1,53 @@
 -#!/usr/local/bin/bash
 +#!/bin/sh
@@ -41,7 +41,7 @@
 -patch -p1  < ../vscode1.26.diff
 +patch -p1 < ../vscode1.26.diff
 +
-+setenv PYTHON ${PYTHON}
++export PYTHON=${PYTHON}
 +yarn add natives@1.1.6
 +
  yarn
