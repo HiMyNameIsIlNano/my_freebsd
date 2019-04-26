@@ -20,25 +20,25 @@ __check_if_pkg_installed() {
 
 __check_requirements() {
     local return_code=0
-    __check_if_port_installed wget
+    __check_if_pkg_installed wget
     if [ $? -eq 0 ]
     then
         return_code=1
     fi
 
-    __check_if_port_installed git
+    __check_if_pkg_installed git
     if [ $? -eq 0 ]
     then
         return_code=1
     fi
 
-    __check_if_port_installed yarn
+    __check_if_pkg_installed yarn
     if [ $? -eq 0 ]
     then
         return_code=1
     fi
 
-    __check_if_port_installed python2.7
+    __check_if_pkg_installed python2.7
     if [ $? -eq 0 ]
     then
         return_code=1
