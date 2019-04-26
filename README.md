@@ -15,9 +15,11 @@ Item 1. will take care of installing a list of programs as defined in the `post_
 If you start from a vanilla Freebsd installation and you are keen to have a quick up and running Openbox-based Desktop environment, then execute:
 
 ```
-fetch --no-verify-hostname --no-verify-peer -o my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
+fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
 tar xzvf my_freebsd.tar.gz
-cd %extracted_folder%
+mkdir -p /tmp/my_freebsd
+tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
+cd /tmp/my_freebsd
 sh post_install
 ```
 
@@ -25,9 +27,11 @@ sh post_install
 If you just want to give your system a nice look and feel as shown [here](https://www.gnome-look.org/p/1013723/), then execute:
 
 ```
-fetch --no-verify-hostname --no-verify-peer -o my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
+fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
 tar xzvf my_freebsd.tar.gz
-cd %extracted_folder%
+mkdir -p /tmp/my_freebsd
+tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
+cd /tmp/my_freebsd
 sh desktop_configurer
 ```
 
@@ -49,3 +53,6 @@ The differentiation between `base_ports`, `desktop_ports`, `office_ports` and `d
 
 ## Examples:
 The project comes with some already pre-defined configuration files that can be used as an example to further customize the installation. The examples can be found in the `examples` folder.
+
+## Performance
+Having tested this configuration Script only on a Virtual Machine little I can say about real system Performance. Installing programs using PKG takes up to 1h in total and that would be the recommended way of configuring the desktop. The installation process with the PORT System takes up to 24h on an i5 processor.
