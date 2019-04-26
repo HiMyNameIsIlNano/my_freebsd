@@ -33,6 +33,7 @@ git checkout 1.26.0
 patch -p1 < ../vscode1.26.diff
 
 setenv PYTHON ${PYTHON}
+yarn add natives@1.1.6
 
 yarn
 tar -xvf ../vscode-ripgrep.tar.gz -C node_modules/

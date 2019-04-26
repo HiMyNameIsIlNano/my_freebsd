@@ -11,16 +11,7 @@ __check_if_pkg_installed() {
     local pkg="$1"
 
     if ! pkg info ${pkg} > /dev/null 2>&1; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-__check_if_port_installed() {
-    local port="$1"
-
-    if ! pkg info ${port} > /dev/null 2>&1; then
+        echo "${pkg} not installed on the system"
         return 0
     else
         return 1
@@ -28,14 +19,41 @@ __check_if_port_installed() {
 }
 
 __check_requirements() {
+    local return_code=0
     __check_if_port_installed wget
+    if [ $? -eq 0 ]
+    then
+        return_code=1
+    fi
+
     __check_if_port_installed git
+    if [ $? -eq 0 ]
+    then
+        return_code=1
+    fi
+
     __check_if_port_installed yarn
+    if [ $? -eq 0 ]
+    then
+        return_code=1
+    fi
+
     __check_if_port_installed python2.7
+    if [ $? -eq 0 ]
+    then
+        return_code=1
+    fi
+
+    return ${return_code}
 }
 # End Functions
 
 __check_requirements
+if [ $? -eq 1 ]
+then
+    exit 1
+fi
+
 fetch --no-verify-hostname --no-verify-peer -o /tmp/electron-v2.0.1-freebsd-x64.tar.gz https://api.github.com/repos/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/tarball/master
 mkdir /tmp/electron-v2.0.1-freebsd-x64
 tar xvzf /tmp/electron-v2.0.1-freebsd-x64.tar.gz --strip=1 -C /tmp/electron-v2.0.1-freebsd-x64
@@ -43,3 +61,4 @@ cp ./patch/vscode_buildv1.26.0.sh.diff /tmp/electron-v2.0.1-freebsd-x64/vscode/
 cd /tmp/electron-v2.0.1-freebsd-x64/vscode
 patch < vscode_buildv1.26.0.sh.diff
 sh vscode_buildv1.26.0.sh
+exit 0
