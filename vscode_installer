@@ -55,13 +55,13 @@ then
 fi
 
 if [ -f /tmp/electron-v2.0.1-freebsd-x64.tar.gz ]
-else
+then
     rm /tmp/electron-v2.0.1-freebsd-x64.tar.gz
 fi
 fetch --no-verify-hostname --no-verify-peer -o /tmp/electron-v2.0.1-freebsd-x64.tar.gz https://api.github.com/repos/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/tarball/master
 
 if [ -d /tmp/electron-v2.0.1-freebsd-x64 ]
-else
+then
     rm -r /tmp/electron-v2.0.1-freebsd-x64
 fi
 mkdir /tmp/electron-v2.0.1-freebsd-x64
