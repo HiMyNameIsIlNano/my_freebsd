@@ -87,14 +87,14 @@ config_file=${work_dir}/post_install.config
 
 while [ "$1" != "" ]; do
     case $1 in
-        -c | --config ) shift
-        config_file=$1
+        -c | --config )     shift
+                            config_file=$1
         ;;
-        -h | --help ) usage
-        exit
+        -h | --help )       usage
+                            exit
         ;;
         * ) usage
-        exit 1
+            exit 1
     esac
     shift
 done
