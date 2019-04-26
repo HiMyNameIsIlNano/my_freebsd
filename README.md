@@ -16,7 +16,6 @@ If you start from a vanilla Freebsd installation and you are keen to have a quic
 
 ```
 fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
-tar xzvf my_freebsd.tar.gz
 mkdir -p /tmp/my_freebsd
 tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
 cd /tmp/my_freebsd
@@ -28,7 +27,6 @@ If you just want to give your system a nice look and feel as shown [here](https:
 
 ```
 fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
-tar xzvf my_freebsd.tar.gz
 mkdir -p /tmp/my_freebsd
 tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
 cd /tmp/my_freebsd
