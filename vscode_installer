@@ -54,8 +54,18 @@ then
     exit 1
 fi
 
+if [ -f /tmp/electron-v2.0.1-freebsd-x64.tar.gz ]
+else
+    rm /tmp/electron-v2.0.1-freebsd-x64.tar.gz
+fi
 fetch --no-verify-hostname --no-verify-peer -o /tmp/electron-v2.0.1-freebsd-x64.tar.gz https://api.github.com/repos/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/tarball/master
+
+if [ -d /tmp/electron-v2.0.1-freebsd-x64 ]
+else
+    rm -r /tmp/electron-v2.0.1-freebsd-x64
+fi
 mkdir /tmp/electron-v2.0.1-freebsd-x64
+
 tar xvzf /tmp/electron-v2.0.1-freebsd-x64.tar.gz --strip=1 -C /tmp/electron-v2.0.1-freebsd-x64
 cp ./patch/vscode_buildv1.26.0.sh.diff /tmp/electron-v2.0.1-freebsd-x64/vscode/
 cd /tmp/electron-v2.0.1-freebsd-x64/vscode
