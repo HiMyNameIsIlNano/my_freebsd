@@ -36,8 +36,7 @@ is_installed(){
 
 check_docker_requirements(){
 	echo "Checking docker Requirements..."
-	# Check if docker, virtualbox, vagrant are installed
-	is_installed virtualbox
+	# Check if docker and vagrant are installed
 	is_installed vagrant
 	is_installed docker-machine
 }
