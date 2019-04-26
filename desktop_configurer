@@ -68,150 +68,150 @@ geany_tag_base_url=http://download.geany.org/contrib/tags
 geany_java_tag_version=openjdk8-8u66-b01.java.tags
 timestamp=$(date +%s)
 
-mkdir -p $HOME/.local/scripts
-mkdir -p $HOME/.config/openbox/wallpapers
-mkdir -p $HOME/.config/gtk-3.0
-mkdir -p $HOME/.themes
-mkdir -p $HOME/.icons
-mkdir -p $HOME/.config/tint2
-mkdir -p $HOME/.config/geany
+mkdir -p ${HOME}/.local/scripts
+mkdir -p ${HOME}/.config/openbox/wallpapers
+mkdir -p ${HOME}/.config/gtk-3.0
+mkdir -p ${HOME}/.themes
+mkdir -p ${HOME}/.icons
+mkdir -p ${HOME}/.config/tint2
+mkdir -p ${HOME}/.config/geany
 
 echo "Start configuring Openbox Desktop Look & Feel..."
-echo "Copying .xinitrc under $HOME"
+echo "Copying .xinitrc under ${HOME}"
 wait_for_seconds 5
 # .xinitrc
-if [ -f "$HOME/.xinitrc" ] 
+if [ -f "${HOME}/.xinitrc" ]
 then
 	echo "Backing-up .xinitrc"
-	mv $HOME/.xinitrc $HOME/.xinitrc.${timestamp}.bak 
+	mv ${HOME}/.xinitrc ${HOME}/.xinitrc.${timestamp}.bak
 else
 	echo "Nothing to backup. File .xinitrc does not exist"
 fi
-echo 'exec openbox-session' >> $HOME/.xinitrc
+echo 'exec openbox-session' >> ${HOME}/.xinitrc
 
-echo "Copying .tcshrc under $HOME"
+echo "Copying .tcshrc under ${HOME}"
 wait_for_seconds 5
 # tcshrc
-if [ -f "$HOME/.tcshrc" ] 
+if [ -f "${HOME}/.tcshrc" ]
 then
 	echo "Backing-up .tcshrc"
-	mv $HOME/.tcshrc $HOME/.tcshrc.${timestamp}.bak 
+	mv ${HOME}/.tcshrc ${HOME}/.tcshrc.${timestamp}.bak
 else
 	echo "Nothing to backup. File .tcshrc does not exist"
 fi
-cp ./openbox/tcshrc $HOME/.tcshrc
+cp ./openbox/tcshrc ${HOME}/.tcshrc
 
-echo "Copying .Xdefaults under $HOME"
+echo "Copying .Xdefaults under ${HOME}"
 wait_for_seconds 5
 # Xdefaults
-if [ -f "$HOME/.Xdefaults" ] 
+if [ -f "${HOME}/.Xdefaults" ]
 then
 	echo "Backing-up .Xdefaults"
-	mv $HOME/.Xdefaults $HOME/.Xdefaults.${timestamp}.bak 
+	mv ${HOME}/.Xdefaults ${HOME}/.Xdefaults.${timestamp}.bak
 else
 	echo "Nothing to backup. File .Xdefaults does not exist"
 fi
-cp ./openbox/Xdefaults $HOME/.Xdefaults
+cp ./openbox/Xdefaults ${HOME}/.Xdefaults
 
-echo "Copying autostart.sh under $HOME/.config/openbox"
+echo "Copying autostart.sh under ${HOME}/.config/openbox"
 wait_for_seconds 5
 # Openbox
-if [ -f "$HOME/.config/openbox/autostart.sh" ] 
+if [ -f "${HOME}/.config/openbox/autostart.sh" ]
 then
 	echo "Backing-up autostart.sh"
-	mv $HOME/.config/openbox/autostart.sh $HOME/.config/openbox/autostart.sh.${timestamp}.bak 
+	mv ${HOME}/.config/openbox/autostart.sh ${HOME}/.config/openbox/autostart.sh.${timestamp}.bak
 else
 	echo "Nothing to backup. File autostart.sh does not exist"
 fi
-cp ./openbox/autostart $HOME/.config/openbox/autostart.sh
-chmod 744 $HOME/.config/openbox/autostart.sh
+cp ./openbox/autostart ${HOME}/.config/openbox/autostart.sh
+chmod 744 ${HOME}/.config/openbox/autostart.sh
 
-echo "Copying rc.xml under $HOME/.config/openbox"
+echo "Copying rc.xml under ${HOME}/.config/openbox"
 wait_for_seconds 5
-if [ -f "$HOME/.config/openbox/rc.xml" ] 
+if [ -f "${HOME}/.config/openbox/rc.xml" ]
 then
 	echo "Backing-up rc.xml"
-	mv $HOME/.config/openbox/rc.xml $HOME/.config/openbox/rc.xml.${timestamp}.bak 
+	mv ${HOME}/.config/openbox/rc.xml ${HOME}/.config/openbox/rc.xml.${timestamp}.bak
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./openbox/rc.xml $HOME/.config/openbox/rc.xml
+cp ./openbox/rc.xml ${HOME}/.config/openbox/rc.xml
 
-echo "Copying menu.xml under $HOME/.config/openbox"
+echo "Copying menu.xml under ${HOME}/.config/openbox"
 wait_for_seconds 5
-if [ -f "$HOME/.config/openbox/menu.xml" ] 
+if [ -f "${HOME}/.config/openbox/menu.xml" ]
 then
 	echo "Backing-up menu.xml"
-	mv $HOME/.config/openbox/menu.xml $HOME/.config/openbox/menu.xml.${timestamp}.bak 
+	mv ${HOME}/.config/openbox/menu.xml ${HOME}/.config/openbox/menu.xml.${timestamp}.bak
 else
 	echo "Nothing to backup. File rc.xml does not exist"
 fi
-cp ./openbox/menu.xml $HOME/.config/openbox/menu.xml
+cp ./openbox/menu.xml ${HOME}/.config/openbox/menu.xml
 
-echo "Copying Openbox Desktop Wallpapers under $HOME/.config/openbox/wallpapers..."
+echo "Copying Openbox Desktop Wallpapers under ${HOME}/.config/openbox/wallpapers..."
 wait_for_seconds 5
 # Wallpaper
-cp ./wallpapers/*-background.jpg $HOME/.config/openbox/wallpapers/
+cp ./wallpapers/*-background.jpg ${HOME}/.config/openbox/wallpapers/
 
-echo "Copying tint2rc under HOME/.config/tint2"
+echo "Copying tint2rc under ${HOME}/.config/tint2"
 wait_for_seconds 5
 # tint2
-if [ -f "$HOME/.config/tint2/tint2rc" ] 
+if [ -f "${HOME}/.config/tint2/tint2rc" ]
 then
 	echo "Backing-up tint2rc"
-	mv $HOME/.config/tint2/tint2rc $HOME/.config/tint2/tint2rc.${timestamp}.bak
+	mv ${HOME}/.config/tint2/tint2rc ${HOME}/.config/tint2/tint2rc.${timestamp}.bak
 else
 	echo "Nothing to backup. File tint2rc does not exist"
 fi
-cp ./openbox/tint2rc $HOME/.config/tint2/tint2rc
+cp ./openbox/tint2rc ${HOME}/.config/tint2/tint2rc
 
-echo "Copying Conky Configuration Files under $HOME..."
+echo "Copying Conky Configuration Files under ${HOME}..."
 wait_for_seconds 5
 # conky
-if [ -f "$HOME/.conkyrc" ] 
+if [ -f "${HOME}/.conkyrc" ]
 then
 	echo "Backing-up .conkyrc"
-	mv $HOME/.conkyrc $HOME/.conkyrc.${timestamp}.bak 
+	mv ${HOME}/.conkyrc ${HOME}/.conkyrc.${timestamp}.bak
 else
 	echo "Nothing to backup. File .conkyrc does not exist"
 fi
-cp ./openbox/conkyrc $HOME/.conkyrc
+cp ./openbox/conkyrc ${HOME}/.conkyrc
 
 
-echo "Copying gtk2/gtk3 Configuration Files under $HOME..."
+echo "Copying gtk2/gtk3 Configuration Files under ${HOME}..."
 wait_for_seconds 5
 # GTK2 Themes and Icons
-if [ -f "$HOME/.gtkrc-2.0" ] 
+if [ -f "${HOME}/.gtkrc-2.0" ]
 then
 	echo "Backing-up .gtkrc-2.0"
-	mv $HOME/.gtkrc-2.0 $HOME/.gtkrc-2.0.${timestamp}.bak 
+	mv ${HOME}/.gtkrc-2.0 ${HOME}/.gtkrc-2.0.${timestamp}.bak
 else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
-cp ./openbox/gtkrc-2.0 $HOME/.gtkrc-2.0
-cp ./openbox/my-siva-flat-dark-borderless.tar.gz $HOME/.themes/my-siva-flat-dark-borderless.tar.gz
-tar xzf $HOME/.themes/my-siva-flat-dark-borderless.tar.gz -C $HOME/.themes
+cp ./openbox/gtkrc-2.0 ${HOME}/.gtkrc-2.0
+cp ./openbox/my-siva-flat-dark-borderless.tar.gz ${HOME}/.themes/my-siva-flat-dark-borderless.tar.gz
+tar xzf ${HOME}/.themes/my-siva-flat-dark-borderless.tar.gz -C ${HOME}/.themes
 
-echo "Copying settings.ini Configuration Files under $HOME/.config/gtk-3.0..."
+echo "Copying settings.ini Configuration Files under ${HOME}/.config/gtk-3.0..."
 wait_for_seconds 5
 # GTK3 Themes and Icons
-if [ -f "$HOME/.config/gtk-3.0/settings.ini" ] 
+if [ -f "${HOME}/.config/gtk-3.0/settings.ini" ]
 then
 	echo "Backing-up settings.ini"
-	mv $HOME/.config/gtk-3.0/settings.ini $HOME/.config/gtk-3.0/settings.${timestamp}.ini
+	mv ${HOME}/.config/gtk-3.0/settings.ini ${HOME}/.config/gtk-3.0/settings.${timestamp}.ini
 else 
 	echo "Nothing to backup. File settings.ini does not exist"
 fi
-cp ./openbox/settings.ini $HOME/.config/gtk-3.0/settings.ini
+cp ./openbox/settings.ini ${HOME}/.config/gtk-3.0/settings.ini
 
-echo "Copying Icon Pack Files under $HOME/.icons..."
+echo "Copying Icon Pack Files under ${HOME}/.icons..."
 wait_for_seconds 5
 # Icon Pack
-cp ./openbox/ultra-flat-icons-orange.tar.gz $HOME/.icons/ultra-flat-icons-orange.tar.gz
-tar xzf $HOME/.icons/ultra-flat-icons-orange.tar.gz -C $HOME/.icons/
+cp ./openbox/ultra-flat-icons-orange.tar.gz ${HOME}/.icons/ultra-flat-icons-orange.tar.gz
+tar xzf ${HOME}/.icons/ultra-flat-icons-orange.tar.gz -C ${HOME}/.icons/
 
 # Geany Themes
-if [ -d "$HOME/.config/geany" ] 
+if [ -d "${HOME}/.config/geany" ]
 then
 	echo "Installing geany themes..."
 	wait_for_seconds 5
@@ -220,12 +220,12 @@ then
 	mkdir /tmp/geany_themes_${timestamp}
 	tar xvzf /tmp/geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
 
-	mkdir -p $HOME/.config/geany/colorschemes/
-	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ $HOME/.config/geany/colorschemes/
+	mkdir -p ${HOME}/.config/geany/colorschemes/
+	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ ${HOME}/.config/geany/colorschemes/
 	rm -rf /tmp/geany_themes_${timestamp}
 	
-	mkdir -p $HOME/.config/geany/tags/ 
-	curl ${geany_tag_base_url}/${geany_java_tag_version} -o $HOME/.config/geany/tags/${geany_java_tag_version}
+	mkdir -p ${HOME}/.config/geany/tags/
+	curl ${geany_tag_base_url}/${geany_java_tag_version} -o ${HOME}/.config/geany/tags/${geany_java_tag_version}
 fi
 
 if [ "${is_docker_enabled}" == "true" ]
@@ -234,14 +234,14 @@ then
 		
 	echo "Installing docker configuration..."
 	wait_for_seconds 5
-	mkdir -p $HOME/Development/Vagrant/dockervm
-	cp ./openbox/Vagrantfile $HOME/Development/Vagrant/dockervm/Vagrantfile
+	mkdir -p ${HOME}/Development/Vagrant/dockervm
+	cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
 	
 	echo "Installing docker shortcuts..."
 	wait_for_seconds 5
-	mkdir -p $HOME/.local/scripts
-	cp ./openbox/docker_up $HOME/.local/scripts/docker_up
-	cp ./openbox/docker_down $HOME/.local/scripts/docker_down
+	mkdir -p ${HOME}/.local/scripts
+	cp ./openbox/docker_up ${HOME}/.local/scripts/docker_up
+	cp ./openbox/docker_down ${HOME}/.local/scripts/docker_down
 fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
@@ -272,7 +272,7 @@ fi
 
 if [ "${is_user_allowed_to_update}" == "true" ]; then
 	# Install Update Script
-	echo "Installing Update Scripts under $HOME/.local/scripts..."
+	echo "Installing Update Scripts under ${HOME}/.local/scripts..."
 	wait_for_seconds 5
 
 	fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
@@ -285,7 +285,7 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	cd
 	rm -rf /tmp/update_script_${timestamp}
 else
-	echo "Skipping Copying Update Scripts under $HOME/.local/scripts as ${USER} is not memeber of the group installer..."
+	echo "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not memeber of the group installer..."
 fi	
 		
 exit 0
