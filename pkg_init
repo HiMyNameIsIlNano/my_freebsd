@@ -1,0 +1,166 @@
+#!/bin/sh
+
+# Begin Functions
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+__check_if_key_in_file() {
+    local key="$1"
+    local file="$2"
+
+    if [ -f ${file} ]
+    then
+        if grep -Fxq "${key}" ${file}
+        then
+            return 1
+        else
+            return 0
+        fi
+    fi
+
+    return 0
+}
+
+__check_if_pkg_installed() {
+    local pkg="$1"
+
+    if ! pkg info ${pkg} > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+__install_pkgs(){
+	pkgs_to_install="$@"
+
+	# The list of ports must be comma separated with no empty space
+	for pkg in $(echo $pkgs_to_install | sed "s/,/ /g")
+	do
+	    __check_if_pkg_installed ${pkg}
+	    if [ $? -eq 0 ]
+	    then
+		    pkg install -y ${pkg}
+        else
+            echo "${pkg} already installed on the system"
+	    fi
+	done
+}
+
+__wait_for_input(){
+	printf 'press [ENTER] to continue...'
+	read dummy
+}
+
+__wait_for_seconds(){
+	local seconds="$@"
+	echo "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}
+
+__is_command_installed(){
+	if ! [ -x "$(command -v $1)" ]; then
+	    return 0
+    else
+        return 1
+	fi
+}
+
+__post_config_java(){
+	local java_port_name="$1"
+	__check_if_pkg_installed ${java_port_name}
+
+	if [ $? -eq 1 ] ; then
+		__check_if_key_in_file /dev/fd /etc/fstab
+        if [ $? -eq 0 ]
+        then
+		    echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+		fi
+
+        __check_if_key_in_file /proc /etc/fstab
+		if [ $? -eq 0 ]
+        then
+		    echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+        fi
+	else
+        echo "${java_port_name} is not installed on the system"
+	fi
+}
+# End Functions
+
+work_dir=.
+config_file=${work_dir}/post_install.config
+
+while [ "$1" != "" ]; do
+    case $1 in
+	    -c | --config )		    shift
+                                config_file=$1
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+# Variable Declaration
+base_pkgs=$(__read_property base_ports)
+desktop_pkgs=$(__read_property desktop_ports)
+dev_pkgs=$(__read_property dev_ports)
+office_pkgs=$(__read_property office_ports)
+browser_ports=$(__read_property browser_ports)
+is_docker_enabled=$(__read_property enable_docker)
+is_setup_vpn_enabled=$(__read_property setup_vpn)
+timestamp=$(date +%s)
+
+echo "Initializing PKG System..."
+echo "Updating package DB..."
+pkg update
+
+echo "Installing base packages..."
+__wait_for_seconds 5
+__install_pkgs ${base_pkgs}
+
+echo "Installing browser ports..."
+__wait_for_seconds 5
+__install_pkgs ${browser_ports}
+
+echo "Installing desktop packages..."
+__wait_for_seconds 5
+__install_pkgs ${desktop_pkgs}
+
+echo "Installing office packages..."
+__wait_for_seconds 5
+__install_pkgs ${office_pkgs}
+
+echo "Installing development packages..."
+__wait_for_seconds 5
+__install_pkgs ${dev_pkgs}
+
+# Finalize Java8 Configuration
+__post_config_java openjdk8
+
+if [ "${is_docker_enabled}" == "true" ]
+then
+	echo "Installing docker packages..."
+	__wait_for_seconds 5
+
+	docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker
+	__install_pkgs ${docker_pkgs}
+fi
+
+if [ "${is_setup_vpn_enabled}" == "true" ]
+then
+	echo "Installing openvpn packages..."
+	__wait_for_seconds 5
+
+	openvpn_pkgs=openvpn,curl,sudo
+	__install_pkgs ${openvpn_pkgs}
+fi
+
+exit 0

@@ -4,7 +4,7 @@
 "browser_ports":firefox
 "dev_ports":openjdk8,maven33,npm,git,vim,netbeans
 "enable_docker":true
-"port_system":PKG
+"port_system":PORT
 "ccache_size":5G
 "download_kernel":true
 "create_users":true
