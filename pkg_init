@@ -173,7 +173,7 @@ then
 	__install_pkgs ${openbox_guest_pkgs}
 
     echo 'vboxguest_enable="YES"' >> /etc/rc.conf
-    cp ./openbox/xorg/xorg.conf /etc/X11/
+    cp ./virtualbox/xorg/xorg.conf /etc/X11/
 fi
 
 exit 0
