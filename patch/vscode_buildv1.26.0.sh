@@ -32,7 +32,7 @@ cd vscode/
 git checkout 1.26.0
 patch -p1 < ../vscode1.26.diff
 
-setenv PYTHON ${PYTHON}
+export PYTHON=${PYTHON}
 yarn add natives@1.1.6
 
 yarn
