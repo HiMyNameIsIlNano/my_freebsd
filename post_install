@@ -34,11 +34,10 @@ __check_if_key_in_file() {
 
     if [ -f ${file} ]
     then
-        if grep -Fxq "${key}" ${file}
-            then
-                return 0
-            else
-                return 1
+        if grep -Fq "${key}" "${file}"; then
+            return 1
+        else
+            return 0
         fi
     fi
 
