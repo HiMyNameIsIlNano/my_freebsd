@@ -160,12 +160,15 @@ then
         echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
     fi
 
-    __check_if_key_in_file %installer /usr/local/etc/sudoers
-    if [ $? -eq 0 ]
+    if [ ${port_system} == "PKG" ]
     then
-        echo '' >> /usr/local/etc/sudoers
-        echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
-        echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+        __check_if_key_in_file %installer /usr/local/etc/sudoers
+        if [ $? -eq 0 ]
+        then
+            echo '' >> /usr/local/etc/sudoers
+            echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
+            echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+        fi
     fi
 
     __check_if_key_in_file %vpnstarter /usr/local/etc/sudoers
@@ -249,9 +252,19 @@ echo "Add members to the 'restarter' group, otherwise it won't be possible for a
 __add_user_to_group restarter
 clear
 
-echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-__add_user_to_group installer
-clear
+if [ ${port_system} == "PKG" ]
+then
+    echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+    __add_user_to_group installer
+    clear
+fi
+
+if [ ${port_system} == "PORT" ]
+then
+	echo "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+    __add_user_to_group wheel
+    clear
+fi
 
 echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
 __add_user_to_group vpnstarter
