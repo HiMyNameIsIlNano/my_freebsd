@@ -44,6 +44,13 @@ __check_requirements() {
         return_code=1
     fi
 
+    __check_if_pkg_installed gconf2
+    if [ $? -eq 0 ]
+    then
+        return_code=1
+    fi
+
+
     return ${return_code}
 }
 # End Functions
@@ -71,4 +78,5 @@ cp ./patch/vscode_buildv1.26.0.sh.diff /tmp/electron-v2.0.1-freebsd-x64/vscode/
 cd /tmp/electron-v2.0.1-freebsd-x64/vscode
 patch < vscode_buildv1.26.0.sh.diff
 sh vscode_buildv1.26.0.sh
+
 exit 0
