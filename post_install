@@ -17,50 +17,6 @@ __wait_for_seconds(){
 	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
-
-__add_group() {
-    local l_group="$@"
-
-    if [ $(getent group ${l_group}) ]; then
-      echo "${l_group} group will not be added as it already exists..."
-    else
-      pw groupadd ${l_group}
-    fi
-}
-
-__check_if_key_in_file() {
-    local key="$1"
-    local file="$2"
-
-    if [ -f ${file} ]
-    then
-        if grep -Fq "${key}" "${file}"; then
-            return 1
-        else
-            return 0
-        fi
-    fi
-
-    return 0
-}
-
-__add_user_to_group(){
-	local group="$@"
-	local user
-	local dummy=Y
-	
-	while
-		printf "Which user would you like to add to group ${group}?: "
-		read user
-	
-		echo "Adding user ${user} to group ${group}..."
-		pw group mod ${group} -m ${user}	
-		
-		printf "Do you want to add another user to group ${group}? [Y/n]: "
-		read dummy
-		[ "${dummy}" == "Y" ]            # test the limit of the loop.
-	do :;  done	
-}
 # End Functions
 
 work_dir=.
@@ -82,37 +38,13 @@ while [ "$1" != "" ]; do
 done
 
 # Variable Declaration
-is_init_ports_enabled=$(__read_property init_ports)
-is_create_users_enabled=$(__read_property create_users)
 port_system=$(__read_property port_system)
-download_kernel=$(__read_property download_kernel)
-timestamp=$(date +%s)
 
-# Groups
-echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."	
-__add_group restarter
-__add_group installer
-__add_group vpnstarter
+# Create Users
+sh ./create_users
 
-# Users
-if [ "${is_create_users_enabled}" == "true" ]
-then
-	__wait_for_seconds 5
-	echo "Initializing users..."
-	adduser
-fi
-
-if [ "${download_kernel}" == "true" ]
-then
-    __wait_for_seconds 5
-	echo "Downloading kernel source..."
-	if [ -d /usr/src ]
-	then
-	    # backup folder
-	    mv /usr/src /usr/src_${timestamp}
-	fi
-	sh ./download_kernel
-fi
+# Download Kernel
+sh ./download_kernel
 
 # Trigger pkg installation if run for the first time
 pkg info
@@ -137,138 +69,11 @@ then
     fi
 fi
 
-# Sudoers
-if [ -f "/usr/local/etc/sudoers" ]
-then
-    echo "Backing-up sudoers"
-	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
+# Configure sudoers file /boot/loader.conf and /etc/rc.conf
+sh ./configure_system
 
-    echo "Configuring sudoers..."
-
-    __check_if_key_in_file '## BEGIN OF MY RULES ##' /usr/local/etc/sudoers
-    if [ $? -eq 0 ]
-    then
-        echo '' >> /usr/local/etc/sudoers
-        echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
-    fi
-
-    __check_if_key_in_file %restarter /usr/local/etc/sudoers
-    if [ $? -eq 0 ]
-    then
-        echo '' >> /usr/local/etc/sudoers
-        echo '## Members of the group restarter can run shutdown and acpiconf without a password.' >> /usr/local/etc/sudoers
-        echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
-    fi
-
-    if [ ${port_system} == "PKG" ]
-    then
-        __check_if_key_in_file %installer /usr/local/etc/sudoers
-        if [ $? -eq 0 ]
-        then
-            echo '' >> /usr/local/etc/sudoers
-            echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
-            echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
-        fi
-    fi
-
-    __check_if_key_in_file %vpnstarter /usr/local/etc/sudoers
-    if [ $? -eq 0 ]
-    then
-        echo '' >> /usr/local/etc/sudoers
-        echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
-        echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
-    fi
-
-    __check_if_key_in_file '## END OF MY RULES ##' /usr/local/etc/sudoers
-    if [ $? -eq 0 ]
-    then
-        echo '' >> /usr/local/etc/sudoers
-        echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
-    fi
-else
-	echo "Nothing to do. File sudoers does not exist"
-fi
-
-echo "Configuring startup daemons and boot options..."
-__wait_for_seconds 5
-
-# Move to the checkout directory
-cd ${work_dir}
-
-# rc.conf
-if [ -f "/etc/rc.conf" ]
-then
-	echo "Backing-up rc.conf"
-	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File rc.conf does not exist"
-fi
-cat ./freebsd/rc.conf.delta >> /etc/rc.conf
-
-# pf.conf
-if [ -f "/etc/pf.conf" ]
-then
-	echo "Backing-up pf.conf"
-	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File pf.conf does not exist"
-fi
-cp ./freebsd/pf.conf /etc/pf.conf
-
-# Localrules
-__check_if_key_in_file [localrules=5] /etc/devfs.rules
-if [ $? -eq 0 ]
-then
-    echo '[localrules=5]' >> /etc/devfs.rules
-    echo "add path 'da*' mode 0660 group operator" >> /etc/devfs.rules
-    echo 'devfs_system_ruleset="localrules"' >> /etc/rc.conf
-    echo 'vfs.usermount=1' >> /etc/sysctl.conf
-fi
-
-# loader.conf
-if [ -f "/boot/loader.conf" ]
-then
-	echo "Backing-up loader.conf"
-	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File loader.conf does not exist"
-fi
-cp ./freebsd/loader.conf /boot/loader.conf
-
-echo "### IMPORTANT NOTE ###"
-echo "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
-__add_user_to_group video
-clear
-
-echo "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
-__add_user_to_group operator
-clear
-
-echo "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
-__add_user_to_group vboxusers
-clear
-
-echo "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
-__add_user_to_group restarter
-clear
-
-if [ ${port_system} == "PKG" ]
-then
-    echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-    __add_user_to_group installer
-    clear
-fi
-
-if [ ${port_system} == "PORT" ]
-then
-	echo "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-    __add_user_to_group wheel
-    clear
-fi
-
-echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
-__add_user_to_group vpnstarter
-clear
+# Configure Groups and Users
+sh ./configure_groups
 
 echo "### Restart computer now... ###"
 __wait_for_input

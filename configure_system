@@ -1,0 +1,147 @@
+#!/bin/sh
+
+# Begin Functions
+__wait_for_seconds(){
+	local seconds="$@"
+	echo "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}
+
+__check_if_key_in_file() {
+    local key="$1"
+    local file="$2"
+
+    if [ -f ${file} ]
+    then
+        if grep -Fq "${key}" "${file}"; then
+            return 1
+        else
+            return 0
+        fi
+    fi
+
+    return 0
+}
+# End Functions
+
+work_dir=.
+config_file=${work_dir}/post_install.config
+
+while [ "$1" != "" ]; do
+    case $1 in
+	    -c | --config )		    shift
+                                config_file=$1
+                                echo ${config_file}
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+# Variable Declaration
+port_system=$(__read_property port_system)
+timestamp=$(date +%s)
+
+# Sudoers
+if [ -f "/usr/local/etc/sudoers" ]
+then
+    echo "Backing-up sudoers"
+	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
+
+    echo "Configuring sudoers..."
+
+    __check_if_key_in_file '## BEGIN OF MY RULES ##' /usr/local/etc/sudoers
+    if [ $? -eq 0 ]
+    then
+        echo '' >> /usr/local/etc/sudoers
+        echo '## BEGIN OF MY RULES ##' >> /usr/local/etc/sudoers
+    fi
+
+    __check_if_key_in_file %restarter /usr/local/etc/sudoers
+    if [ $? -eq 0 ]
+    then
+        echo '' >> /usr/local/etc/sudoers
+        echo '## Members of the group restarter can run shutdown and acpiconf without a password.' >> /usr/local/etc/sudoers
+        echo '%restarter ALL=(ALL) NOPASSWD: /sbin/shutdown,/usr/sbin/acpiconf' >> /usr/local/etc/sudoers
+    fi
+
+    if [ ${port_system} == "PKG" ]
+    then
+        __check_if_key_in_file %installer /usr/local/etc/sudoers
+        if [ $? -eq 0 ]
+        then
+            echo '' >> /usr/local/etc/sudoers
+            echo '## Members of the Group installer can run pkg' >> /usr/local/etc/sudoers
+            echo '%installer ALL=(ALL) PASSWD: /usr/sbin/pkg' >> /usr/local/etc/sudoers
+        fi
+    fi
+
+    __check_if_key_in_file %vpnstarter /usr/local/etc/sudoers
+    if [ $? -eq 0 ]
+    then
+        echo '' >> /usr/local/etc/sudoers
+        echo '## Members of the Group vpnstarter can run openvpn' >> /usr/local/etc/sudoers
+        echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >> /usr/local/etc/sudoers
+    fi
+
+    __check_if_key_in_file '## END OF MY RULES ##' /usr/local/etc/sudoers
+    if [ $? -eq 0 ]
+    then
+        echo '' >> /usr/local/etc/sudoers
+        echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
+    fi
+else
+	echo "Nothing to do. File sudoers does not exist"
+fi
+
+echo "Configuring startup daemons and boot options..."
+__wait_for_seconds 5
+
+# Move to the checkout directory
+cd ${work_dir}
+
+# rc.conf
+if [ -f "/etc/rc.conf" ]
+then
+	echo "Backing-up rc.conf"
+	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File rc.conf does not exist"
+fi
+cat ./freebsd/rc.conf.delta >> /etc/rc.conf
+
+# pf.conf
+if [ -f "/etc/pf.conf" ]
+then
+	echo "Backing-up pf.conf"
+	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File pf.conf does not exist"
+fi
+cp ./freebsd/pf.conf /etc/pf.conf
+
+# Localrules
+__check_if_key_in_file [localrules=5] /etc/devfs.rules
+if [ $? -eq 0 ]
+then
+    echo '[localrules=5]' >> /etc/devfs.rules
+    echo "add path 'da*' mode 0660 group operator" >> /etc/devfs.rules
+    echo 'devfs_system_ruleset="localrules"' >> /etc/rc.conf
+    echo 'vfs.usermount=1' >> /etc/sysctl.conf
+fi
+
+# loader.conf
+if [ -f "/boot/loader.conf" ]
+then
+	echo "Backing-up loader.conf"
+	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
+else
+	echo "Nothing to backup. File loader.conf does not exist"
+fi
+cp ./freebsd/loader.conf /boot/loader.conf
+
+exit 0
