@@ -41,7 +41,8 @@ __install_ports(){
 # End Functions
 
 __check_requirements
-curl https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v1.26.0/VSCode-freebsd-x64-1.26.0.tar.xz -o /tmp/VSCode-freebsd-x64-1.26.0.tar.xz
+wget https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v1.26.0/VSCode-freebsd-x64-1.26.0.tar.xz
+mv ./VSCode-freebsd-x64-1.26.0.tar.xz /tmp/
 mkdir -p /tmp/VSCode-freebsd-x64-1.26.0
-tar -xf /tmp/VSCode-freebsd-x64-1.26.0.tar.xz --strip=1 /tmp/VSCode-freebsd-x64-1.26.0
+tar -xf /tmp/VSCode-freebsd-x64-1.26.0.tar.xz --strip=1 -C /tmp/VSCode-freebsd-x64-1.26.0
 sh /tmp/VSCode-freebsd-x64-1.26.0/code-oss
