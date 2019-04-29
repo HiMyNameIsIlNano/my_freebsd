@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Begin Functions
+__check_if_port_installed() {
+    local port="$1"
+
+    if ! pkg info ${port} > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+__check_requirements() {
+    local ports_to_install=speech-dispatcher,snappy,libxslt
+    __install_ports ${ports_to_install}
+}
+
+__install_ports(){
+	local ports_to_install="$@"
+
+	# The list of ports must be comma separated with no empty space
+	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
+	do
+	    __check_if_port_installed ${port}
+	    if [ $? -eq 0 ]
+	    then
+	    	local port_dir=$(__get_port_dir $port)
+	    	cd ${port_dir} && make install clean BATCH=yes
+        else
+            echo "${port} already installed on the system"
+	    fi
+	done
+}
+# End Functions
+
+__check_requirements
+curl https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v1.26.0/VSCode-freebsd-x64-1.26.0.tar.xz -o /tmp/VSCode-freebsd-x64-1.26.0.tar.xz
+mkdir -p /tmp/VSCode-freebsd-x64-1.26.0
+tar -xf /tmp/VSCode-freebsd-x64-1.26.0.tar.xz --strip=1 /tmp/VSCode-freebsd-x64-1.26.0
+sh /tmp/VSCode-freebsd-x64-1.26.0/code-oss
