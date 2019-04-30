@@ -83,6 +83,7 @@ done
 port_system=$(__read_property port_system)
 dependencies_to_install=speech-dispatcher,snappy,libxslt
 version=1.26.0
+artifact_url=https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v${version}/VSCode-freebsd-x64-${version}.tar.xz
 
 if [ ${port_system} == "PKG" ]
 then
@@ -94,7 +95,14 @@ then
     __install_ports ${dependencies_to_install}
 fi
 
-wget https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v1.26.0/VSCode-freebsd-x64-${version}.tar.xz -O /tmp/VSCode-freebsd-x64-${version}.tar.xz
+wget  ${artifact_url} -O /tmp/VSCode-freebsd-x64-${version}.tar.xz
 mkdir -p /usr/local/share/VSCode-freebsd-x64-${version}
 tar -xf /tmp/VSCode-freebsd-x64-${version}.tar.xz --strip=1 -C /usr/local/share/VSCode-freebsd-x64-${version}
+
+if [ -f /usr/local/bin/vscode-${version} ]
+then
+    rm /usr/local/bin/vscode-${version}
+fi
 ln -s /usr/local/share/VSCode-freebsd-x64-${version}/code-oss /usr/local/bin/vscode-${version}
+
+exit 0
