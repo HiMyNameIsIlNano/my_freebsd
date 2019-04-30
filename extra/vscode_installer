@@ -61,7 +61,7 @@ __install_pkgs(){
 }
 # End Functions
 
-work_dir=.
+work_dir=..
 config_file=${work_dir}/post_install.config
 
 while [ "$1" != "" ]; do
