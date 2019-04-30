@@ -1,16 +1,26 @@
 #!/bin/sh
 
 # Begin Functions
+__wait_for_seconds(){
+	local seconds="$@"
+	echo "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}
+
 __read_property(){
 	input="$@"
 	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
 	echo ${temp##*|}
 }
 
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
+__add_group() {
+    local l_group="$@"
+
+    if [ $(getent group ${l_group}) ]; then
+      echo "${l_group} group will not be added as it already exists..."
+    else
+      pw groupadd ${l_group}
+    fi
 }
 # End Functions
 
@@ -32,20 +42,20 @@ while [ "$1" != "" ]; do
     shift
 done
 
-download_kernel=$(__read_property download_kernel)
-timestamp=$(date +%s)
+is_create_users_enabled=$(__read_property create_users)
 
-if [ "${download_kernel}" == "true" ]
+# Groups
+echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."
+__add_group restarter
+__add_group installer
+__add_group vpnstarter
+
+# Users
+if [ "${is_create_users_enabled}" == "true" ]
 then
-    __wait_for_seconds 5
-	echo "Downloading kernel source..."
-	if [ -d /usr/src ]
-	then
-	    # backup folder
-	    mv /usr/src /usr/src_${timestamp}
-	fi
-
-	fetch ftp://ftp.freebsd.org/pub/`uname -s`/releases/`uname -m`/`uname -r`/src.txz
-    tar -C / -xvzf src.txz
+	__wait_for_seconds 5
+	echo "Initializing users..."
+	adduser
 fi
 
+exit 0

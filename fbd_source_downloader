@@ -1,4 +1,0 @@
-#!/bin/sh
-
-fetch ftp://ftp.freebsd.org/pub/`uname -s`/releases/`uname -m`/`uname -r`/src.txz
-tar -C / -xvzf src.txz
