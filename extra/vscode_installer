@@ -87,7 +87,7 @@ done
 
 # Variable Declaration
 port_system=$(__read_property port_system)
-dependencies_to_install=speech-dispatcher,snappy,libxslt
+dependencies_to_install=speech-dispatcher,snappy,libxslt,wget
 version=1.26.0
 artifact_url=https://github.com/prash-wghats/Electron-VSCode-Atom-For-FreeBSD/releases/download/vscode_v${version}/VSCode-freebsd-x64-${version}.tar.xz
 
