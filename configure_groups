@@ -1,6 +1,12 @@
 #!/bin/sh
 
 # Begin Functions
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
 __add_user_to_group(){
 	local group="$@"
 	local user
