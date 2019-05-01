@@ -1,6 +1,12 @@
 #!/bin/sh
 
 # Begin Functions
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
 __check_if_pkg_installed() {
     local pkg="$1"
 
