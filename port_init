@@ -254,6 +254,8 @@ __wait_for_seconds 5
 echo "Installing desktop ports..."
 __install_ports_from_ramdisk ${desktop_ports}
 
+# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
+
 echo "Installing office ports..."
 __wait_for_seconds 5
 __install_ports_from_ramdisk ${office_ports}
