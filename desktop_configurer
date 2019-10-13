@@ -75,6 +75,25 @@ mkdir -p ${HOME}/.icons
 mkdir -p ${HOME}/.config/tint2
 mkdir -p ${HOME}/.config/geany
 
+# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
+# PCmanFM: Add open terminal feature
+mkdir - p ~/.local/share/file-manager/actions/
+touch ~/.local/share/file-manager/actions/terminal.desktop
+cat >> ~/.local/share/file-manager/actions/terminal.desktop <<'EOF'
+[Desktop Entry]
+Type=Action
+Tooltip=Open Terminal
+Name=Open Terminal
+Profiles=profile-one;
+Icon=utilities-terminal
+
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=xterm -e "cd %f && xterm -hold &"
+Name=Default profile
+EOF
+
 echo "Start configuring Openbox Desktop Look & Feel..."
 echo "Copying .xinitrc under ${HOME}"
 wait_for_seconds 5
@@ -188,8 +207,6 @@ else
 	echo "Nothing to backup. File .gtk2rc does not exist"
 fi
 cp ./openbox/gtkrc-2.0 ${HOME}/.gtkrc-2.0
-cp ./openbox/my-siva-flat-dark-borderless.tar.gz ${HOME}/.themes/my-siva-flat-dark-borderless.tar.gz
-tar xzf ${HOME}/.themes/my-siva-flat-dark-borderless.tar.gz -C ${HOME}/.themes
 
 echo "Copying settings.ini Configuration Files under ${HOME}/.config/gtk-3.0..."
 wait_for_seconds 5
@@ -206,8 +223,8 @@ cp ./openbox/settings.ini ${HOME}/.config/gtk-3.0/settings.ini
 echo "Copying Icon Pack Files under ${HOME}/.icons..."
 wait_for_seconds 5
 # Icon Pack
-cp ./openbox/ultra-flat-icons-orange.tar.gz ${HOME}/.icons/ultra-flat-icons-orange.tar.gz
-tar xzf ${HOME}/.icons/ultra-flat-icons-orange.tar.gz -C ${HOME}/.icons/
+fetch --no-verify-hostname --no-verify-peer -o /tmp/icons.tar.gz https://api.github.com/repos/thiagolucio/Super-Ultra-Flat-Numix-Remix/tarball/master
+tar xvzf /tmp/icons.tar.gz --strip=1 -C ${HOME}/.icons/
 
 # Geany Themes
 if [ -d "${HOME}/.config/geany" ]
@@ -284,7 +301,7 @@ if [ "${is_user_allowed_to_update}" == "true" ]; then
 	cd
 	rm -rf /tmp/update_script_${timestamp}
 else
-	echo "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not memeber of the group installer..."
+	echo "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not member of the group installer..."
 fi	
 		
 exit 0

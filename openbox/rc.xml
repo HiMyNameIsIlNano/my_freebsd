@@ -46,8 +46,7 @@
 </placement>
 
 <theme>
-  <name>Siva Flat Dark Borderless</name>
-  <!--<name>Flattastic-Orange-Light</name>-->
+  <name>Adapta</name>
   <titleLayout>LSIMC</titleLayout>
   <!--
       available characters are NDSLIMC, each can occur at most once.

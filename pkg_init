@@ -126,8 +126,6 @@ echo "Installing base packages..."
 __wait_for_seconds 5
 __install_pkgs ${base_pkgs}
 
-# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
-
 echo "Installing browser ports..."
 __wait_for_seconds 5
 __install_pkgs ${browser_ports}
