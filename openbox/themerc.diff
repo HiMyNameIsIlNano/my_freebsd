@@ -1,0 +1,42 @@
+--- themerc.orig	2019-10-23 15:38:43.667828000 +0200
++++ themerc	2019-10-24 09:35:22.828759000 +0200
+@@ -117,22 +117,27 @@
+ 
+ 
+ # Menu
+-menu.border.color: #E5E9EC
++menu.border.width: 5
++menu.overlap.x:    -10
++menu.overlap.y:    -10
+ 
+-menu.title.bg: flat solid
+-menu.title.bg.color: #FDFDFE
+-menu.title.text.color: #888F92
++menu.border.color:              #222D32
++menu.separator.color:           #222D32
+ 
+-menu.items.bg: flat solid
+-menu.items.bg.color: #FDFDFE
+-menu.items.text.color: #414C51
+-menu.items.disabled.text.color: #C1C4C6
++menu.title.bg:                  flat solid
++menu.title.bg.color:            #222D32
++menu.title.text.color:          #4DB6AC
++menu.title.text.justify:        Center
+ 
+-menu.items.active.bg: flat solid
+-menu.items.active.bg.color: #E7E9EA
+-menu.items.active.text.color: #263238
++menu.items.bg:                  flat solid
++menu.items.bg.color:            #222D32
+ 
+-menu.separator.color: #E9EAEC
++menu.items.text.color:          #8a8a8a
++menu.items.disabled.text.color: #555F64
++
++menu.items.active.bg:           flat solid
++menu.items.active.bg.color:     #222D32
++menu.items.active.text.color:   #4DB6AC
+ 
+ 
+ # OSD

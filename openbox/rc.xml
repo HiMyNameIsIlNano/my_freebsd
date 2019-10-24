@@ -46,7 +46,7 @@
 </placement>
 
 <theme>
-  <name>Adapta</name>
+  <name>Myfreebsd-Adapta</name>
   <titleLayout>LSIMC</titleLayout>
   <!--
       available characters are NDSLIMC, each can occur at most once.
@@ -61,7 +61,7 @@
   <keepBorder>yes</keepBorder>
   <animateIconify>yes</animateIconify>
   <font place="ActiveWindow">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>8</size>
     <!-- font size in points -->
     <weight>bold</weight>
@@ -70,7 +70,7 @@
     <!-- 'italic' or 'normal' -->
   </font>
   <font place="InactiveWindow">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>8</size>
     <!-- font size in points -->
     <weight>bold</weight>
@@ -79,7 +79,7 @@
     <!-- 'italic' or 'normal' -->
   </font>
   <font place="MenuHeader">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>9</size>
     <!-- font size in points -->
     <weight>normal</weight>
@@ -88,7 +88,7 @@
     <!-- 'italic' or 'normal' -->
   </font>
   <font place="MenuItem">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>8</size>
     <!-- font size in points -->
     <weight>normal</weight>
@@ -97,7 +97,7 @@
     <!-- 'italic' or 'normal' -->
   </font>
   <font place="ActiveOnScreenDisplay">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>9</size>
     <!-- font size in points -->
     <weight>bold</weight>
@@ -106,7 +106,7 @@
     <!-- 'italic' or 'normal' -->
   </font>
   <font place="InactiveOnScreenDisplay">
-    <name>sans</name>
+    <name>Roboto</name>
     <size>9</size>
     <!-- font size in points -->
     <weight>bold</weight>
@@ -214,16 +214,16 @@
   <keybind key="S-A-Down">
     <action name="SendToDesktop"><to>down</to><wrap>no</wrap></action>
   </keybind>
-  <keybind key="W-F1">
+  <keybind key="W-S-F1">
     <action name="GoToDesktop"><to>1</to></action>
   </keybind>
-  <keybind key="W-F2">
+  <keybind key="W-S-F2">
     <action name="GoToDesktop"><to>2</to></action>
   </keybind>
-  <keybind key="W-F3">
+  <keybind key="W-S-F3">
     <action name="GoToDesktop"><to>3</to></action>
   </keybind>
-  <keybind key="W-F4">
+  <keybind key="W-S-F4">
     <action name="GoToDesktop"><to>4</to></action>
   </keybind>
   <keybind key="W-d">
@@ -231,7 +231,7 @@
   </keybind>
 
   <!-- Keybindings for windows -->
-  <keybind key="A-F4">
+  <keybind key="C-w">
     <action name="Close"/>
   </keybind>
   <keybind key="A-Escape">
@@ -244,7 +244,7 @@
   </keybind>
 
   <!-- Keybindings for window switching -->
-  <keybind key="A-Tab">
+  <keybind key="C-Tab">
     <action name="NextWindow">
       <finalactions>
         <action name="Focus"/>
@@ -253,7 +253,7 @@
       </finalactions>
     </action>
   </keybind>
-  <keybind key="A-S-Tab">
+  <keybind key="C-S-Tab">
     <action name="PreviousWindow">
       <finalactions>
         <action name="Focus"/>
@@ -296,28 +296,8 @@
   </keybind>
   
   <!-- Keybindings for running applications -->
-  <!-- Firefox: Default Profile 
-  <keybind key="W-b">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>Firefox</name>
-      </startupnotify>
-      <command>firefox -P "default"</command>
-    </action>
-  </keybind> -->
-  <!-- Firefox: Tor Profile 
-  <keybind key="W-t">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>Firefox</name>
-      </startupnotify>
-      <command>firefox -P "tor-bundle"</command>
-    </action>
-  </keybind> -->
   <!-- Geany -->
-  <keybind key="W-e">
+  <keybind key="W-S-e">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -327,7 +307,7 @@
     </action>
   </keybind>
   <!-- File System Home -->
-  <keybind key="W-f">
+  <keybind key="W-S-f">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -337,7 +317,7 @@
     </action>
   </keybind>
   <!-- Find files -->
-  <keybind key="W-s">
+  <keybind key="W-S-s">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -346,18 +326,8 @@
       <command>fsearch</command>
     </action>
   </keybind>
-  <!-- Firefox: Default Profile 
-  <keybind key="W-n">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>Firefox</name>
-      </startupnotify>
-      <command>firefox -P "default" http://web.airdroid.com/</command>
-    </action>
-  </keybind> -->
   <!-- Chromium -->
-  <keybind key="W-w">
+  <keybind key="W-S-w">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -367,7 +337,7 @@
     </action>
   </keybind> 
   <!-- Lock Screen -->
-  <keybind key="W-l">
+  <keybind key="W-S-0">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -396,34 +366,14 @@
       <command>sh -c 'sudo acpiconf -s 3; xlock -mode blank'</command>
     </action>
   </keybind>
-  <!-- VPN: Connection to DE -->
-  <keybind key="W-1">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>vpnbook</name>
-      </startupnotify>
-      <command>.local/scripts/vpnbook -s DE4</command>
-    </action>
-  </keybind>
-  <!-- Idea: exceute Idea -->
-  <keybind key="W-d">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>Intellij Idea</name>
-      </startupnotify>
-      <command>idea</command>
-    </action>
-  </keybind>
-  <!-- XTerm: execute Xterm -->
+  <!-- Urxvt: execute Urxvt -->
   <keybind key="W-t">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
-        <name>Xterm</name>
+        <name>Urxvt</name>
       </startupnotify>
-      <command>xterm</command>
+      <command>urxvt -title Terminal</command>
     </action>
   </keybind>
 </keyboard>
@@ -857,26 +807,5 @@
 
   # end of the example
 -->
-	<application name="urxvt">
-		<decor>no</decor>
-		<shade>no</shade>
-		<position force="no">
-		  <x>0</x>
-		  <y>22</y>
-		  <monitor>all</monitor>
-		</position>
-		<size>
-		  <width>100%</width>
-		  <height>50%</height>
-		</size>
-		<focus>yes</focus>
-		<desktop>all</desktop>
-		<layer>below</layer>
-		<iconic>no</iconic>
-		<skip_pager>no</skip_pager>
-		<skip_taskbar>yes</skip_taskbar>
-		<fullscreen>no</fullscreen>
-		<maximized>no</maximized>
-	</application>
 </applications>
 </openbox_config>

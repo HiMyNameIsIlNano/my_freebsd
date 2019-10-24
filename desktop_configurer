@@ -82,7 +82,7 @@ touch ~/.local/share/file-manager/actions/terminal.desktop
 cat >> ~/.local/share/file-manager/actions/terminal.desktop <<'EOF'
 [Desktop Entry]
 Type=Action
-Tooltip=Open Terminal
+Tooltip=Open Terminal Here
 Name=Open Terminal
 Profiles=profile-one;
 Icon=utilities-terminal
@@ -90,9 +90,43 @@ Icon=utilities-terminal
 
 [X-Action-Profile profile-one]
 MimeTypes=inode/directory;
-Exec=xterm -e "cd %f && xterm -hold &"
+Exec=urxvt -title Terminal -cd %f
 Name=Default profile
 EOF
+
+cat >> ${HOME}/.local/scripts/extract <<'EOF'
+#!/bin/sh
+
+if [ $# -lt 1 ];then
+  echo "Usage: `basename $0` FILES"
+  exit 1
+fi
+
+# I found the following function at https://unix.stackexchange.com/a/168/37944
+# which I improved it a little. Many thanks to sydo for this idea.
+__extract(){
+    for arg in $@ ; do
+        if [ -f $arg ] ; then
+            case $arg in
+                *.tar.bz2)  tar xjf $arg      ;;
+                *.tar.gz)   tar xzf $arg      ;;
+                *.bz2)      bunzip2 $arg      ;;
+                *.gz)       gunzip $arg       ;;
+                *.tar)      tar xf $arg       ;;
+                *.tbz2)     tar xjf $arg      ;;
+                *.tgz)      tar xzf $arg      ;;
+                *.zip)      unzip $arg        ;;
+                *)          echo "'$arg' cannot be extracted via extract()" ;;
+            esac
+        else
+            echo "'$arg' is not a valid file"
+        fi
+    done
+}
+
+extract $@
+EOF
+chmod +x ${HOME}/.local/scripts/extract
 
 echo "Start configuring Openbox Desktop Look & Feel..."
 echo "Copying .xinitrc under ${HOME}"
@@ -143,6 +177,18 @@ else
 fi
 cp ./openbox/autostart ${HOME}/.config/openbox/autostart.sh
 chmod 744 ${HOME}/.config/openbox/autostart.sh
+
+echo "Copying themerc under ${HOME}/.themes/Myfreebsd-Adapta/openbox-3"
+mkdir -p ${HOME}/.themes/Myfreebsd-Adapta/openbox-3
+wait_for_seconds 5
+if [ -f "${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc" ]
+then
+	echo "Backing-up themerc"
+	mv ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc.${timestamp}.bak
+else
+	echo "Nothing to backup. File themerc does not exist"
+fi
+cd /usr/local/share/themes/Adapta/openbox-3/themerc && patch < ./openbox/themerc,diff -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
 
 echo "Copying rc.xml under ${HOME}/.config/openbox"
 wait_for_seconds 5
