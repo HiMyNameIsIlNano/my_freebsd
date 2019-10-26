@@ -94,6 +94,12 @@ Exec=urxvt -title Terminal -cd %f
 Name=Default profile
 EOF
 
+if [ -f "${HOME}/.local/scripts/extract" ]
+then
+  echo "Backing-up extract script"
+	mv ${HOME}/.local/scripts/extract ${HOME}/.local/scripts/extract.${timestamp}.bak
+fi
+
 cat >> ${HOME}/.local/scripts/extract <<'EOF'
 #!/bin/sh
 
@@ -188,7 +194,7 @@ then
 else
 	echo "Nothing to backup. File themerc does not exist"
 fi
-cd /usr/local/share/themes/Adapta/openbox-3/themerc && patch < ./openbox/themerc,diff -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
+patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
 
 echo "Copying rc.xml under ${HOME}/.config/openbox"
 wait_for_seconds 5
