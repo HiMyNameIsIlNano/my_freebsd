@@ -7,23 +7,23 @@
 #---------------------------------------------
 rounded = 0
 border_width = 1
-background_color = #1F1E1E 100
-border_color = #555555 20
+background_color = #222D31 100
+border_color = #1c2529 20
 
 rounded = 0
 border_width = 2
-background_color = #1F1E1E 60
-border_color = #555555 0
+background_color = #222D31 60
+border_color = #1c2529 0
 
 rounded = 0
 border_width = 2
-background_color = #1F1E1E 35
-border_color = #555555 0
+background_color = #222D31 35
+border_color = #1c2529 0
 
 rounded = 0
 border_width = 2
-background_color = #1F1E1E 60
-border_color = #555555 0
+background_color = #222D31 60
+border_color = #1c2529 0
 
 #---------------------------------------------
 # PANEL
@@ -56,7 +56,7 @@ task_text = 1
 task_maximum_size = 150 25
 task_centered = 1
 task_padding = 0 0
-task_font = Sans 8
+task_font = Roboto 8
 task_font_color = #ffffff 80
 task_background_id = 3
 task_icon_asb = 100 0 0
@@ -66,11 +66,11 @@ task_icon_asb = 100 0 0
 #task_urgent_icon_asb = 100 0 0
 # example:
 task_active_background_id = 2
-task_active_font_color = #af3838 100
+task_active_font_color = #4DB6AC 100
 task_active_icon_asb = 100 0 0
 urgent_nb_of_blink = 8
 task_urgent_background_id = 3
-task_urgent_font_color = #af3838 85
+task_urgent_font_color = #4DB6AC 85
 task_urgent_icon_asb = 100 0 0
 
 #---------------------------------------------
@@ -87,10 +87,10 @@ systray_icon_asb = 100 0 0
 # CLOCK
 #---------------------------------------------
 time1_format = %A %d %B %H:%M
-time1_font = Sans 8
+time1_font = Roboto 8
 # time2_format = %A %d %B
 # time2_font = Sans 7
-clock_font_color = #af3838 100
+clock_font_color = #ffffff 100
 clock_padding = 5 1
 clock_background_id = 0
 # clock_tooltip = %A %d %B
@@ -103,9 +103,9 @@ battery = 0
 battery_hide = 0
 battery_low_status = 10
 battery_low_cmd = notify-send "battery low"
-bat1_font = sans 8
-bat2_font = sans 6
-battery_font_color = #ffffff 76
+bat1_font = Roboto 8
+bat2_font = Roboto 6
+battery_font_color = #27a3d9 76
 battery_padding = 1 0
 battery_background_id = 0
 
