@@ -1,23 +1,36 @@
 #!/bin/sh
 
-read_property(){
+__read_property(){
 	input="$@"
 	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
 	echo ${temp##*|}
 }
 
-wait_for_input(){
+__wait_for_input(){
 	printf 'press [ENTER] to continue'
 	read dummy
 }
 
-wait_for_seconds(){
+__backup_file() {
+  local file="$@"
+  __wait_for_seconds 5
+
+  if [ -f "${file}" ]
+  then
+    echo "Backing-up ${file}"
+    mv ${file} ${file}.${timestamp}.bak
+  else
+    echo "Nothing to backup. File ${file} does not exist"
+  fi
+}
+
+__wait_for_seconds(){
 	local seconds="$@"
 	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
 
-is_user_allowed_to_update(){
+__is_user_allowed_to_update(){
 	group=$(id -G -n $USER | grep -o "installer")
 	if [ "${group}" == "installer" ]; then
 		echo true
@@ -26,7 +39,7 @@ is_user_allowed_to_update(){
 	fi
 }
 
-is_installed(){
+__is_installed(){
 	echo "Checking if $1 is installed..."
 	if ! [ -x "$(command -v $1)" ]; then
 	  echo "Error: $1 is not installed." >&2
@@ -34,15 +47,215 @@ is_installed(){
 	fi
 }
 
-check_docker_requirements(){
+__check_docker_requirements(){
 	echo "Checking docker Requirements..."
 	# Check if docker and vagrant are installed
-	is_installed vagrant
-	is_installed docker-machine
+	__is_installed vagrant
+	__is_installed docker-machine
+}
+
+__xsession_setup(){
+  echo "Copying .xinitrc under ${HOME}"
+  __backup_file ${HOME}/.xinitrc
+  echo 'exec openbox-session' >> ${HOME}/.xinitrc
+
+  echo "Copying .Xdefaults under ${HOME}"
+  __backup_file ${HOME}/.Xdefaults
+  cp ./dotfiles/Xdefaults ${HOME}/.Xdefaults
+}
+
+__shell_setup(){
+  echo "Copying .tcshrc under ${HOME}"
+  __backup_file ${HOME}/.tcshrc
+  cp ./dotfiles/tcshrc ${HOME}/.tcshrc
+}
+
+__shell_prompt_setup(){
+  echo "Copying powershell config.json under ${HOME}/.config/powerline-shell"
+  mkdir -p ${HOME}/.config//powerline-shell
+    __backup_file ${HOME}/.config/powerline-shell/config.json
+  cp ./openbox/config.json ${HOME}/.config/powerline-shell/config.json
+}
+
+__task_bar_setup(){
+  echo "Copying tint2rc under ${HOME}/.config/tint2"
+  mkdir -p ${HOME}/.config/tint2
+  __backup_file ${HOME}/.config/tint2
+  cp ./openbox/tint2rc ${HOME}/.config/tint2/tint2rc
+}
+
+__conky_setup(){
+  echo "Copying Conky Configuration Files under ${HOME}..."
+  __backup_file ${HOME}/.conkyrc
+  cp ./dotfiles/conkyrc ${HOME}/.conkyrc
+}
+
+__download_icons_theme(){
+  echo "Copying Icon Pack Files under ${HOME}/.icons..."
+  mkdir -p ${HOME}/.icons
+  __wait_for_seconds 5
+  # Icon Pack
+  fetch --no-verify-hostname --no-verify-peer -o /tmp/icons.tar.gz https://api.github.com/repos/thiagolucio/Super-Ultra-Flat-Numix-Remix/tarball/master
+  tar xvzf /tmp/icons.tar.gz --strip=1 -C ${HOME}/.icons/
+}
+
+__gtk_theme_setup(){
+  echo "Copying gtk2/gtk3 Configuration Files under ${HOME}..."
+  __backup_file ${HOME}/.gtkrc-2.0
+  cp ./dotfiles/gtkrc-2.0 ${HOME}/.gtkrc-2.0
+
+  echo "Copying settings.ini Configuration Files under ${HOME}/.config/gtk-3.0..."
+  mkdir -p ${HOME}/.config/gtk-3.0
+  __backup_file ${HOME}/.config/gtk-3.0/settings.ini
+  cp ./dotfiles/settings.ini ${HOME}/.config/gtk-3.0/settings.ini
+}
+
+__openbox_setup(){
+  echo "Copying autostart.sh under ${HOME}/.config/openbox"
+  __backup_file ${HOME}/.config/openbox/autostart.sh
+  cp ./openbox/autostart ${HOME}/.config/openbox/autostart.sh
+  chmod 744 ${HOME}/.config/openbox/autostart.sh
+
+  mkdir -p ${HOME}/.themes/Myfreebsd-Adapta/openbox-3
+  echo "Copying themerc under ${HOME}/.themes/Myfreebsd-Adapta/openbox-3"
+  __backup_file ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
+  patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
+
+  echo "Copying rc.xml under ${HOME}/.config/openbox"
+  __backup_file ${HOME}/.config/openbox/rc.xml
+  cp ./openbox/rc.xml ${HOME}/.config/openbox/rc.xml
+
+  echo "Copying menu.xml under ${HOME}/.config/openbox"
+  __backup_file ${HOME}/.config/openbox/menu.xml
+  cp ./openbox/menu.xml ${HOME}/.config/openbox/menu.xml
+
+  echo "Copying Openbox Desktop Wallpapers under ${HOME}/.config/openbox/wallpapers..."
+  mkdir -p ${HOME}/.config/openbox/wallpapers
+  __wait_for_seconds 5
+  cp ./wallpapers/*-background.jpg ${HOME}/.config/openbox/wallpapers/
+}
+
+__geany_setup(){
+  mkdir -p ${HOME}/.config/geany
+
+  echo "Installing geany themes..."
+  __wait_for_seconds 5
+
+  fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
+  mkdir /tmp/geany_themes_${timestamp}
+  tar xvzf /tmp/geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
+
+  mkdir -p ${HOME}/.config/geany/colorschemes/
+  cp -r /tmp/geany_themes_${timestamp}/colorschemes/ ${HOME}/.config/geany/colorschemes/
+  rm -rf /tmp/geany_themes_${timestamp}
+
+  mkdir -p ${HOME}/.config/geany/tags/
+  curl ${geany_tag_base_url}/${geany_java_tag_version} -o ${HOME}/.config/geany/tags/${geany_java_tag_version}
+}
+
+__docker_setup(){
+  if [ "${is_docker_enabled}" == "false" ]
+  then
+    return
+  fi
+
+  __check_docker_requirements
+  mkdir -p ${HOME}/.local/scripts
+
+  echo "Installing docker configuration..."
+  __wait_for_seconds 5
+  mkdir -p ${HOME}/Development/Vagrant/dockervm
+  cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
+
+  echo "Installing docker shortcuts..."
+  __wait_for_seconds 5
+  mkdir -p ${HOME}/.local/scripts
+  cp ./openbox/docker_up ${HOME}/.local/scripts/docker_up
+  cp ./openbox/docker_down ${HOME}/.local/scripts/docker_down
+}
+
+__setup_user_update_script(){
+  if [ "${user_can_update}" == "true" ]; then
+    echo "Installing Update Scripts under ${HOME}/.local/scripts..."
+    __wait_for_seconds 5
+
+    fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
+    mkdir /tmp/update_script_${timestamp}
+    tar xvzf /tmp/update_script.tar.gz --strip=1 -C /tmp/update_script_${timestamp}
+
+    cd /tmp/update_script_${timestamp}
+    sh install
+    echo "Cleaning Temporary Files..."
+    cd
+    rm -rf /tmp/update_script_${timestamp}
+  else
+    echo "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not member of the group installer..."
+  fi
+}
+
+# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
+__pcmanfm_setup(){
+  # PCmanFM: Add open terminal feature
+  mkdir - p ~/.local/share/file-manager/actions/
+  touch ~/.local/share/file-manager/actions/terminal.desktop
+  cat >> ~/.local/share/file-manager/actions/terminal.desktop <<'EOF'
+  [Desktop Entry]
+  Type=Action
+  Tooltip=Open Terminal Here
+  Name=Open Terminal
+  Profiles=profile-one;
+  Icon=utilities-terminal
+
+
+  [X-Action-Profile profile-one]
+  MimeTypes=inode/directory;
+  Exec=urxvt -title Terminal -cd %f
+  Name=Default profile
+  EOF
+
+  if [ -f "${HOME}/.local/scripts/extract" ]
+  then
+    echo "Backing-up extract script"
+    mv ${HOME}/.local/scripts/extract ${HOME}/.local/scripts/extract.${timestamp}.bak
+  fi
+
+  cat >> ${HOME}/.local/scripts/extract <<'EOF'
+  #!/bin/sh
+
+  if [ $# -lt 1 ];then
+    echo "Usage: `basename $0` FILES"
+    exit 1
+  fi
+
+  # I found the following function at https://unix.stackexchange.com/a/168/37944
+  # which I improved it a little. Many thanks to sydo for this idea.
+  __extract(){
+      for arg in $@ ; do
+          if [ -f $arg ] ; then
+              case $arg in
+                  *.tar.bz2)  tar xjf $arg      ;;
+                  *.tar.gz)   tar xzf $arg      ;;
+                  *.bz2)      bunzip2 $arg      ;;
+                  *.gz)       gunzip $arg       ;;
+                  *.tar)      tar xf $arg       ;;
+                  *.tbz2)     tar xjf $arg      ;;
+                  *.tgz)      tar xzf $arg      ;;
+                  *.zip)      unzip $arg        ;;
+                  *)          echo "'$arg' cannot be extracted via extract()" ;;
+              esac
+          else
+              echo "'$arg' is not a valid file"
+          fi
+      done
+  }
+
+  extract $@
+  EOF
+  chmod +x ${HOME}/.local/scripts/extract
 }
 
 work_dir=.
-config_file=${work_dir}/post_install.config
+config_file=${work_dir}/freebsd_configurer.config
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -60,315 +273,37 @@ while [ "$1" != "" ]; do
 done
 
 # Variable Declaration
-is_user_allowed_to_update=$(is_user_allowed_to_update)
-is_docker_enabled=$(read_property enable_docker)
-is_setup_vpn_enabled=$(read_property setup_vpn)
+user_can_update=$(__is_user_allowed_to_update)
+is_docker_enabled=$(__read_property enable_docker)
+is_setup_vpn_enabled=$(__read_property setup_vpn)
 geany_tag_base_url=http://download.geany.org/contrib/tags
 geany_java_tag_version=openjdk8-8u66-b01.java.tags
 timestamp=$(date +%s)
 
-mkdir -p ${HOME}/.local/scripts
-mkdir -p ${HOME}/.config/openbox/wallpapers
-mkdir -p ${HOME}/.config/gtk-3.0
-mkdir -p ${HOME}/.themes
-mkdir -p ${HOME}/.icons
-mkdir -p ${HOME}/.config/tint2
-mkdir -p ${HOME}/.config/geany
-mkdir -p ${HOME}/.config//powerline-shell
-
-# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
-# PCmanFM: Add open terminal feature
-mkdir - p ~/.local/share/file-manager/actions/
-touch ~/.local/share/file-manager/actions/terminal.desktop
-cat >> ~/.local/share/file-manager/actions/terminal.desktop <<'EOF'
-[Desktop Entry]
-Type=Action
-Tooltip=Open Terminal Here
-Name=Open Terminal
-Profiles=profile-one;
-Icon=utilities-terminal
-
-
-[X-Action-Profile profile-one]
-MimeTypes=inode/directory;
-Exec=urxvt -title Terminal -cd %f
-Name=Default profile
-EOF
-
-if [ -f "${HOME}/.local/scripts/extract" ]
-then
-  echo "Backing-up extract script"
-	mv ${HOME}/.local/scripts/extract ${HOME}/.local/scripts/extract.${timestamp}.bak
-fi
-
-cat >> ${HOME}/.local/scripts/extract <<'EOF'
-#!/bin/sh
-
-if [ $# -lt 1 ];then
-  echo "Usage: `basename $0` FILES"
-  exit 1
-fi
-
-# I found the following function at https://unix.stackexchange.com/a/168/37944
-# which I improved it a little. Many thanks to sydo for this idea.
-__extract(){
-    for arg in $@ ; do
-        if [ -f $arg ] ; then
-            case $arg in
-                *.tar.bz2)  tar xjf $arg      ;;
-                *.tar.gz)   tar xzf $arg      ;;
-                *.bz2)      bunzip2 $arg      ;;
-                *.gz)       gunzip $arg       ;;
-                *.tar)      tar xf $arg       ;;
-                *.tbz2)     tar xjf $arg      ;;
-                *.tgz)      tar xzf $arg      ;;
-                *.zip)      unzip $arg        ;;
-                *)          echo "'$arg' cannot be extracted via extract()" ;;
-            esac
-        else
-            echo "'$arg' is not a valid file"
-        fi
-    done
-}
-
-extract $@
-EOF
-chmod +x ${HOME}/.local/scripts/extract
-
 echo "Start configuring Openbox Desktop Look & Feel..."
-echo "Copying .xinitrc under ${HOME}"
-wait_for_seconds 5
-# .xinitrc
-if [ -f "${HOME}/.xinitrc" ]
-then
-	echo "Backing-up .xinitrc"
-	mv ${HOME}/.xinitrc ${HOME}/.xinitrc.${timestamp}.bak
-else
-	echo "Nothing to backup. File .xinitrc does not exist"
-fi
-echo 'exec openbox-session' >> ${HOME}/.xinitrc
 
-echo "Copying .tcshrc under ${HOME}"
-wait_for_seconds 5
+__pcmanfm_setup
 
-# tcshrc
-if [ -f "${HOME}/.tcshrc" ]
-then
-	echo "Backing-up .tcshrc"
-	mv ${HOME}/.tcshrc ${HOME}/.tcshrc.${timestamp}.bak
-else
-	echo "Nothing to backup. File .tcshrc does not exist"
-fi
-cp ./openbox/tcshrc ${HOME}/.tcshrc
+__xsession_setup
 
-echo "Copying powershell config.json under ${HOME}/.config/powerline-shell"
-wait_for_seconds 5
+__shell_setup
 
-# powershell
-if [ -f "${HOME}/.config/powerline-shell/config.json" ]
-then
-	echo "Backing-up config.json"
-	mv ${HOME}/.config/powerline-shell/config.json ${HOME}/.config/powerline-shell/config.json.${timestamp}.bak
-else
-	echo "Nothing to backup. File config.json does not exist"
-fi
-cp ./openbox/config.json ${HOME}/.config/powerline-shell/config.json
+__shell_prompt_setup
 
-echo "Copying .Xdefaults under ${HOME}"
-wait_for_seconds 5
-# Xdefaults
-if [ -f "${HOME}/.Xdefaults" ]
-then
-	echo "Backing-up .Xdefaults"
-	mv ${HOME}/.Xdefaults ${HOME}/.Xdefaults.${timestamp}.bak
-else
-	echo "Nothing to backup. File .Xdefaults does not exist"
-fi
-cp ./openbox/Xdefaults ${HOME}/.Xdefaults
+__openbox_setup
 
-echo "Copying autostart.sh under ${HOME}/.config/openbox"
-wait_for_seconds 5
-# Openbox
-if [ -f "${HOME}/.config/openbox/autostart.sh" ]
-then
-	echo "Backing-up autostart.sh"
-	mv ${HOME}/.config/openbox/autostart.sh ${HOME}/.config/openbox/autostart.sh.${timestamp}.bak
-else
-	echo "Nothing to backup. File autostart.sh does not exist"
-fi
-cp ./openbox/autostart ${HOME}/.config/openbox/autostart.sh
-chmod 744 ${HOME}/.config/openbox/autostart.sh
+__task_bar_setup
 
-echo "Copying themerc under ${HOME}/.themes/Myfreebsd-Adapta/openbox-3"
-mkdir -p ${HOME}/.themes/Myfreebsd-Adapta/openbox-3
-wait_for_seconds 5
-if [ -f "${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc" ]
-then
-	echo "Backing-up themerc"
-	mv ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc.${timestamp}.bak
-else
-	echo "Nothing to backup. File themerc does not exist"
-fi
-patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
+__conky_setup
 
-echo "Copying rc.xml under ${HOME}/.config/openbox"
-wait_for_seconds 5
-if [ -f "${HOME}/.config/openbox/rc.xml" ]
-then
-	echo "Backing-up rc.xml"
-	mv ${HOME}/.config/openbox/rc.xml ${HOME}/.config/openbox/rc.xml.${timestamp}.bak
-else
-	echo "Nothing to backup. File rc.xml does not exist"
-fi
-cp ./openbox/rc.xml ${HOME}/.config/openbox/rc.xml
+__download_icons_theme
 
-echo "Copying menu.xml under ${HOME}/.config/openbox"
-wait_for_seconds 5
-if [ -f "${HOME}/.config/openbox/menu.xml" ]
-then
-	echo "Backing-up menu.xml"
-	mv ${HOME}/.config/openbox/menu.xml ${HOME}/.config/openbox/menu.xml.${timestamp}.bak
-else
-	echo "Nothing to backup. File rc.xml does not exist"
-fi
-cp ./openbox/menu.xml ${HOME}/.config/openbox/menu.xml
+__gtk_theme_setup
 
-echo "Copying Openbox Desktop Wallpapers under ${HOME}/.config/openbox/wallpapers..."
-wait_for_seconds 5
-# Wallpaper
-cp ./wallpapers/*-background.jpg ${HOME}/.config/openbox/wallpapers/
+__geany_setup
 
-echo "Copying tint2rc under ${HOME}/.config/tint2"
-wait_for_seconds 5
-# tint2
-if [ -f "${HOME}/.config/tint2/tint2rc" ]
-then
-	echo "Backing-up tint2rc"
-	mv ${HOME}/.config/tint2/tint2rc ${HOME}/.config/tint2/tint2rc.${timestamp}.bak
-else
-	echo "Nothing to backup. File tint2rc does not exist"
-fi
-cp ./openbox/tint2rc ${HOME}/.config/tint2/tint2rc
+__docker_setup
 
-echo "Copying Conky Configuration Files under ${HOME}..."
-wait_for_seconds 5
-# conky
-if [ -f "${HOME}/.conkyrc" ]
-then
-	echo "Backing-up .conkyrc"
-	mv ${HOME}/.conkyrc ${HOME}/.conkyrc.${timestamp}.bak
-else
-	echo "Nothing to backup. File .conkyrc does not exist"
-fi
-cp ./openbox/conkyrc ${HOME}/.conkyrc
-
-
-echo "Copying gtk2/gtk3 Configuration Files under ${HOME}..."
-wait_for_seconds 5
-# GTK2 Themes and Icons
-if [ -f "${HOME}/.gtkrc-2.0" ]
-then
-	echo "Backing-up .gtkrc-2.0"
-	mv ${HOME}/.gtkrc-2.0 ${HOME}/.gtkrc-2.0.${timestamp}.bak
-else
-	echo "Nothing to backup. File .gtk2rc does not exist"
-fi
-cp ./openbox/gtkrc-2.0 ${HOME}/.gtkrc-2.0
-
-echo "Copying settings.ini Configuration Files under ${HOME}/.config/gtk-3.0..."
-wait_for_seconds 5
-# GTK3 Themes and Icons
-if [ -f "${HOME}/.config/gtk-3.0/settings.ini" ]
-then
-	echo "Backing-up settings.ini"
-	mv ${HOME}/.config/gtk-3.0/settings.ini ${HOME}/.config/gtk-3.0/settings.${timestamp}.ini
-else 
-	echo "Nothing to backup. File settings.ini does not exist"
-fi
-cp ./openbox/settings.ini ${HOME}/.config/gtk-3.0/settings.ini
-
-echo "Copying Icon Pack Files under ${HOME}/.icons..."
-wait_for_seconds 5
-# Icon Pack
-fetch --no-verify-hostname --no-verify-peer -o /tmp/icons.tar.gz https://api.github.com/repos/thiagolucio/Super-Ultra-Flat-Numix-Remix/tarball/master
-tar xvzf /tmp/icons.tar.gz --strip=1 -C ${HOME}/.icons/
-
-# Geany Themes
-if [ -d "${HOME}/.config/geany" ]
-then
-	echo "Installing geany themes..."
-	wait_for_seconds 5
-
-    fetch --no-verify-hostname --no-verify-peer -o /tmp/geany_themes.tar.gz https://api.github.com/repos/geany/geany-themes/tarball/master
-	mkdir /tmp/geany_themes_${timestamp}
-	tar xvzf /tmp/geany_themes.tar.gz --strip=1 -C /tmp/geany_themes_${timestamp}
-
-	mkdir -p ${HOME}/.config/geany/colorschemes/
-	cp -r /tmp/geany_themes_${timestamp}/colorschemes/ ${HOME}/.config/geany/colorschemes/
-	rm -rf /tmp/geany_themes_${timestamp}
-	
-	mkdir -p ${HOME}/.config/geany/tags/
-	curl ${geany_tag_base_url}/${geany_java_tag_version} -o ${HOME}/.config/geany/tags/${geany_java_tag_version}
-fi
-
-if [ "${is_docker_enabled}" == "true" ]
-then
-	check_docker_requirements
-		
-	echo "Installing docker configuration..."
-	wait_for_seconds 5
-	mkdir -p ${HOME}/Development/Vagrant/dockervm
-	cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
-	
-	echo "Installing docker shortcuts..."
-	wait_for_seconds 5
-	mkdir -p ${HOME}/.local/scripts
-	cp ./openbox/docker_up ${HOME}/.local/scripts/docker_up
-	cp ./openbox/docker_down ${HOME}/.local/scripts/docker_down
-fi
-
-if [ "${is_setup_vpn_enabled}" == "true" ]
-then
-	echo "Installing openvpn scripts..."
-	wait_for_seconds 5
-
-	fetch --no-verify-hostname --no-verify-peer -o /tmp/vpnbook.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/vpnbook/tarball/master
-	mkdir /tmp/vpnbook_${timestamp}
-	tar xvzf /tmp/vpnbook.tar.gz --strip=1 -C /tmp/vpnbook_${timestamp}
-
-	cd /tmp/vpnbook_${timestamp}
-	sh install
-	
-	cmd="(sleep 20 && ${HOME}/.local/scripts/vpnbook_wrapper -s US1) &"
-	if [ -d "${HOME}/.config/openbox" ]; then  
-		if grep -Fxq "${cmd}" ${HOME}/.config/openbox/autostart.sh
-		then
-			echo "No need to add vpnbook to autostart.sh as it is already present"
-		else
-			echo ${cmd} >> ${HOME}/.config/openbox/autostart.sh
-		fi
-	fi
-	echo "Cleaning Temporary Files..."
-	cd
-	rm -rf /tmp/vpnbook_${timestamp}
-fi
-
-if [ "${is_user_allowed_to_update}" == "true" ]; then
-	# Install Update Script
-	echo "Installing Update Scripts under ${HOME}/.local/scripts..."
-	wait_for_seconds 5
-
-	fetch --no-verify-hostname --no-verify-peer -o /tmp/update_script.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/update_script/tarball/master
-    mkdir /tmp/update_script_${timestamp}
-    tar xvzf /tmp/update_script.tar.gz --strip=1 -C /tmp/update_script_${timestamp}
-
-	cd /tmp/update_script_${timestamp}
-	sh install
-	echo "Cleaning Temporary Files..."
-	cd
-	rm -rf /tmp/update_script_${timestamp}
-else
-	echo "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not member of the group installer..."
-fi	
+__setup_user_update_script
 		
 exit 0

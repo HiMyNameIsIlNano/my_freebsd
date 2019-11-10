@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Begin Functions
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+__wait_for_seconds(){
+	local seconds="$@"
+	echo "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}
+# End Functions
+
+work_dir=.
+config_file=${work_dir}/freebsd_configurer.config
+
+# Variable Declaration
+port_system=$(__read_property port_system)
+
+# Trigger pkg installation if run for the first time
+pkg info
+
+if [ ${port_system} == "PKG" ]
+then
+    __wait_for_seconds 5
+	sh ./pkg_init
+	if [ $? -eq 1 ]
+    then
+        exit 1
+    fi
+fi
+
+if [ ${port_system} == "PORT" ]
+then
+	__wait_for_seconds 5
+	sh ./port_init
+	if [ $? -eq 1 ]
+    then
+        exit 1
+    fi
+fi

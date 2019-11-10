@@ -91,7 +91,7 @@ __post_config_java(){
 # End Functions
 
 work_dir=.
-config_file=${work_dir}/post_install.config
+config_file=${work_dir}/freebsd_configurer.config
 
 while [ "$1" != "" ]; do
     case $1 in

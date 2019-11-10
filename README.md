@@ -19,7 +19,7 @@ fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://ap
 mkdir -p /tmp/my_freebsd
 tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
 cd /tmp/my_freebsd
-sh post_install
+sh freebsd_configurer
 ```
 
 ## Desktop Configuration:

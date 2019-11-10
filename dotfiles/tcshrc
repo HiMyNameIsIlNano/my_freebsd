@@ -31,6 +31,7 @@ if ($?prompt) then
 		if ($uid) then
 			setenv PYTHONIOENCODING utf8
 			alias precmd 'set prompt="`powerline-shell --shell tcsh $?`"'
+			pfetch
 		endif
 	endif
 endif
