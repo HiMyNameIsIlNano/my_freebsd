@@ -25,8 +25,8 @@ sh post_install
 ## Desktop Configuration:
 If you just want to give your system a nice look and feel as shown below 
 
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_1_1600x900.png.png)
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_2_1600x900.png.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_1_1600x900.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_2_1600x900.png)
 
 then execute:
 
