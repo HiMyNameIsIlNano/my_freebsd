@@ -197,14 +197,14 @@ __setup_user_update_script(){
 __pcmanfm_setup(){
   # PCmanFM: Add open terminal feature
   mkdir -p ~/.local/share/file-manager/actions/
-  cp .openbox/terminal.desktop ~/.local/share/file-manager/actions/
+  cp ./openbox/terminal.desktop ~/.local/share/file-manager/actions/
 
   if [ -f "${HOME}/.local/scripts/extract" ]
   then
     echo "Backing-up extract script"
     mv ${HOME}/.local/scripts/extract ${HOME}/.local/scripts/extract.${timestamp}.bak
   fi
-  cp .openbox//extract ${HOME}/.local/scripts/extract
+  cp ./openbox/extract ${HOME}/.local/scripts/extract
 }
 
 work_dir=.
