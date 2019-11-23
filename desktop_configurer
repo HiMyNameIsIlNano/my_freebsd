@@ -151,9 +151,6 @@ __geany_setup(){
   mkdir -p ${HOME}/.config/geany/colorschemes/
   cp -r /tmp/geany_themes_${timestamp}/colorschemes/ ${HOME}/.config/geany/colorschemes/
   rm -rf /tmp/geany_themes_${timestamp}
-
-  mkdir -p ${HOME}/.config/geany/tags/
-  curl ${geany_tag_base_url}/${geany_java_tag_version} -o ${HOME}/.config/geany/tags/${geany_java_tag_version}
 }
 
 __docker_setup(){
@@ -234,7 +231,6 @@ user_can_update=$(__is_user_allowed_to_update)
 is_docker_enabled=$(__read_property enable_docker)
 is_setup_vpn_enabled=$(__read_property setup_vpn)
 geany_tag_base_url=http://download.geany.org/contrib/tags
-geany_java_tag_version=openjdk8-8u66-b01.java.tags
 timestamp=$(date +%s)
 
 echo "Start configuring Openbox Desktop Look & Feel..."

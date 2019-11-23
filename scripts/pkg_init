@@ -74,18 +74,18 @@ __post_config_java(){
 
 	if [ $? -eq 1 ] ; then
 		__check_if_key_in_file /dev/fd /etc/fstab
-        if [ $? -eq 0 ]
-        then
-		    echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+    if [ $? -eq 0 ]
+    then
+      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
 		fi
 
-        __check_if_key_in_file /proc /etc/fstab
+    __check_if_key_in_file /proc /etc/fstab
 		if [ $? -eq 0 ]
-        then
-		    echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
-        fi
+    then
+      echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+    fi
 	else
-        echo "${java_port_name} is not installed on the system"
+    echo "${java_port_name} is not installed on the system"
 	fi
 }
 # End Functions
@@ -143,7 +143,7 @@ __wait_for_seconds 5
 __install_pkgs ${dev_pkgs}
 
 # Finalize Java8 Configuration
-__post_config_java openjdk8
+__post_config_java openjdk11
 
 if [ "${is_docker_enabled}" == "true" ]
 then

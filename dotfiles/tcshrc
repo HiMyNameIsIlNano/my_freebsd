@@ -18,7 +18,7 @@ if ($?prompt) then
 	set history = 100
 	set savehist = 100
 	set autolist = TAB
-	set JAVA_HOME=/usr/local/openjdk8/bin
+	set JAVA_HOME=/usr/local/openjdk11/bin
 	set POWERSHELL_DIR=~/.local/bin/
 	set path = ($path $HOME/bin ${JAVA_HOME} ${POWERSHELL_DIR})
 	set mail = (/var/mail/$USER)
