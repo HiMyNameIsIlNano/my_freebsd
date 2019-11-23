@@ -9,7 +9,7 @@ This project consists of two scripts for two different phases:
 1. Post Install Configuration;
 2. Desktop Configuration.
 
-Item 1. will take care of installing a list of programs as defined in the `post_install.config` file and bootstrapping a set of config files and system users. Item 2. will take care of giving the system a nice (or at lest a decent) look&feel. 
+Item 1. will take care of installing a list of programs as defined in the `freebsd_configurer.config` file and bootstrapping a set of config files and system users. Item 2. will take care of giving the system a nice (or at lest a decent) look&feel. 
 
 ## Post Install Configuration:
 If you start from a vanilla Freebsd installation and you are keen to have a quick up and running Openbox-based Desktop environment, then execute:
@@ -39,7 +39,7 @@ sh desktop_configurer
 ```
 
 ## Further Configuration Possibilities:
-As mentioned above, both `post_install` and `desktop_configurer` are driven by a configuration file named `post_install.config`. The `post_install.config` is a simple `json` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
+As mentioned above, both `freebsd_configurer` and `desktop_configurer` are driven by a configuration file named `freebsd_configurer.config`. The `freebsd_configurer.config` is a simple `json-like` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
 
 1. base_ports: A category of ports used to configure the base system (e.g. xorg). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 2. desktop_ports: A category of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
