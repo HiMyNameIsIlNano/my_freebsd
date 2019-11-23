@@ -33,27 +33,27 @@ __config_ccache() {
 
 	__check_if_key_in_file CCACHE_DIR /etc/make.conf
 	if [ $? -eq 0 ]
-    then
-	    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
-    else
-        echo "Key CCACHE_DIR already in /etc/make.conf"
+  then
+    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
+  else
+    echo "Key CCACHE_DIR already in /etc/make.conf"
 	fi
 
 	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
 	if [ $? -eq 0 ]
-    then
-	    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
-    else
-        echo "Key WITH_CCACHE_BUILD already in /etc/make.conf"
+  then
+    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+  else
+    echo "Key WITH_CCACHE_BUILD already in /etc/make.conf"
 	fi
 
 	mkdir -p ~/.ccache
 	__check_if_key_in_file max_size ~/.ccache/ccache.conf
 	if [ $? -eq 0 ]
-    then
-	    echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
-    else
-        echo "Key max_size already in ~/.ccache/ccache.conf"
+  then
+    echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
+  else
+    echo "Key max_size already in ~/.ccache/ccache.conf"
 	fi
 
 	__check_if_key_in_file cache_dir ~/.ccache/ccache.conf
@@ -61,7 +61,7 @@ __config_ccache() {
   then
     echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
   else
-      echo "Key cache_dir already in ~/.ccache/ccache.conf"
+    echo "Key cache_dir already in ~/.ccache/ccache.conf"
   fi
 
   return 0
@@ -74,10 +74,10 @@ __config_ramdisk() {
 
   if [ -f /etc/fstab ]
   then
-      echo "Backing-up /etc/fstab"
-      cp /etc/fstab /etc/fstab.${timestamp}.bak
+    echo "Backing-up /etc/fstab"
+    cp /etc/fstab /etc/fstab.${timestamp}.bak
   else
-      touch /etc/fstab
+    touch /etc/fstab
   fi
 
   mkdir -p /ram
@@ -86,23 +86,23 @@ __config_ramdisk() {
   then
     echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
   else
-      echo "Key /ram already in /etc/fstab"
+    echo "Key /ram already in /etc/fstab"
   fi
 
   if [ -f /etc/make.conf ]
   then
-      echo "Backing-up /etc/make.conf"
-      cp /etc/make.conf /etc/make.conf.${timestamp}.bak
+    echo "Backing-up /etc/make.conf"
+    cp /etc/make.conf /etc/make.conf.${timestamp}.bak
   else
-      touch /etc/make.conf
+    touch /etc/make.conf
   fi
 
   __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
   if [ $? -eq 0 ]
   then
-      echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
+    echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
   else
-      echo "Key WRKDIRPREFIX already in /etc/make.conf"
+    echo "Key WRKDIRPREFIX already in /etc/make.conf"
   fi
 }
 
@@ -112,11 +112,11 @@ __check_if_key_in_file() {
 
   if [ -f ${file} ]
   then
-      if grep -Fq "${key}" "${file}"; then
-          return 1
-      else
-          return 0
-      fi
+    if grep -Fq "${key}" "${file}"; then
+        return 1
+    else
+        return 0
+    fi
   fi
 
   return 0
@@ -144,17 +144,17 @@ __check_if_port_installed() {
   local port="$1"
 
   if ! pkg info ${port} > /dev/null 2>&1; then
-      return 0
+    return 0
   else
-      return 1
+    return 1
   fi
 }
 
 __is_command_installed(){
 	if ! [ -x "$(command -v $1)" ]; then
-	    return 0
-    else
-        return 1
+    return 0
+  else
+    return 1
 	fi
 }
 
@@ -173,14 +173,14 @@ __install_ports(){
 	# The list of ports must be comma separated with no empty space
 	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
 	do
-	    __check_if_port_installed ${port}
-	    if [ $? -eq 0 ]
-	    then
-	    	local port_dir=$(__get_port_dir $port)
-	    	cd ${port_dir} && make install clean BATCH=yes
-      else
-        echo "${port} already installed on the system"
-	    fi
+    __check_if_port_installed ${port}
+    if [ $? -eq 0 ]
+    then
+      local port_dir=$(__get_port_dir $port)
+      cd ${port_dir} && make install clean BATCH=yes
+    else
+      echo "${port} already installed on the system"
+    fi
 	done
 }
 
@@ -191,14 +191,14 @@ __post_config_java(){
 	if [ $? -eq 1 ] ; then
 		__check_if_key_in_file /dev/fd /etc/fstab
     if [ $? -eq 0 ]
-        then
-		    echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
+    then
+      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
 		fi
 
     __check_if_key_in_file /proc /etc/fstab
 		if [ $? -eq 0 ]
-        then
-		    echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+    then
+      echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
     fi
 	else
 		echo "${java_port_name} is not installed on the system"
