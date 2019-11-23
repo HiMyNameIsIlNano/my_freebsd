@@ -1,8 +1,8 @@
 "base_ports":xorg,drm-kmod,sudo,xlockmore,curl,automount
-"desktop_ports":openbox,tint2,rxvt-unicode,conky,feh,htop,gtk-engines2,gsettings-desktop-schemas,gtk-murrine-engine,geany,geany-plugin-vc,pcmanfm,fsearch,epdfview,xlockmore,zip,unzip
+"desktop_ports":openbox,compton,tint2,rxvt-unicode,conky,feh,htop,gtk-engines2,gsettings-desktop-schemas,gtk-murrine-engine,adapta-gtk-theme,geany,geany-plugin-vc,pcmanfm,fsearch,epdfview,xlockmore,zip,unzip,pfetch,xz
 "office_ports":abiword,gnumeric
 "browser_ports":firefox
-"dev_ports":openjdk8,maven33,npm,git,vim,netbeans
+"dev_ports":openjdk11,maven33,npm,git,vim,netbeans,py36-pip
 "enable_docker":true
 "port_system":PORT
 "ccache_size":5G
