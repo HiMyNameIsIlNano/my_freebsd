@@ -197,61 +197,14 @@ __setup_user_update_script(){
 __pcmanfm_setup(){
   # PCmanFM: Add open terminal feature
   mkdir - p ~/.local/share/file-manager/actions/
-  touch ~/.local/share/file-manager/actions/terminal.desktop
-  cat >> ~/.local/share/file-manager/actions/terminal.desktop <<'EOF'
-  [Desktop Entry]
-  Type=Action
-  Tooltip=Open Terminal Here
-  Name=Open Terminal
-  Profiles=profile-one;
-  Icon=utilities-terminal
-
-
-  [X-Action-Profile profile-one]
-  MimeTypes=inode/directory;
-  Exec=urxvt -title Terminal -cd %f
-  Name=Default profile
-  EOF
+  cp .openbox/terminal.desktop ~/.local/share/file-manager/actions/
 
   if [ -f "${HOME}/.local/scripts/extract" ]
   then
     echo "Backing-up extract script"
     mv ${HOME}/.local/scripts/extract ${HOME}/.local/scripts/extract.${timestamp}.bak
   fi
-
-  cat >> ${HOME}/.local/scripts/extract <<'EOF'
-  #!/bin/sh
-
-  if [ $# -lt 1 ];then
-    echo "Usage: `basename $0` FILES"
-    exit 1
-  fi
-
-  # I found the following function at https://unix.stackexchange.com/a/168/37944
-  # which I improved it a little. Many thanks to sydo for this idea.
-  __extract(){
-      for arg in $@ ; do
-          if [ -f $arg ] ; then
-              case $arg in
-                  *.tar.bz2)  tar xjf $arg      ;;
-                  *.tar.gz)   tar xzf $arg      ;;
-                  *.bz2)      bunzip2 $arg      ;;
-                  *.gz)       gunzip $arg       ;;
-                  *.tar)      tar xf $arg       ;;
-                  *.tbz2)     tar xjf $arg      ;;
-                  *.tgz)      tar xzf $arg      ;;
-                  *.zip)      unzip $arg        ;;
-                  *)          echo "'$arg' cannot be extracted via extract()" ;;
-              esac
-          else
-              echo "'$arg' is not a valid file"
-          fi
-      done
-  }
-
-  extract $@
-  EOF
-  chmod +x ${HOME}/.local/scripts/extract
+  cp .openbox//extract ${HOME}/.local/scripts/extract
 }
 
 work_dir=.
