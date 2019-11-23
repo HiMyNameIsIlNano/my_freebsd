@@ -26,7 +26,7 @@ pkg info
 if [ ${port_system} == "PKG" ]
 then
     __wait_for_seconds 5
-	sh ./pkg_init
+	sh ./scripts/pkg_init
 	if [ $? -eq 1 ]
     then
         exit 1
@@ -36,7 +36,7 @@ fi
 if [ ${port_system} == "PORT" ]
 then
 	__wait_for_seconds 5
-	sh ./port_init
+	sh ./scripts/port_init
 	if [ $? -eq 1 ]
     then
         exit 1
