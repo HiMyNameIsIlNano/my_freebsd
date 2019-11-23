@@ -23,7 +23,12 @@ sh freebsd_configurer
 ```
 
 ## Desktop Configuration:
-If you just want to give your system a nice look and feel as shown [here](https://www.gnome-look.org/p/1013723/), then execute:
+If you just want to give your system a nice look and feel as shown below 
+
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_1_1600x900.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_2_1600x900.png)
+
+then execute:
 
 ```
 fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/master
