@@ -4,4 +4,5 @@
 feh --bg-scale $HOME/.config/openbox/wallpapers/red-background.jpg &
 
 urxvtd -q -f -o &
-(sleep 2 && urxvtc) &
+#sleep 2 && setxkbmap it) &
+(sleep 2 && compton -b) &
