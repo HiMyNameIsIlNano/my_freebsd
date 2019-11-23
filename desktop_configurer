@@ -111,15 +111,12 @@ __gtk_theme_setup(){
 }
 
 __openbox_setup(){
+  mkdir -p ${HOME}/.config/openbox
+
   echo "Copying autostart.sh under ${HOME}/.config/openbox"
   __backup_file ${HOME}/.config/openbox/autostart.sh
   cp ./openbox/autostart ${HOME}/.config/openbox/autostart.sh
   chmod 744 ${HOME}/.config/openbox/autostart.sh
-
-  mkdir -p ${HOME}/.themes/Myfreebsd-Adapta/openbox-3
-  echo "Copying themerc under ${HOME}/.themes/Myfreebsd-Adapta/openbox-3"
-  __backup_file ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
-  patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
 
   echo "Copying rc.xml under ${HOME}/.config/openbox"
   __backup_file ${HOME}/.config/openbox/rc.xml
@@ -133,6 +130,11 @@ __openbox_setup(){
   mkdir -p ${HOME}/.config/openbox/wallpapers
   __wait_for_seconds 5
   cp ./wallpapers/*-background.jpg ${HOME}/.config/openbox/wallpapers/
+
+  mkdir -p ${HOME}/.themes/Myfreebsd-Adapta/openbox-3
+  echo "Copying themerc under ${HOME}/.themes/Myfreebsd-Adapta/openbox-3"
+  __backup_file ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
+  patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
 }
 
 __geany_setup(){
