@@ -196,7 +196,7 @@ __setup_user_update_script(){
 # TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
 __pcmanfm_setup(){
   # PCmanFM: Add open terminal feature
-  mkdir - p ~/.local/share/file-manager/actions/
+  mkdir -p ~/.local/share/file-manager/actions/
   cp .openbox/terminal.desktop ~/.local/share/file-manager/actions/
 
   if [ -f "${HOME}/.local/scripts/extract" ]
