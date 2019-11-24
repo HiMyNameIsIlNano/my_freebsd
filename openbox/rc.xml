@@ -231,7 +231,7 @@
   </keybind>
 
   <!-- Keybindings for windows -->
-  <keybind key="C-w">
+  <keybind key="W-S-q">
     <action name="Close"/>
   </keybind>
   <keybind key="A-Escape">
@@ -326,18 +326,18 @@
       <command>fsearch</command>
     </action>
   </keybind>
-  <!-- Chromium -->
+  <!-- Firefox -->
   <keybind key="W-S-w">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
-        <name>Chromium</name>
+        <name>Firefox</name>
       </startupnotify>
-      <command>chrome</command>
+      <command>firefox</command>
     </action>
-  </keybind> 
+  </keybind>
   <!-- Lock Screen -->
-  <keybind key="W-S-0">
+  <keybind key="W-S-9">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>
@@ -366,8 +366,8 @@
       <command>sh -c 'sudo acpiconf -s 3; xlock -mode blank'</command>
     </action>
   </keybind>
-  <!-- Urxvt: execute Urxvt -->
-  <keybind key="W-t">
+  <!-- Terminal: execute default terminal -->
+  <keybind key="W-S-t">
     <action name="Execute">
       <startupnotify>
         <enabled>true</enabled>

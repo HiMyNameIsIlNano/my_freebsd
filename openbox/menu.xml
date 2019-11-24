@@ -38,14 +38,14 @@
                 </startupnotify>
             </action>
         </item>
-        <!--<item label="Virtualbox">
+        <item label="Virtualbox">
           <action name="Execute">
             <command>virtualbox</command>
             <startupnotify>
               <enabled>yes</enabled>
             </startupnotify>
           </action>
-        </item>-->
+        </item>
     </menu>
 
     <menu id="apps-term-menu" label="Terminals">
@@ -62,30 +62,12 @@
     </menu>
 
     <menu id="apps-net-menu" label="Internet">
-        <item label="Chromium">
-            <action name="Execute">
-                <command>chrome</command>
-                <startupnotify>
-                    <enabled>yes</enabled>
-                    <wmclass>Chromium</wmclass>
-                </startupnotify>
-            </action>
-        </item>
         <item label="Firefox">
             <action name="Execute">
                 <command>firefox</command>
                 <startupnotify>
                     <enabled>yes</enabled>
                     <wmclass>Firefox</wmclass>
-                </startupnotify>
-            </action>
-        </item>
-        <item label="Midori">
-            <action name="Execute">
-                <command>midori</command>
-                <startupnotify>
-                    <enabled>yes</enabled>
-                    <wmclass>Midori</wmclass>
                 </startupnotify>
             </action>
         </item>
@@ -148,21 +130,26 @@
         </menu>
     </menu>
 
-    <menu id="apps-multimedia-menu" label="Multimedia">
-        <item label="DVD Player">
+    <menu id="apps-fileman-menu" label="File System">
+        <item label="Home">
             <action name="Execute">
-                <command>mplayer dvdnav://0</command>
+                <command>pcmanfm</command>
                 <startupnotify>
                     <enabled>yes</enabled>
                 </startupnotify>
             </action>
         </item>
-    </menu>
-
-    <menu id="apps-fileman-menu" label="File Managers">
-        <item label="PCMan File Manager">
+        <item label="Automount">
             <action name="Execute">
-                <command>pcmanfm</command>
+                <command>pcmanfm /media</command>
+                <startupnotify>
+                    <enabled>yes</enabled>
+                </startupnotify>
+            </action>
+        </item>
+        <item label="Shared">
+            <action name="Execute">
+                <command>pcmanfm /mnt/shared</command>
                 <startupnotify>
                     <enabled>yes</enabled>
                 </startupnotify>
@@ -182,17 +169,6 @@
         <item label="Gnumeric">
             <action name="Execute">
                 <command>gnumeric</command>
-                <startupnotify>
-                    <enabled>yes</enabled>
-                </startupnotify>
-            </action>
-        </item>
-    </menu>
-
-    <menu id="apps-graphics-menu" label="Graphics">
-        <item label="Gimp">
-            <action name="Execute">
-                <command>gimp</command>
                 <startupnotify>
                     <enabled>yes</enabled>
                 </startupnotify>
@@ -238,7 +214,6 @@
         <menu id="apps-office-menu"/>
         <menu id="apps-development-menu"/>
         <menu id="apps-net-menu"/>
-        <!--<menu id="apps-multimedia-menu"/>-->
         <menu id="apps-term-menu"/>
         <menu id="apps-fileman-menu"/>
         <separator label="System"/>

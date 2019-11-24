@@ -13,7 +13,8 @@ if ($?prompt) then
 	alias docker_remove_imgs 'docker rmi `docker images -q`'
 	alias docker_remove_vols 'docker volume rm -f `docker volume ls -f dangling=true -q`'
 	alias docker_reset 'docker_remove_imgs && docker_remove_vols'
-
+	alias ex '$HOME/.local/scripts/extract'
+		
 	set filec
 	set history = 100
 	set savehist = 100
@@ -22,7 +23,7 @@ if ($?prompt) then
 	set POWERSHELL_DIR=~/.local/bin/
 	set path = ($path $HOME/bin ${JAVA_HOME} ${POWERSHELL_DIR})
 	set mail = (/var/mail/$USER)
-
+	
 	setenv LSCOLORS ExGxdxdxCxDxDxBxBxegeg
 	if ( $?tcsh ) then
 		bindkey "^W" backward-delete-word
