@@ -1,15 +1,6 @@
 #!/bin/sh
 
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
-
-__wait_for_input(){
-	printf 'press [ENTER] to continue'
-	read dummy
-}
+. $(dirname "$0")/utils
 
 __backup_file() {
   local file="$@"
@@ -22,12 +13,6 @@ __backup_file() {
   else
     echo "Nothing to backup. File ${file} does not exist"
   fi
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
 }
 
 __is_user_allowed_to_update(){

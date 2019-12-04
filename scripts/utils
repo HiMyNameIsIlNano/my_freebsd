@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Utility Functions
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+__wait_for_input(){
+	printf 'press [ENTER] to continue...'
+	read dummy
+}
+
+__wait_for_seconds(){
+	local seconds="$@"
+	echo "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}

@@ -1,11 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
+. $(dirname "$0")/utils
 
 __check_if_key_in_file() {
     local key="$1"
@@ -47,17 +42,6 @@ __install_pkgs(){
             echo "${pkg} already installed on the system"
 	    fi
 	done
-}
-
-__wait_for_input(){
-	printf 'press [ENTER] to continue...'
-	read dummy
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
 }
 
 __is_command_installed(){

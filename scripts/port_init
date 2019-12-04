@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# Begin Functions
+. $(dirname "$0")/utils
+
 __init_ports() {
 	echo "Initializing ports..."
 
@@ -120,18 +121,6 @@ __check_if_key_in_file() {
   fi
 
   return 0
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
-
-__read_property(){
-	input="$@"
-	temp=`cat ${config_file} | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
 }
 
 __get_port_dir() {

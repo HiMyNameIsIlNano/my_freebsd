@@ -1,11 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
+. $(dirname "$0")/utils
 
 __add_user_to_group(){
 	local group="$@"
@@ -24,7 +19,6 @@ __add_user_to_group(){
 		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done
 }
-# End Functions
 
 work_dir=.
 config_file=${work_dir}/freebsd_configurer.config
@@ -66,16 +60,16 @@ clear
 
 if [ ${port_system} == "PKG" ]
 then
-    echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-    __add_user_to_group installer
-    clear
+  echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+  __add_user_to_group installer
+  clear
 fi
 
 if [ ${port_system} == "PORT" ]
 then
 	echo "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-    __add_user_to_group wheel
-    clear
+  __add_user_to_group wheel
+  clear
 fi
 
 echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"

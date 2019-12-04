@@ -1,17 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
+. $(dirname "$0")/utiils
 
 __check_if_key_in_file() {
   local key="$1"
