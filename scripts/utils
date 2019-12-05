@@ -17,3 +17,24 @@ __wait_for_seconds(){
 	echo "waiting ${seconds} seconds before continuing..."
 	sleep ${seconds}
 }
+
+__log_error(){
+	local seconds="$@"
+	red=`tput setaf 1`
+  reset=`tput sgr0`
+  echo "${red}${text}${reset}"
+}
+
+__log_warn(){
+	local text="$@"
+  yellow=`tput setaf 3`
+  reset=`tput sgr0`
+  echo "${yellow}${text}${reset}"
+}
+
+__log_info(){
+	local text="$@"
+  green=`tput setaf 2`
+  reset=`tput sgr0`
+  echo "${yellow}${text}${reset}"
+}
