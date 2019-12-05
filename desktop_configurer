@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $(dirname "$0")/utils
+. $(dirname "$0")/scripts/utils
 
 __backup_file() {
   local file="$@"
