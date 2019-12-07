@@ -19,22 +19,22 @@ __wait_for_seconds(){
 }
 
 __log_error(){
-	local seconds="$@"
-	red=`tput setaf 1`
-  reset=`tput sgr0`
-  echo "${red}${text}${reset}"
+	local texts="$@"
+	RED='\033[0;31m'
+  NC='\033[0m'
+  printf "${RED}[ERROR]${NC} ${text}\n"
 }
 
 __log_warn(){
-	local text="$@"
-  yellow=`tput setaf 3`
-  reset=`tput sgr0`
-  echo "${yellow}${text}${reset}"
+	local texts="$@"
+	YELLOW='\033[0;33m'
+  NC='\033[0m'
+  printf "${YELLOW}[INFO]${NC} ${text}\n"
 }
 
 __log_info(){
-	local text="$@"
-  green=`tput setaf 2`
-  reset=`tput sgr0`
-  echo "${yellow}${text}${reset}"
+	local texts="$@"
+	GREEN='\033[0;32m'
+  NC='\033[0m'
+  printf "${GREEN}[WARN]${NC} ${text}\n"
 }
