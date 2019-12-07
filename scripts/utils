@@ -23,7 +23,7 @@ __log_error(){
 	RED='\033[0;31m'
 	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${RED}[ERROR]${WHITE}${text}${NC}\n"
+  printf "${RED}[ERROR] ${WHITE}${text}${NC}\n"
 }
 
 __log_warn(){
@@ -31,7 +31,7 @@ __log_warn(){
 	YELLOW='\033[0;33m'
 	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${YELLOW}[INFO]${WHITE}${text}${NC}\n"
+  printf "${YELLOW}[INFO] ${WHITE}${text}${NC}\n"
 }
 
 __log_info(){
@@ -39,5 +39,5 @@ __log_info(){
 	GREEN='\033[0;32m'
 	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${GREEN}[WARN]${WHITE}${text}${NC}\n"
+  printf "${GREEN}[WARN] ${WHITE}${text}${NC}\n"
 }
