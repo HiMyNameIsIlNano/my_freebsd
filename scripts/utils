@@ -28,16 +28,16 @@ __log_error(){
 
 __log_warn(){
 	local text="$@"
-	YELLOW='\033[0;32m'
+	YELLOW='\033[0;33m'
 	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${YELLOW}[INFO] ${WHITE}${text}${NC}\n"
+  printf "${YELLOW}[WARN] ${WHITE}${text}${NC}\n"
 }
 
 __log_info(){
 	local text="$@"
-	GREEN='\033[0;33m'
+	GREEN='\033[0;32m'
 	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${GREEN}[WARN] ${WHITE}${text}${NC}\n"
+  printf "${GREEN}[INFO] ${WHITE}${text}${NC}\n"
 }
