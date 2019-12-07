@@ -3,7 +3,7 @@
 . $(dirname "$0")/utils
 
 __init_ports() {
-	echo "Initializing ports..."
+	__log_info "Initializing ports..."
 
 	if [ -d /usr/ports ]
 	then
@@ -17,7 +17,7 @@ __init_ports() {
 }
 
 __config_ccache() {
-  echo "Initializing ccache..."
+  __log_info "Initializing ccache..."
 
 	local max_size="$1"
   local timestamp=$(date +%s)
@@ -26,8 +26,9 @@ __config_ccache() {
 
   if [ -f /etc/make.conf ]
   then
-      echo "Backing-up /etc/make.conf"
-      cp /etc/make.conf /etc/make.conf.${timestamp}.bak
+    # TODO: use backup function
+    __log_info "Backing-up /etc/make.conf"
+    cp /etc/make.conf /etc/make.conf.${timestamp}.bak
   else
       touch /etc/make.conf
   fi
@@ -37,7 +38,7 @@ __config_ccache() {
   then
     echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
   else
-    echo "Key CCACHE_DIR already in /etc/make.conf"
+    __log_warn "Key CCACHE_DIR already in /etc/make.conf"
 	fi
 
 	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
@@ -45,7 +46,7 @@ __config_ccache() {
   then
     echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
   else
-    echo "Key WITH_CCACHE_BUILD already in /etc/make.conf"
+    __log_warn "Key WITH_CCACHE_BUILD already in /etc/make.conf"
 	fi
 
 	mkdir -p ~/.ccache
@@ -54,7 +55,7 @@ __config_ccache() {
   then
     echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
   else
-    echo "Key max_size already in ~/.ccache/ccache.conf"
+    __log_warn "Key max_size already in ~/.ccache/ccache.conf"
 	fi
 
 	__check_if_key_in_file cache_dir ~/.ccache/ccache.conf
@@ -62,20 +63,21 @@ __config_ccache() {
   then
     echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
   else
-    echo "Key cache_dir already in ~/.ccache/ccache.conf"
+    __log_warn "Key cache_dir already in ~/.ccache/ccache.conf"
   fi
 
   return 0
 }
 
 __config_ramdisk() {
-  echo "Initializing ramdisk..."
+  __log_info "Initializing ramdisk..."
 
   local timestamp=$(date +%s)
 
   if [ -f /etc/fstab ]
   then
-    echo "Backing-up /etc/fstab"
+    # TODO: use backup function
+    __log_info "Backing-up /etc/fstab"
     cp /etc/fstab /etc/fstab.${timestamp}.bak
   else
     touch /etc/fstab
@@ -87,12 +89,12 @@ __config_ramdisk() {
   then
     echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
   else
-    echo "Key /ram already in /etc/fstab"
+    __log_warn "Key /ram already in /etc/fstab"
   fi
 
   if [ -f /etc/make.conf ]
   then
-    echo "Backing-up /etc/make.conf"
+    __log_info "Backing-up /etc/make.conf"
     cp /etc/make.conf /etc/make.conf.${timestamp}.bak
   else
     touch /etc/make.conf
@@ -103,7 +105,7 @@ __config_ramdisk() {
   then
     echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
   else
-    echo "Key WRKDIRPREFIX already in /etc/make.conf"
+    __log_warn "Key WRKDIRPREFIX already in /etc/make.conf"
   fi
 }
 
@@ -168,7 +170,7 @@ __install_ports(){
       local port_dir=$(__get_port_dir $port)
       cd ${port_dir} && make install clean BATCH=yes
     else
-      echo "${port} already installed on the system"
+      __log_warn "${port} already installed on the system"
     fi
 	done
 }
@@ -190,7 +192,7 @@ __post_config_java(){
       echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
     fi
 	else
-		echo "${java_port_name} is not installed on the system"
+		__log_warn "${java_port_name} is not installed on the system"
 	fi
 }
 # End Functions
@@ -226,29 +228,29 @@ is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 __init_ports
 __config_ccache ${ccache_size}
 
-echo "Installing base ports..."
+__log_info "Installing base ports..."
 __wait_for_seconds 5
 # The installation of the base ports will trigger the installation of some ports that will kill the ramdisk.
 # The base ports will therefore be installed using the normal filesystem.
 __install_ports ${base_ports}
 
-echo "Installing browser ports..."
+__log_info "Installing browser ports..."
 __wait_for_seconds 5
 __install_ports ${browser_ports}
 
 __config_ramdisk
 
 __wait_for_seconds 5
-echo "Installing desktop ports..."
+__log_info "Installing desktop ports..."
 __install_ports_from_ramdisk ${desktop_ports}
 
 # TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
 
-echo "Installing office ports..."
+__log_info "Installing office ports..."
 __wait_for_seconds 5
 __install_ports_from_ramdisk ${office_ports}
 
-echo "Installing development ports..."
+__log_info "Installing development ports..."
 __wait_for_seconds 5
 __install_ports_from_ramdisk ${dev_ports}
 
@@ -257,7 +259,7 @@ __post_config_java openjdk11
 
 if [ "${is_docker_enabled}" == "true" ]
 then
-	echo "Installing docker ports..."
+	__log_info "Installing docker ports..."
 	__wait_for_seconds 5
 
 	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
@@ -266,7 +268,7 @@ fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
 then
-	echo "Installing openvpn ports..."
+	__log_info "Installing openvpn ports..."
 	__wait_for_seconds 5
 
 	openvpn_pkgs=openvpn,curl,sudo
@@ -275,7 +277,7 @@ fi
 
 if [ "${is_virtualbox_guest}" == "true" ]
 then
-	echo "Optimizing Virtualbox Guest..."
+	__log_info "Optimizing Virtualbox Guest..."
 	__wait_for_seconds 5
 
   openbox_guest_pkgs=virtualbox-ose-additions

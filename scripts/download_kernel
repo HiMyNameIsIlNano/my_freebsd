@@ -26,7 +26,7 @@ timestamp=$(date +%s)
 if [ "${download_kernel}" == "true" ]
 then
     __wait_for_seconds 5
-	echo "Downloading kernel source..."
+	__log_info "Downloading kernel source..."
 	if [ -d /usr/src ]
 	then
 	    # backup folder

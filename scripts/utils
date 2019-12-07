@@ -1,23 +1,6 @@
 #!/bin/sh
 
 # Utility Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
-
-__wait_for_input(){
-	printf 'press [ENTER] to continue...'
-	read dummy
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
-
 __log_error(){
 	local text="$@"
 	RED='\033[0;31m'
@@ -40,4 +23,21 @@ __log_info(){
 	WHITE='\033[0;37m'
   NC='\033[0m'
   printf "${GREEN}[INFO] ${WHITE}${text}${NC}\n"
+}
+
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+__wait_for_input(){
+	printf 'press [ENTER] to continue...'
+	read dummy
+}
+
+__wait_for_seconds(){
+	local seconds="$@"
+	__log_warn "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
 }

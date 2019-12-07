@@ -45,7 +45,8 @@ __install_ports(){
 	    	local port_dir=$(__get_port_dir $port)
 	    	cd ${port_dir} && make install clean BATCH=yes
         else
-            echo "${port} already installed on the system"
+          value='An Additional Message'
+          __log_warn "${port} already installed on the system"
 	    fi
 	done
 }
@@ -61,7 +62,7 @@ __install_pkgs(){
 	    then
 		    pkg install -y ${pkg}
         else
-            echo "${pkg} already installed on the system"
+          __log_warn "${pkg} already installed on the system"
 	    fi
 	done
 }

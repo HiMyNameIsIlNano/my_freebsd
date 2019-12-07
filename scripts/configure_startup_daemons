@@ -44,11 +44,10 @@ timestamp=$(date +%s)
 # Sudoers
 if [ -f "/usr/local/etc/sudoers" ]
 then
-  echo "Backing-up sudoers"
+  __log_info "Backing-up sudoers"
 	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
 
-  echo "Configuring sudoers..."
-
+  __log_info "Configuring sudoers..."
   __check_if_key_in_file '## BEGIN OF MY RULES ##' /usr/local/etc/sudoers
   if [ $? -eq 0 ]
   then
@@ -90,32 +89,33 @@ then
       echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
   fi
 else
-	echo "Nothing to do. File sudoers does not exist"
+	__log_error "Nothing to do. File sudoers does not exist"
 fi
 
-echo "Configuring startup daemons and boot options..."
+__log_info "Configuring startup daemons and boot options..."
 __wait_for_seconds 5
 
 # Move to the checkout directory
 cd ${work_dir}
 
+# TODO: change to backup function
 # rc.conf
 if [ -f "/etc/rc.conf" ]
 then
-	echo "Backing-up rc.conf"
+	__log_info "Backing-up rc.conf"
 	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
 else
-	echo "Nothing to backup. File rc.conf does not exist"
+	__log_info "Nothing to backup. File rc.conf does not exist"
 fi
 cat ./freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
 if [ -f "/etc/pf.conf" ]
 then
-	echo "Backing-up pf.conf"
+	__log_info "Backing-up pf.conf"
 	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
 else
-	echo "Nothing to backup. File pf.conf does not exist"
+	__log_info "Nothing to backup. File pf.conf does not exist"
 fi
 cp ./freebsd/pf.conf /etc/pf.conf
 
@@ -132,10 +132,10 @@ fi
 # loader.conf
 if [ -f "/boot/loader.conf" ]
 then
-	echo "Backing-up loader.conf"
+	__log_info "Backing-up loader.conf"
 	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
 else
-	echo "Nothing to backup. File loader.conf does not exist"
+	__log_info "Nothing to backup. File loader.conf does not exist"
 fi
 cp ./freebsd/loader.conf /boot/loader.conf
 

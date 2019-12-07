@@ -20,14 +20,6 @@ while [ "$1" != "" ]; do
     shift
 done
 
-value='An Additional Message'
-__log_error 'This is an error'
-__log_warn 'This is a warning'
-__log_info 'This is an info'
-__log_info "This is an info: ${value}"
-
-exit 0
-
 sh ./scripts/create_users
 
 sh ./scripts/download_kernel
@@ -40,7 +32,7 @@ sh ./scripts/configure_startup_daemons
 # Configure Groups and Users
 sh ./scripts/configure_groups
 
-echo "### Restart computer now... ###"
+__log_warn "### Restart computer now... ###"
 __wait_for_input
 shutdown -r now
 

@@ -8,13 +8,13 @@ __add_user_to_group(){
 	local dummy=Y
 
 	while
-		printf "Which user would you like to add to group ${group}?: "
+		__log_warn "Which user would you like to add to group ${group}?: "
 		read user
 
-		echo "Adding user ${user} to group ${group}..."
+		__log_info "Adding user ${user} to group ${group}..."
 		pw group mod ${group} -m ${user}
 
-		printf "Do you want to add another user to group ${group}? [Y/n]: "
+		__log_warn "Do you want to add another user to group ${group}? [Y/n]: "
 		read dummy
 		[ "${dummy}" == "Y" ]            # test the limit of the loop.
 	do :;  done
@@ -41,38 +41,38 @@ done
 # Variable Declaration
 port_system=$(__read_property port_system)
 
-echo "### IMPORTANT NOTE ###"
-echo "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
+__log_warn "### IMPORTANT NOTE ###"
+__log_warn "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
 __add_user_to_group video
 clear
 
-echo "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
+__log_warn "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
 __add_user_to_group operator
 clear
 
-echo "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
+__log_warn "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
 __add_user_to_group vboxusers
 clear
 
-echo "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
+__log_warn "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
 __add_user_to_group restarter
 clear
 
 if [ ${port_system} == "PKG" ]
 then
-  echo "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+  __log_warn "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
   __add_user_to_group installer
   clear
 fi
 
 if [ ${port_system} == "PORT" ]
 then
-	echo "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+	__log_warn "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
   __add_user_to_group wheel
   clear
 fi
 
-echo "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
+__log_warn "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
 __add_user_to_group vpnstarter
 clear
 
