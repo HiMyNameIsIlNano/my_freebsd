@@ -98,25 +98,11 @@ __wait_for_seconds 5
 # Move to the checkout directory
 cd ${work_dir}
 
-# TODO: change to backup function
-# rc.conf
-if [ -f "/etc/rc.conf" ]
-then
-	__log_info "Backing-up rc.conf"
-	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
-else
-	__log_info "Nothing to backup. File rc.conf does not exist"
-fi
+__backup_file /etc/rc.conf
 cat ./freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
-if [ -f "/etc/pf.conf" ]
-then
-	__log_info "Backing-up pf.conf"
-	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
-else
-	__log_info "Nothing to backup. File pf.conf does not exist"
-fi
+__backup_file /etc/pf.conf
 cp ./freebsd/pf.conf /etc/pf.conf
 
 # Localrules
@@ -130,13 +116,7 @@ then
 fi
 
 # loader.conf
-if [ -f "/boot/loader.conf" ]
-then
-	__log_info "Backing-up loader.conf"
-	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
-else
-	__log_info "Nothing to backup. File loader.conf does not exist"
-fi
+__backup_file /boot/loader.conf
 cp ./freebsd/loader.conf /boot/loader.conf
 
 exit 0

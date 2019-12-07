@@ -24,14 +24,8 @@ __config_ccache() {
 
   __install_ports ccache
 
-  if [ -f /etc/make.conf ]
-  then
-    # TODO: use backup function
-    __log_info "Backing-up /etc/make.conf"
-    cp /etc/make.conf /etc/make.conf.${timestamp}.bak
-  else
-      touch /etc/make.conf
-  fi
+  __backup_file /etc/make.conf
+  touch /etc/make.conf
 
 	__check_if_key_in_file CCACHE_DIR /etc/make.conf
 	if [ $? -eq 0 ]
@@ -74,14 +68,8 @@ __config_ramdisk() {
 
   local timestamp=$(date +%s)
 
-  if [ -f /etc/fstab ]
-  then
-    # TODO: use backup function
-    __log_info "Backing-up /etc/fstab"
-    cp /etc/fstab /etc/fstab.${timestamp}.bak
-  else
-    touch /etc/fstab
-  fi
+  __backup_file /etc/fstab
+  touch /etc/fstab
 
   mkdir -p /ram
   __check_if_key_in_file /ram /etc/fstab
@@ -243,8 +231,6 @@ __config_ramdisk
 __wait_for_seconds 5
 __log_info "Installing desktop ports..."
 __install_ports_from_ramdisk ${desktop_ports}
-
-# TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
 
 __log_info "Installing office ports..."
 __wait_for_seconds 5
