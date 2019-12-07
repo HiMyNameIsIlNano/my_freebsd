@@ -19,22 +19,25 @@ __wait_for_seconds(){
 }
 
 __log_error(){
-	local texts="$@"
+	local text="$@"
 	RED='\033[0;31m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${RED}[ERROR] ${text}${NC}\n"
+  printf "${RED}[ERROR]${WHITE}${text}${NC}\n"
 }
 
 __log_warn(){
-	local texts="$@"
+	local text="$@"
 	YELLOW='\033[0;33m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${YELLOW}[INFO] ${text}${NC}\n"
+  printf "${YELLOW}[INFO]${WHITE}${text}${NC}\n"
 }
 
 __log_info(){
-	local texts="$@"
+	local text="$@"
 	GREEN='\033[0;32m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${GREEN}[WARN] ${text}${NC}\n"
+  printf "${GREEN}[WARN]${WHITE}${text}${NC}\n"
 }
