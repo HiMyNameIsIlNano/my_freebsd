@@ -1,11 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
+. $(dirname "$0")/utils
 
 __check_if_key_in_file() {
     local key="$1"
@@ -44,20 +39,9 @@ __install_pkgs(){
 	    then
 		    pkg install -y ${pkg}
         else
-            echo "${pkg} already installed on the system"
+          __log_warn "${pkg} already installed on the system"
 	    fi
 	done
-}
-
-__wait_for_input(){
-	printf 'press [ENTER] to continue...'
-	read dummy
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
 }
 
 __is_command_installed(){
@@ -85,7 +69,7 @@ __post_config_java(){
       echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
     fi
 	else
-    echo "${java_port_name} is not installed on the system"
+    __log_warn "${java_port_name} is not installed on the system"
 	fi
 }
 # End Functions
@@ -118,27 +102,27 @@ is_setup_vpn_enabled=$(__read_property setup_vpn)
 is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 timestamp=$(date +%s)
 
-echo "Initializing PKG System..."
-echo "Updating package DB..."
+__log_info "Initializing PKG System..."
+__log_info "Updating package DB..."
 pkg update
 
-echo "Installing base packages..."
+__log_info "Installing base packages..."
 __wait_for_seconds 5
 __install_pkgs ${base_pkgs}
 
-echo "Installing browser ports..."
+__log_info "Installing browser ports..."
 __wait_for_seconds 5
 __install_pkgs ${browser_ports}
 
-echo "Installing desktop packages..."
+__log_info "Installing desktop packages..."
 __wait_for_seconds 5
 __install_pkgs ${desktop_pkgs}
 
-echo "Installing office packages..."
+__log_info "Installing office packages..."
 __wait_for_seconds 5
 __install_pkgs ${office_pkgs}
 
-echo "Installing development packages..."
+__log_info "Installing development packages..."
 __wait_for_seconds 5
 __install_pkgs ${dev_pkgs}
 
@@ -147,7 +131,7 @@ __post_config_java openjdk11
 
 if [ "${is_docker_enabled}" == "true" ]
 then
-	echo "Installing docker packages..."
+	__log_info "Installing docker packages..."
 	__wait_for_seconds 5
 
 	docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker
@@ -156,7 +140,7 @@ fi
 
 if [ "${is_setup_vpn_enabled}" == "true" ]
 then
-	echo "Installing openvpn packages..."
+	__log_info "Installing openvpn packages..."
 	__wait_for_seconds 5
 
 	openvpn_pkgs=openvpn,curl,sudo
@@ -165,7 +149,7 @@ fi
 
 if [ "${is_virtualbox_guest}" == "true" ]
 then
-	echo "Optimizing Virtualbox Guest..."
+	__log_info "Optimizing Virtualbox Guest..."
 	__wait_for_seconds 5
 
     openbox_guest_pkgs=virtualbox-ose-additions

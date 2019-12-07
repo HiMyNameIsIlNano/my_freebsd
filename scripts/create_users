@@ -1,28 +1,16 @@
 #!/bin/sh
 
-# Begin Functions
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
-
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
+. $(dirname "$0")/utils
 
 __add_group() {
     local l_group="$@"
 
     if [ $(getent group ${l_group}) ]; then
-      echo "${l_group} group will not be added as it already exists..."
+      __log_warn "${l_group} group will not be added as it already exists..."
     else
       pw groupadd ${l_group}
     fi
 }
-# End Functions
 
 work_dir=.
 config_file=${work_dir}/freebsd_configurer.config
@@ -45,7 +33,7 @@ done
 is_create_users_enabled=$(__read_property create_users)
 
 # Groups
-echo "Adding 'restarter', 'installer' and 'vpnstarter' groups..."
+__log_info "Adding 'restarter', 'installer' and 'vpnstarter' groups..."
 __add_group restarter
 __add_group installer
 __add_group vpnstarter
@@ -54,7 +42,7 @@ __add_group vpnstarter
 if [ "${is_create_users_enabled}" == "true" ]
 then
 	__wait_for_seconds 5
-	echo "Initializing users..."
+	__log_info "Initializing users..."
 	adduser
 fi
 

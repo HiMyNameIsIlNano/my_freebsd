@@ -1,18 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
-# End Functions
+. $(dirname "$0")/utils
 
 work_dir=.
 config_file=${work_dir}/freebsd_configurer.config
@@ -38,7 +26,7 @@ timestamp=$(date +%s)
 if [ "${download_kernel}" == "true" ]
 then
     __wait_for_seconds 5
-	echo "Downloading kernel source..."
+	__log_info "Downloading kernel source..."
 	if [ -d /usr/src ]
 	then
 	    # backup folder

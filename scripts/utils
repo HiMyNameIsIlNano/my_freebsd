@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# Utility Functions
+__backup_file() {
+  local file="$@"
+  __wait_for_seconds 5
+
+  if [ -f "${file}" ]
+  then
+    __log_info "Backing-up ${file}"
+    mv ${file} ${file}.${timestamp}.bak
+  else
+    __log_info "Nothing to backup. File ${file} does not exist"
+  fi
+}
+
+__log_error(){
+	local text="$@"
+	RED='\033[0;31m'
+	WHITE='\033[0;37m'
+  NC='\033[0m'
+  printf "${RED}[ERROR] ${WHITE}${text}${NC}\n"
+}
+
+__log_warn(){
+	local text="$@"
+	YELLOW='\033[0;33m'
+	WHITE='\033[0;37m'
+  NC='\033[0m'
+  printf "${YELLOW}[WARN] ${WHITE}${text}${NC}\n"
+}
+
+__log_info(){
+	local text="$@"
+	GREEN='\033[0;32m'
+	WHITE='\033[0;37m'
+  NC='\033[0m'
+  printf "${GREEN}[INFO] ${WHITE}${text}${NC}\n"
+}
+
+__read_property(){
+	input="$@"
+	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
+	echo ${temp##*|}
+}
+
+__wait_for_input(){
+	printf 'press [ENTER] to continue...'
+	read dummy
+}
+
+__wait_for_seconds(){
+	local seconds="$@"
+	__log_warn "waiting ${seconds} seconds before continuing..."
+	sleep ${seconds}
+}

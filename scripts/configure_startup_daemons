@@ -1,17 +1,6 @@
 #!/bin/sh
 
-# Begin Functions
-__read_property(){
-	input="$@"
-	temp=`cat $config_file | sed 's/\"//g' | grep -w $input | cut -d ":" -f2`
-	echo ${temp##*|}
-}
-
-__wait_for_seconds(){
-	local seconds="$@"
-	echo "waiting ${seconds} seconds before continuing..."
-	sleep ${seconds}
-}
+. $(dirname "$0")/utiils
 
 __check_if_key_in_file() {
   local key="$1"
@@ -55,11 +44,10 @@ timestamp=$(date +%s)
 # Sudoers
 if [ -f "/usr/local/etc/sudoers" ]
 then
-  echo "Backing-up sudoers"
+  __log_info "Backing-up sudoers"
 	cp /usr/local/etc/sudoers /usr/local/etc/sudoers-${timestamp}.bak
 
-  echo "Configuring sudoers..."
-
+  __log_info "Configuring sudoers..."
   __check_if_key_in_file '## BEGIN OF MY RULES ##' /usr/local/etc/sudoers
   if [ $? -eq 0 ]
   then
@@ -101,33 +89,20 @@ then
       echo '## END OF MY RULES ##' >> /usr/local/etc/sudoers
   fi
 else
-	echo "Nothing to do. File sudoers does not exist"
+	__log_error "Nothing to do. File sudoers does not exist"
 fi
 
-echo "Configuring startup daemons and boot options..."
+__log_info "Configuring startup daemons and boot options..."
 __wait_for_seconds 5
 
 # Move to the checkout directory
 cd ${work_dir}
 
-# rc.conf
-if [ -f "/etc/rc.conf" ]
-then
-	echo "Backing-up rc.conf"
-	cp /etc/rc.conf /etc/rc.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File rc.conf does not exist"
-fi
+__backup_file /etc/rc.conf
 cat ./freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
-if [ -f "/etc/pf.conf" ]
-then
-	echo "Backing-up pf.conf"
-	cp /etc/pf.conf /etc/pf.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File pf.conf does not exist"
-fi
+__backup_file /etc/pf.conf
 cp ./freebsd/pf.conf /etc/pf.conf
 
 # Localrules
@@ -141,13 +116,7 @@ then
 fi
 
 # loader.conf
-if [ -f "/boot/loader.conf" ]
-then
-	echo "Backing-up loader.conf"
-	mv /boot/loader.conf /boot/loader.conf.${timestamp}.bak
-else
-	echo "Nothing to backup. File loader.conf does not exist"
-fi
+__backup_file /boot/loader.conf
 cp ./freebsd/loader.conf /boot/loader.conf
 
 exit 0
