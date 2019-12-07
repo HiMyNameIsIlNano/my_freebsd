@@ -21,20 +21,23 @@ __wait_for_seconds(){
 __log_error(){
 	local texts="$@"
 	RED='\033[0;31m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${RED}[ERROR]${NC} ${text}\n"
+  printf "${RED}[ERROR]${WHITE}${text}${NC}\n"
 }
 
 __log_warn(){
 	local texts="$@"
 	YELLOW='\033[0;33m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${YELLOW}[INFO]${NC} ${text}\n"
+  printf "${YELLOW}[INFO]${WHITE}${text}${NC}\n"
 }
 
 __log_info(){
 	local texts="$@"
 	GREEN='\033[0;32m'
+	WHITE='\033[0;37m'
   NC='\033[0m'
-  printf "${GREEN}[WARN]${NC} ${text}\n"
+  printf "${GREEN}[WARN]${WHITE}${text}${NC}\n"
 }
