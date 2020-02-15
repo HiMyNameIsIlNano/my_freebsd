@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $(dirname "$0")/utiils
+. $(dirname "$0")/utils
 
 __check_if_key_in_file() {
   local key="$1"
