@@ -28,4 +28,4 @@ __extract(){
     done
 }
 
-extract $@
+__extract $@
