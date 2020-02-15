@@ -98,7 +98,9 @@ __wait_for_seconds 5
 # Move to the checkout directory
 cd ${work_dir}
 
+cp /etc/rc.conf /etc/rc.conf.1
 __backup_file /etc/rc.conf
+mv /etc/rc.conf.1 /etc/rc.conf
 cat ./freebsd/rc.conf.delta >> /etc/rc.conf
 
 # pf.conf
