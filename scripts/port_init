@@ -68,9 +68,7 @@ __config_ramdisk() {
 
   local timestamp=$(date +%s)
 
-  cp /etc/fstab /etc/fstab.1
-  __backup_file /etc/fstab
-  mv /etc/fstab.1 /etc/fstab 
+  __backup_but_keep_file /etc/fstab
  
   mkdir -p /ram
   __check_if_key_in_file /ram /etc/fstab

@@ -14,6 +14,14 @@ __backup_file() {
   fi
 }
 
+
+__backup_but_keep_file() {
+  local file="$@"
+  cp ${file} /tmp/${file}.${timestamp}.cpy
+  __backup_file ${file}
+  mv /tmp/${file}.${timestamp}.cpy ${file}
+}
+
 __log_error(){
 	local text="$@"
 	RED='\033[0;31m'
