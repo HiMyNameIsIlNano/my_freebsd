@@ -69,7 +69,7 @@ __install_pkgs(){
 # End Functions
 
 work_dir=..
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/openbox_configurer.config
 
 while [ "$1" != "" ]; do
     case $1 in

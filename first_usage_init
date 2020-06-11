@@ -181,7 +181,12 @@ __pcmanfm_setup(){
 }
 
 work_dir=.
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/openbox_configurer.config
+
+# Make sure the init is run once
+if [ -f ~/.config/openbox/init.finished ]; then
+  exit 0;
+fi
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -230,5 +235,7 @@ __geany_setup
 __docker_setup
 
 __setup_user_update_script
-		
+
+cat $timestamp > ~/.config/openbox/init.finished
+
 exit 0

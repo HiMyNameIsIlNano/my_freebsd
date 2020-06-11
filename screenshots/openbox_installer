@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. $(dirname "$0")/scripts/utils
+
+work_dir=.
+config_file=${work_dir}/openbox_configurer.config
+
+while [ "$1" != "" ]; do
+    case $1 in
+	    -c | --config )		    shift
+                            config_file=$1
+                            echo ${config_file}
+                            ;;
+        -h | --help )       usage
+                            exit
+                            ;;
+        * )                 usage
+                            exit 1
+    esac
+    shift
+done
+
+sh ./scripts/install_software
+
+exit 0
