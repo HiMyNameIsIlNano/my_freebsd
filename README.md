@@ -64,6 +64,6 @@ Having tested this configuration Script only on a Virtual Machine little I can s
 The Extra folder contains some configuration scripts that are not part and cannot be part of the configuration scripts, but some users may find interesting. One of these is for example, the installation script for MS VSCode.
 
 ## TODOs:
-- [ ] Add `arandr` to openbox menu
-- [ ] Fix `xz` package name
-- [ ] Add colored logs
+- [x] Add `arandr` to openbox menu
+- [x] Fix `xz` package name
+- [x] Add colored logs

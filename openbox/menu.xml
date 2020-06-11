@@ -19,6 +19,14 @@
                 </startupnotify>
             </action>
         </item>
+        <item label="Video Resolution">
+            <action name="Execute">
+                <command>arandr</command>
+                <startupnotify>
+                    <enabled>yes</enabled>
+                </startupnotify>
+            </action>
+        </item>
     </menu>
 
     <menu id="apps-development-menu" label="Development Tools">
