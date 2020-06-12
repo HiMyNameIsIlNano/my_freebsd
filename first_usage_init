@@ -24,6 +24,8 @@ __check_docker_requirements() {
   # Check if docker and vagrant are installed
   __is_installed vagrant
   __is_installed docker-machine
+  __is_installed docker
+  __is_installed docker-compose
 }
 
 __xsession_setup() {
