@@ -144,6 +144,15 @@ __docker_setup(){
   mkdir -p ${HOME}/.local/scripts
   cp ./openbox/docker_up ${HOME}/.local/scripts/docker_up
   cp ./openbox/docker_down ${HOME}/.local/scripts/docker_down
+
+  # Do not use this in production. This is just fine for local development
+  docker-machine create \
+    --driver generic \
+    --generic-ip-address 127.0.0.1 \
+    --generic-ssh-port 2222 \
+    --generic-ssh-user docker \
+    --generic-ssh-key ~/.vagrant.d/insecure_private_key \
+    boot2docker-vbox
 }
 
 __setup_user_update_script(){
