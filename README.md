@@ -13,11 +13,16 @@ If you want to install Openbox on your system a give it the look and feel as sho
 then execute:
 
 ```
-fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/openbox-desktop
+fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
 mkdir -p /tmp/my_freebsd
 tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
 cd /tmp/my_freebsd
-sh desktop_configurer
+
+# As root (or a user with install privileges)
+sh openbox_installer
+
+# As normal user
+sh first_usage_init
 ```
 
 ## Further Configuration Possibilities:
