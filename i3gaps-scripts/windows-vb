@@ -1,0 +1,9 @@
+#!/bin/sh
+
+notebook_screen_res=1600x1200x32
+office_screen_res=1650x1050x32
+
+VBoxManage setextradata global GUI/MaxGuestResolution any
+VBoxManage setextradata 'Windows 10' "CustomVideoMode1" "${notebook_screen_resolution}"
+VBoxManage setextradata 'Windows 10' "CustomVideoMode1" "${office_screen_resolution}"
+VBoxManage startvm 'Windows 10'

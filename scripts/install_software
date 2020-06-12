@@ -3,7 +3,7 @@
 . $(dirname "$0")/utils
 
 work_dir=.
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/i3gaps_configurer.i3-config
 
 # Variable Declaration
 port_system=$(__read_property port_system)

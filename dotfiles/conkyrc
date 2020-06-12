@@ -1,26 +1,33 @@
+-- Taken from https://unixsheikh.com/tutorials/how-to-setup-freebsd-with-a-riced-desktop-part-3-i3.html
+
 conky.config = {
-	double_buffer = true,
-	own_window_class = 'conky',
-	own_window = true,
-	own_window_type = 'conky',
-	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
-	own_window_argb_visual = true,
-	draw_borders = false,
-	draw_graph_borders = false,
-	draw_shades = true,
-	gap_x = 0,
-	gap_y = 0,
-	alignment = 'top_left',
-	update_interval = 1,
-	default_color = '#ffffff',
-	own_window_colour = '#222D32',
-	use_xft = true,
-	font = 'Roboto:size=9',
-	override_utf8_locale = true,
-	use_spacer = 'none',
-	minimum_width = 1920, minimum_height = 0
+    background = false,
+    cpu_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = true,
+    out_to_x = false,
+    own_window = false,
+    update_interval = 1,
+    short_units = true,
+    total_run_times = 0
 };
 
 conky.text = [[
-${goto 5}OS: ${color 4DB6AC}${font Roboto:size=9}$sysname${color}${font}   Kernel: ${color 4DB6AC}${font Roboto:size=9}$kernel${color}${font}  Uptime: ${color 4DB6AC}${font Roboto:size=9}${uptime_short}${color}${font} |  Battery: ${color 4DB6AC}${font Roboto:size=9}$battery_percent%${color}${font}  |  ${color}${font}Hdd:${color 4DB6AC}${font Roboto:size=9} ${fs_used_perc /}% ${fs_used /} / ${fs_size /}${color} ${if_up wlan0} |  Local ip: ${color 4DB6AC}${font Roboto:size=9}${addr wlan0}${font}${color}  |  Public ip: ${color 4DB6AC}${font Roboto:size=9}${exec curl -s ipinfo.io/ip}${color} ${if_up tun1} |  (VPN) Network: ${color 82BA00}Up :${color} ${color 4DB6AC}${upspeed tun1} kb/s${color}  ${color 82BA00}Down :${color} ${color 4DB6AC}${downspeed tun1} kb/s${color} ${color 82BA00}Total :${color} ${color 4DB6AC}${totaldown tun1}${color} ${else}${if_up wlan0} |  Network: ${color 82BA00}Up :${color} ${color 4DB6AC}${upspeed wlan0} kb/s${color}  ${color 82BA00}Down :${color} ${color 4DB6AC}${downspeed wlan0} kb/s${color} ${color 82BA00}Total :${color} ${color 4DB6AC}${totaldown wlan0}${color}${endif}${endif}${endif}  | Cpu: ${color 4DB6AC}${font Roboto:size=9}${cpu}%${color}${font}  Ram: ${color 4DB6AC}${font Roboto:size=9}${memperc}%${color}${font}  Swap: ${color 4DB6AC}${font Roboto:size=9}${swapperc}%${color}${font}
+
+[
+    {"full_text": "CPU: ${cpu cpu0}% ", "color":"\#cf6a4c"},
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "RAM: $mem","color":"\#cda869"},
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "LAN: ${addr em0}","color":"\#89b859"},                                                        
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "VPN: ${addr tun0}","color":"\#00aaaa"},
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "${exec hostname }", "color":"\#9b703f"},
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "UP: ${uptime_short} ", "color":"\#838184"},
+    {"full_text": " | ", "color":"\#555555"},
+    {"full_text": "${time %A %Y-%m-%d %H:%M} ", "color":"\#cccccc"}
+],
+
 ]];

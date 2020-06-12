@@ -1,0 +1,3 @@
+feh --bg-fill ~/.config/i3/wallpapers/wallpaper.jpg &
+setxkbmap xx &
+exec i3

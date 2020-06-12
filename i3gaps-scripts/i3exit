@@ -1,0 +1,26 @@
+#!/bin/sh
+# Adapted from https://github.com/manjaro/packages-community/blob/master/i3/i3exit/i3exit
+
+case "$1" in
+    lock)
+        blurlock
+        ;;
+    logout)
+        i3-msg exit
+        ;;
+    suspend)
+        sudo acpiconf -s 3 && blurlock 
+        ;;
+    reboot)
+	sudo shutdown -r now        
+        ;;
+    shutdown)
+        sudo shutdown -h now
+        ;;
+    *)
+        echo "== ! i3exit: missing or invalid argument ! =="
+        echo "Try again with: lock | logout | switch_user | suspend | hibernate | reboot | shutdown"
+        exit 2
+esac
+
+exit 0

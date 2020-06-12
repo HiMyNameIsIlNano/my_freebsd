@@ -1,0 +1,19 @@
+#!/bin/sh
+
+notebook_screen_res='1600 1200 32'
+office_screen_res='1650 1050 32'
+intern=eDP1i
+extern=DP2-1
+
+function set_resolution() {
+    local resolution=$1
+    VBoxManage controlvm "Windows 10" setvideomodehint ${resolution}
+}
+
+if xrandr | grep "$extern connected"; then
+    echo 'External monitor connected. Using this as default monitor'
+    set_resolution "${office_screen_res}"
+else
+    echo 'External monitor is not connected. Using the notebook one'
+    set_resolution "${notebook_screen_res}"
+fi

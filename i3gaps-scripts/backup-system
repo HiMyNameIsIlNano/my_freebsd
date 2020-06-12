@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# # create_img - backup a parition to a gzip file
+# # usage: create_img <partition> <destination> (e.g. create_img nvme0n1p2 /mnt/usb)
+create_img () {
+  local output_folder="$(date +"%d_%m_%Y")"
+  local file_name="$(date +"%d_%m_%Y")".img.gz
+  local partition=$1
+  local destination_path=$2/Backup/Images/${output_folder}
+  [ -d ${destination_path} ] && echo "Removing old ${destination_path}" && sudo sh -c "rm -r ${destination_path}"
+  sudo sh -c "mkdir -p ${destination_path}"
+  echo "Creating back-up of ${partition} to ${destination_path}"
+  sudo sh -c "dd if=/dev/${partition} | gzip -c > ${destination_path}/${file_name}"
+}
+
+#
+# # backup_my_home - backup a user's own folder to a gzip file
+# # usage: backup_my_home <destination> (e.g. backup_home /mnt/usb)
+backup_my_home () {
+  local output_folder="$(date +"%d_%m_%Y")"
+  local user_name="$(whoami)"
+  local destination_path=$1/Backup/UserHome/${output_folder}
+  sudo sh -c "mkdir -p ${destination_path}"
+  sudo sh -c "tar -cv /home/${user_name} | gzip > ${destination_path}/${user_name}.tar.gz"
+}
+
+dest_folder=$1
+partition=$2
+
+#[ -d ${dest_folder} ] && backup_my_home ${dest_folder} && create_img ${partition} ${dest_folder}
+[ -d ${dest_folder} ] && create_img ${partition} ${dest_folder}

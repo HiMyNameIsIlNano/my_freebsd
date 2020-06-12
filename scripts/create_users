@@ -13,11 +13,11 @@ __add_group() {
 }
 
 work_dir=.
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/i3gaps_configurer.i3-config
 
 while [ "$1" != "" ]; do
     case $1 in
-	    -c | --config )		    shift
+	    -c | --i3-config )		    shift
                                 config_file=$1
                                 echo ${config_file}
                                 ;;
