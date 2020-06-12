@@ -134,7 +134,7 @@ then
 	__log_info "Installing docker packages..."
 	__wait_for_seconds 5
 
-	docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker
+	docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker,docker-compose,py37-paramiko
 	__install_pkgs ${docker_pkgs}
 fi
 
