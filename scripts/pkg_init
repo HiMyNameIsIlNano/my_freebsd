@@ -138,15 +138,6 @@ then
 	__install_pkgs ${docker_pkgs}
 fi
 
-if [ "${is_setup_vpn_enabled}" == "true" ]
-then
-	__log_info "Installing openvpn packages..."
-	__wait_for_seconds 5
-
-	openvpn_pkgs=openvpn,curl,sudo
-	__install_pkgs ${openvpn_pkgs}
-fi
-
 if [ "${is_virtualbox_guest}" == "true" ]
 then
 	__log_info "Optimizing Virtualbox Guest..."

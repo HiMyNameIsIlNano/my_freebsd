@@ -44,14 +44,6 @@ __shell_setup(){
   cp ./dotfiles/tcshrc ${HOME}/.tcshrc
 }
 
-__shell_prompt_setup(){
-  __log_info "Copying powershell config.json under ${HOME}/.config/powerline-shell"
-  pip install --user powerline-shell
-  mkdir -p ${HOME}/.config//powerline-shell
-  __backup_file ${HOME}/.config/powerline-shell/config.json
-  cp ./openbox/config.json ${HOME}/.config/powerline-shell/config.json
-}
-
 __task_bar_setup(){
   __log_info "Copying tint2rc under ${HOME}/.config/tint2"
   mkdir -p ${HOME}/.config/tint2
@@ -136,16 +128,10 @@ __docker_setup(){
   __check_docker_requirements
   mkdir -p ${HOME}/.local/scripts
 
-  __log_info "Installing docker configuration..."
+  __log_info "Configuring docker..."
   __wait_for_seconds 5
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
-
-  __log_info "Installing docker shortcuts..."
-  __wait_for_seconds 5
-  mkdir -p ${HOME}/.local/scripts
-  cp ./openbox/docker_up ${HOME}/.local/scripts/docker_up
-  cp ./openbox/docker_down ${HOME}/.local/scripts/docker_down
 
   # Do not use this in production. This is just fine for local development
   docker-machine create \

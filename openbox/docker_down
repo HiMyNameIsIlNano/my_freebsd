@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd ~/Development/Vagrant/dockervm
-vagrant halt 
-
-#docker-machine stop
-
