@@ -20,9 +20,10 @@ if ($?prompt) then
 	set history = 100
 	set savehist = 100
 	set autolist = TAB
+	set LOCAL_SCRIPTS=~/.local/scripts
 	set JAVA_HOME=/usr/local/openjdk11/bin
 	set POWERSHELL_DIR=~/.local/bin/
-	set path = ($path $HOME/bin ${JAVA_HOME} ${POWERSHELL_DIR})
+	set path = ($path $HOME/bin ${LOCAL_SCRIPTS} ${JAVA_HOME} ${POWERSHELL_DIR})
 	set mail = (/var/mail/$USER)
 
 	set green_bg="%{\e[30;42;1m%}"
