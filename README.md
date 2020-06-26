@@ -7,8 +7,8 @@ The aim of this script is to provide a minimal working desktop without putting t
 ## Desktop Configuration:
 If you want to install i3 on your system a give it the look and feel as shown below 
 
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/i3gaps-desktop/2020-06-12-093100_1600x900_scrot.png)
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/i3gaps-desktop/2020-06-12-092044_1600x900_scrot.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/i3gaps-desktop/screenshots/2020-06-12-093100_1600x900_scrot.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/i3gaps-desktop/screenshots/2020-06-12-092044_1600x900_scrot.png)
 
 then execute:
 
