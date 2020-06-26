@@ -2,71 +2,62 @@
 
 . $(dirname "$0")/scripts/utils
 
-__is_user_allowed_to_update(){
-	group=$(id -G -n $USER | grep -o "installer")
-	if [ "${group}" == "installer" ]; then
-		echo true
-	else
-		echo false
-	fi
+__is_user_allowed_to_update() {
+  group=$(id -G -n $USER | grep -o "installer")
+  if [ "${group}" == "installer" ]; then
+    echo true
+  else
+    echo false
+  fi
 }
 
-__is_installed(){
-	__log_info "Checking if $1 is installed..."
-	if ! [ -x "$(command -v $1)" ]; then
-	  __log_error "Error: $1 is not installed." >&2
-	  exit 1
-	fi
+__is_installed() {
+  __log_info "Checking if $1 is installed..."
+  if ! [ -x "$(command -v $1)" ]; then
+    __log_error "Error: $1 is not installed." >&2
+    exit 1
+  fi
 }
 
-__check_docker_requirements(){
-	__log_info "Checking docker Requirements..."
-	# Check if docker and vagrant are installed
-	__is_installed vagrant
-	__is_installed docker-machine
-	__is_installed docker
+__check_docker_requirements() {
+  __log_info "Checking docker Requirements..."
+  # Check if docker and vagrant are installed
+  __is_installed vagrant
+  __is_installed docker-machine
+  __is_installed docker
   __is_installed docker-compose
 }
 
-__xsession_setup(){
+__xsession_setup() {
   __log_info "Copying .xinitrc under ${HOME}"
   __backup_file ${HOME}/.xinitrc
-  echo 'exec openbox-session' >> ${HOME}/.xinitrc
+  echo 'exec openbox-session' >>${HOME}/.xinitrc
 
   __log_info "Copying .Xdefaults under ${HOME}"
   __backup_file ${HOME}/.Xdefaults
   cp ./dotfiles/Xdefaults ${HOME}/.Xdefaults
 }
 
-__shell_setup(){
+__shell_setup() {
   __log_info "Copying .tcshrc under ${HOME}"
   __backup_file ${HOME}/.tcshrc
   cp ./dotfiles/tcshrc ${HOME}/.tcshrc
 }
 
-__task_bar_setup(){
+__task_bar_setup() {
   __log_info "Copying tint2rc under ${HOME}/.config/tint2"
   mkdir -p ${HOME}/.config/tint2
   __backup_file ${HOME}/.config/tint2
   cp ./openbox/tint2rc ${HOME}/.config/tint2/tint2rc
 }
 
-__conky_setup(){
+__conky_setup() {
   __log_info "Copying Conky Configuration Files under ${HOME}..."
   __backup_file ${HOME}/.conkyrc
   cp ./dotfiles/conkyrc ${HOME}/.conkyrc
 }
 
-__download_icons_theme(){
-  __log_info "Copying Icon Pack Files under ${HOME}/.icons..."
-  mkdir -p ${HOME}/.icons
-  __wait_for_seconds 5
-  # Icon Pack
-  fetch --no-verify-hostname --no-verify-peer -o /tmp/icons.tar.gz https://api.github.com/repos/thiagolucio/Super-Ultra-Flat-Numix-Remix/tarball/master
-  tar xvzf /tmp/icons.tar.gz --strip=1 -C ${HOME}/.icons/
-}
-
-__gtk_theme_setup(){
+__gtk_theme_setup() {
   __log_info "Copying gtk2/gtk3 Configuration Files under ${HOME}..."
   __backup_file ${HOME}/.gtkrc-2.0
   cp ./dotfiles/gtkrc-2.0 ${HOME}/.gtkrc-2.0
@@ -77,7 +68,7 @@ __gtk_theme_setup(){
   cp ./dotfiles/settings.ini ${HOME}/.config/gtk-3.0/settings.ini
 }
 
-__openbox_setup(){
+__openbox_setup() {
   mkdir -p ${HOME}/.config/openbox
 
   __log_info "Copying autostart.sh under ${HOME}/.config/openbox"
@@ -104,7 +95,7 @@ __openbox_setup(){
   patch -i ./openbox/themerc.diff /usr/local/share/themes/Adapta/openbox-3/themerc -o ${HOME}/.themes/Myfreebsd-Adapta/openbox-3/themerc
 }
 
-__geany_setup(){
+__geany_setup() {
   mkdir -p ${HOME}/.config/geany
 
   __log_info "Installing geany themes..."
@@ -119,9 +110,8 @@ __geany_setup(){
   rm -rf /tmp/geany_themes_${timestamp}
 }
 
-__docker_setup(){
-  if [ "${is_docker_enabled}" == "false" ]
-  then
+__docker_setup() {
+  if [ "${is_docker_enabled}" == "false" ]; then
     return
   fi
 
@@ -143,7 +133,7 @@ __docker_setup(){
     boot2docker-vbox
 }
 
-__setup_user_update_script(){
+__setup_user_update_script() {
   if [ "${user_can_update}" == "true" ]; then
     __log_info "Installing Update Scripts under ${HOME}/.local/scripts..."
     __wait_for_seconds 5
@@ -163,7 +153,7 @@ __setup_user_update_script(){
 }
 
 # TODO: if pcmanfm copy /usr/local/share/applications/mimeinfo.cache under ${HOME}/local/share/applications/mimeinfo.cache
-__pcmanfm_setup(){
+__pcmanfm_setup() {
   # PCmanFM: Add open terminal feature
   mkdir -p ~/.local/share/file-manager/actions/
   mkdir -p ${HOME}/.local/scripts/
@@ -182,22 +172,26 @@ config_file=${work_dir}/openbox_configurer.config
 
 # Make sure the init is run once
 if [ -f ~/.config/openbox/init.finished ]; then
-  exit 0;
+  exit 0
 fi
 
 while [ "$1" != "" ]; do
-    case $1 in
-	    -c | --config )		    shift
-                                config_file=$1
-                                echo ${config_file}
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+  -c | --config)
     shift
+    config_file=$1
+    echo ${config_file}
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
 done
 
 # Variable Declaration
@@ -223,8 +217,6 @@ __task_bar_setup
 
 __conky_setup
 
-__download_icons_theme
-
 __gtk_theme_setup
 
 __geany_setup
@@ -233,6 +225,6 @@ __docker_setup
 
 __setup_user_update_script
 
-cat $timestamp > ~/.config/openbox/init.finished
+cat $timestamp >~/.config/openbox/init.finished
 
 exit 0
