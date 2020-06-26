@@ -75,7 +75,7 @@ __post_config_java(){
 # End Functions
 
 work_dir=.
-config_file=${work_dir}/openbox_configurer.config
+config_file=${work_dir}/openbox_installer.config
 
 while [ "$1" != "" ]; do
     case $1 in

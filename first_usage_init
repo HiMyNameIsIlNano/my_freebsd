@@ -168,7 +168,7 @@ __pcmanfm_setup() {
 }
 
 work_dir=.
-config_file=${work_dir}/openbox_configurer.config
+config_file=${work_dir}/openbox_installer.config
 
 # Make sure the init is run once
 if [ -f ~/.config/openbox/init.finished ]; then

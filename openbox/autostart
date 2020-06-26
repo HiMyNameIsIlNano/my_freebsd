@@ -1,10 +1,4 @@
 #!/bin/sh
-sleep 2 &
-
-# Make sure the init is run once
-if [ ! -f ~/.config/openbox/init.finished ]; then
-  xterm -title "Initialize the desktop environment" -e "/tmp/my_freebsd/first_usage_init"
-fi
 
 (sleep 2 && tint2) &
 (sleep 2 && conky) &

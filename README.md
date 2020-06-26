@@ -13,10 +13,10 @@ If you want to install Openbox on your system a give it the look and feel as sho
 then execute:
 
 ```
-fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
-mkdir -p /tmp/my_freebsd
-tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
-cd /tmp/my_freebsd
+fetch --no-verify-hostname --no-verify-peer -o /tmp/openbox_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/openbox-desktop
+mkdir -p /tmp/openbox_freebsd
+tar xvzf /tmp/openbox_freebsd.tar.gz --strip=1 -C /tmp/openbox_freebsd
+cd /tmp/openbox_freebsd
 
 # As root (or a user with install privileges)
 sh openbox_installer
@@ -26,7 +26,7 @@ sh first_usage_init
 ```
 
 ## Further Configuration Possibilities:
-The `desktop_configurer` is driven by a configuration file named `openbox_configurer.config`. The `openbox_configurer.config` is a simple `json-like` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
+The `desktop_configurer` is driven by a configuration file named `openbox_installer.config`. The `openbox_installer.config` is a simple `json-like` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
 
 1. desktop_ports: A category of ports used to configure the desktop (e.g. openbox, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 2. office_ports: A category of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
@@ -44,6 +44,4 @@ Having tested this configuration Script only on a Virtual Machine little I can s
 The Extra folder contains some configuration scripts that are not part and cannot be part of the configuration scripts, but some users may find interesting. One of these is for example, the installation script for MS VSCode.
 
 ## TODOs:
-- [x] Add `arandr` to openbox menu
-- [x] Fix `xz` package name
-- [x] Add colored logs
+- [ ] There is always something to do
