@@ -50,15 +50,6 @@ __conky_setup() {
   cp ./dotfiles/conkyrc ${HOME}/.conkyrc
 }
 
-__download_icons_theme() {
-  __log_info "Copying Icon Pack Files under ${HOME}/.icons..."
-  mkdir -p ${HOME}/.icons
-  __wait_for_seconds 5
-  # Icon Pack
-  fetch --no-verify-hostname --no-verify-peer -o /tmp/icons.tar.gz https://api.github.com/repos/thiagolucio/Super-Ultra-Flat-Numix-Remix/tarball/master
-  tar xvzf /tmp/icons.tar.gz --strip=1 -C ${HOME}/.icons/
-}
-
 __gtk_theme_setup() {
   __log_info "Copying gtk2/gtk3 Configuration Files under ${HOME}..."
   __backup_file ${HOME}/.gtkrc-2.0
@@ -75,7 +66,7 @@ __i3gaps_setup() {
   __backup_file ${HOME}/.i3-config/i3/i3-config
   cp ./i3gaps/i3-config ${HOME}/.i3-config/i3
 
-  cp ./wallpapers/wallpaper.jpg ${HOME}/.i3-config/i3/wallpapers/
+  cp ./wallpapers/* ${HOME}/.i3-config/i3/wallpapers/
   cp -r ./i3gaps-scripts ${HOME}/.local/scripts/
 }
 
@@ -92,7 +83,7 @@ __docker_setup() {
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./i3gaps/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
 
-    __log_info "Configuring docker..."
+  __log_info "Configuring docker..."
   __wait_for_seconds 5
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
@@ -124,6 +115,20 @@ __setup_user_update_script() {
   else
     __log_warn "Skipping Copying Update Scripts under ${HOME}/.local/scripts as ${USER} is not member of the group installer..."
   fi
+}
+
+__setup_vim {
+  __is_installed curl
+  __is_installed vim
+
+  cp dotfiles/vimrc ~/.vimrc
+  mkdir -p ~/.vim/undodir
+  mkdir -p ~/.vim/plugged
+
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+  vim +PluginInstall +qall
 }
 
 work_dir=.
@@ -169,11 +174,7 @@ __task_bar_setup
 
 __conky_setup
 
-__download_icons_theme
-
 __gtk_theme_setup
-
-__geany_setup
 
 __docker_setup
 

@@ -194,15 +194,15 @@ set_from_resource $term_color14    color14
 set_from_resource $term_color15    color15
 
 # class                 border  bground text    indicator child_border
-client.focused          #1e1e1b #1e1e1b #1e1e1b #cf6a4c   #cf6a4c
-client.background       #1e1e1b
+client.focused          #282828 #282828 #282828 #cf6a4c   #cf6a4c
+client.background       #282828
 
 bar {
     colors {
-        background #1e1e1b
+        background #282828
         statusline #ffffff
-        separator  #1e1e1b
-        focused_workspace  #1e1e1b #1e1e1b #cf6a4c
+        separator  #282828
+        focused_workspace  #282828 #282828 #cf6a4c
         active_workspace   #333333 #5f676a #ffffff
         inactive_workspace #333333 #222222 #888888
         urgent_workspace   #aa0000 #990000 #ffffff
