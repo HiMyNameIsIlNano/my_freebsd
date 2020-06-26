@@ -1,6 +1,0 @@
-# Default Font
-gtk-font-name="Roboto 8"
-
-# Sets the icon theme and gtk2 theme
-gtk-icon-theme-name = "Super-Ultra-Flat-Numix-Remix-Arch-Blue" 
-gtk-theme-name="Adapta"

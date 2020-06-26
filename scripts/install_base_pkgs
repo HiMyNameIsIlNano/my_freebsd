@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. $(dirname "$0")/utils
+
+work_dir=.
+config_file=${work_dir}/freebsd_installer.config
+
+# Variable Declaration
+port_system=$(__read_property port_system)
+
+# Trigger pkg installation if run for the first time
+pkg info
+
+if [ ${port_system} == "PKG" ]; then
+  __wait_for_seconds 5
+  sh ./scripts/pkg_init
+  if [ $? -eq 1 ]; then
+    exit 1
+  fi
+fi
+
+if [ ${port_system} == "PORT" ]; then
+  __wait_for_seconds 5
+  sh ./scripts/port_init
+  if [ $? -eq 1 ]; then
+    exit 1
+  fi
+fi

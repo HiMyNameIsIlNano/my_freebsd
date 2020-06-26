@@ -2,40 +2,44 @@
 
 . $(dirname "$0")/utils
 
-__add_user_to_group(){
-	local group="$@"
-	local user
-	local dummy=Y
+__add_user_to_group() {
+  local group="$@"
+  local user
+  local dummy=Y
 
-	while
-		__log_warn "Which user would you like to add to group ${group}?: "
-		read user
+  while
+    __log_warn "Which user would you like to add to group ${group}?: "
+    read user
 
-		__log_info "Adding user ${user} to group ${group}..."
-		pw group mod ${group} -m ${user}
+    __log_info "Adding user ${user} to group ${group}..."
+    pw group mod ${group} -m ${user}
 
-		__log_warn "Do you want to add another user to group ${group}? [Y/n]: "
-		read dummy
-		[ "${dummy}" == "Y" ]            # test the limit of the loop.
-	do :;  done
+    __log_warn "Do you want to add another user to group ${group}? [Y/n]: "
+    read dummy
+    [ "${dummy}" == "Y" ] # test the limit of the loop.
+  do :; done
 }
 
 work_dir=.
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/freebsd_installer.config
 
 while [ "$1" != "" ]; do
-    case $1 in
-	    -c | --config )		    shift
-                                config_file=$1
-                                echo ${config_file}
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+  -c | --config)
     shift
+    config_file=$1
+    echo ${config_file}
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
 done
 
 # Variable Declaration
@@ -58,16 +62,14 @@ __log_warn "Add members to the 'restarter' group, otherwise it won't be possible
 __add_user_to_group restarter
 clear
 
-if [ ${port_system} == "PKG" ]
-then
+if [ ${port_system} == "PKG" ]; then
   __log_warn "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
   __add_user_to_group installer
   clear
 fi
 
-if [ ${port_system} == "PORT" ]
-then
-	__log_warn "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
+if [ ${port_system} == "PORT" ]; then
+  __log_warn "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
   __add_user_to_group wheel
   clear
 fi

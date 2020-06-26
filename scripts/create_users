@@ -3,31 +3,35 @@
 . $(dirname "$0")/utils
 
 __add_group() {
-    local l_group="$@"
+  local l_group="$@"
 
-    if [ $(getent group ${l_group}) ]; then
-      __log_warn "${l_group} group will not be added as it already exists..."
-    else
-      pw groupadd ${l_group}
-    fi
+  if [ $(getent group ${l_group}) ]; then
+    __log_warn "${l_group} group will not be added as it already exists..."
+  else
+    pw groupadd ${l_group}
+  fi
 }
 
 work_dir=.
-config_file=${work_dir}/freebsd_configurer.config
+config_file=${work_dir}/freebsd_installer.config
 
 while [ "$1" != "" ]; do
-    case $1 in
-	    -c | --config )		    shift
-                                config_file=$1
-                                echo ${config_file}
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+  -c | --config)
     shift
+    config_file=$1
+    echo ${config_file}
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
 done
 
 is_create_users_enabled=$(__read_property create_users)
@@ -39,11 +43,10 @@ __add_group installer
 __add_group vpnstarter
 
 # Users
-if [ "${is_create_users_enabled}" == "true" ]
-then
-	__wait_for_seconds 5
-	__log_info "Initializing users..."
-	adduser
+if [ "${is_create_users_enabled}" == "true" ]; then
+  __wait_for_seconds 5
+  __log_info "Initializing users..."
+  adduser
 fi
 
 exit 0
