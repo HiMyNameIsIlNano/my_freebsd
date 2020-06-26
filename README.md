@@ -13,10 +13,10 @@ If you want to install i3 on your system a give it the look and feel as shown be
 then execute:
 
 ```
-fetch --no-verify-hostname --no-verify-peer -o /tmp/my_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
-mkdir -p /tmp/my_freebsd
-tar xvzf /tmp/my_freebsd.tar.gz --strip=1 -C /tmp/my_freebsd
-cd /tmp/my_freebsd
+fetch --no-verify-hostname --no-verify-peer -o /tmp/i3_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
+mkdir -p /tmp/i3_freebsd
+tar xvzf /tmp/i3_freebsd.tar.gz --strip=1 -C /tmp/i3_freebsd
+cd /tmp/i3_freebsd
 
 # As root (or a user with install privileges)
 sh i3gaps_installer
@@ -26,7 +26,7 @@ sh first_usage_init
 ```
 
 ## Further Configuration Possibilities:
-The `i3gaps_installer` is driven by a configuration file named `i3gaps_configurer.config`. The `i3gaps_configurer.config` is a simple `json-like` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
+The `i3gaps_installer` is driven by a configuration file named `i3gaps_installer.config`. The `i3gaps_installer.config` is a simple `json-like` file containing a list of programs and flags used for the configuration of the desktop environment. The meaning of each configuration item is described below:
 
 1. desktop_ports: A category of ports used to configure the desktop (e.g. i3gaps, gtk themes, etc.). The list MUST BE comma separated with NO EMPTY SPACE between the items;
 2. office_ports: A category of ports used to configure the office suite system wide (e.g. libreoffice). The list MUST BE comma separated with NO EMPTY SPACE between the items;
