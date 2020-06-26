@@ -7,8 +7,8 @@ The aim of this script is to provide a minimal working desktop without putting t
 ## Desktop Configuration:
 If you want to install Openbox on your system a give it the look and feel as shown below 
 
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_1_1600x900.png)
-![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/master/screenshots/2019-11-21_2_1600x900.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/openbox-desktop/screenshots/2019-11-21_1_1600x900.png)
+![Settings Window](https://raw.github.com/HiMyNameIsIlNano/my_freebsd/openbox-desktop/screenshots/2019-11-21_2_1600x900.png)
 
 then execute:
 
