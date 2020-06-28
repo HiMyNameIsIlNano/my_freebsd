@@ -3,23 +3,22 @@
 . $(dirname "$0")/utils
 
 __init_ports() {
-	__log_info "Initializing ports..."
+  __log_info "Initializing ports..."
 
-	if [ -d /usr/ports ]
-	then
-	    portsnap update
-    else
-        portsnap fetch
-        portsnap extract
-    fi
+  if [ -d /usr/ports ]; then
+    portsnap update
+  else
+    portsnap fetch
+    portsnap extract
+  fi
 
-	return 0
+  return 0
 }
 
 __config_ccache() {
   __log_info "Initializing ccache..."
 
-	local max_size="$1"
+  local max_size="$1"
   local timestamp=$(date +%s)
 
   __install_ports ccache
@@ -27,35 +26,31 @@ __config_ccache() {
   __backup_file /etc/make.conf
   touch /etc/make.conf
 
-	__check_if_key_in_file CCACHE_DIR /etc/make.conf
-	if [ $? -eq 0 ]
-  then
-    echo "CCACHE_DIR=/var/cache/ccache" >> /etc/make.conf
+  __check_if_key_in_file CCACHE_DIR /etc/make.conf
+  if [ $? -eq 0 ]; then
+    echo "CCACHE_DIR=/var/cache/ccache" >>/etc/make.conf
   else
     __log_warn "Key CCACHE_DIR already in /etc/make.conf"
-	fi
+  fi
 
-	__check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
-	if [ $? -eq 0 ]
-  then
-    echo "WITH_CCACHE_BUILD=yes" >> /etc/make.conf
+  __check_if_key_in_file WITH_CCACHE_BUILD /etc/make.conf
+  if [ $? -eq 0 ]; then
+    echo "WITH_CCACHE_BUILD=yes" >>/etc/make.conf
   else
     __log_warn "Key WITH_CCACHE_BUILD already in /etc/make.conf"
-	fi
+  fi
 
-	mkdir -p ~/.ccache
-	__check_if_key_in_file max_size ~/.ccache/ccache.conf
-	if [ $? -eq 0 ]
-  then
-    echo "max_size = ${max_size}" >> ~/.ccache/ccache.conf
+  mkdir -p ~/.ccache
+  __check_if_key_in_file max_size ~/.ccache/ccache.conf
+  if [ $? -eq 0 ]; then
+    echo "max_size = ${max_size}" >>~/.ccache/ccache.conf
   else
     __log_warn "Key max_size already in ~/.ccache/ccache.conf"
-	fi
+  fi
 
-	__check_if_key_in_file cache_dir ~/.ccache/ccache.conf
-  if [ $? -eq 0 ]
-  then
-    echo "cache_dir = /var/cache/ccache" >> ~/.ccache/ccache.conf
+  __check_if_key_in_file cache_dir ~/.ccache/ccache.conf
+  if [ $? -eq 0 ]; then
+    echo "cache_dir = /var/cache/ccache" >>~/.ccache/ccache.conf
   else
     __log_warn "Key cache_dir already in ~/.ccache/ccache.conf"
   fi
@@ -69,18 +64,16 @@ __config_ramdisk() {
   local timestamp=$(date +%s)
 
   __backup_but_keep_file /etc/fstab
- 
+
   mkdir -p /ram
   __check_if_key_in_file /ram /etc/fstab
-  if [ $? -eq 0 ]
-  then
-    echo 'tmpfs /ram tmpfs rw 0 0' >> /etc/fstab
+  if [ $? -eq 0 ]; then
+    echo 'tmpfs /ram tmpfs rw 0 0' >>/etc/fstab
   else
     __log_warn "Key /ram already in /etc/fstab"
   fi
 
-  if [ -f /etc/make.conf ]
-  then
+  if [ -f /etc/make.conf ]; then
     __log_info "Backing-up /etc/make.conf"
     cp /etc/make.conf /etc/make.conf.${timestamp}.bak
   else
@@ -88,9 +81,8 @@ __config_ramdisk() {
   fi
 
   __check_if_key_in_file WRKDIRPREFIX /etc/make.conf
-  if [ $? -eq 0 ]
-  then
-    echo "WRKDIRPREFIX=/ram" >> /etc/make.conf
+  if [ $? -eq 0 ]; then
+    echo "WRKDIRPREFIX=/ram" >>/etc/make.conf
   else
     __log_warn "Key WRKDIRPREFIX already in /etc/make.conf"
   fi
@@ -100,12 +92,11 @@ __check_if_key_in_file() {
   local key="$1"
   local file="$2"
 
-  if [ -f ${file} ]
-  then
+  if [ -f ${file} ]; then
     if grep -Fq "${key}" "${file}"; then
-        return 1
+      return 1
     else
-        return 0
+      return 0
     fi
   fi
 
@@ -113,74 +104,70 @@ __check_if_key_in_file() {
 }
 
 __get_port_dir() {
-	local port_name="$1"
-	local port_dir=$(whereis -q ${port_name})
-	echo ${port_dir##*|}
+  local port_name="$1"
+  local port_dir=$(whereis -q ${port_name})
+  echo ${port_dir##*|}
 }
 
 __check_if_port_installed() {
   local port="$1"
 
-  if ! pkg info ${port} > /dev/null 2>&1; then
+  if ! pkg info ${port} >/dev/null 2>&1; then
     return 0
   else
     return 1
   fi
 }
 
-__is_command_installed(){
-	if ! [ -x "$(command -v $1)" ]; then
+__is_command_installed() {
+  if ! [ -x "$(command -v $1)" ]; then
     return 0
   else
     return 1
-	fi
+  fi
 }
 
-__install_ports_from_ramdisk(){
-	local ports_to_install="$@"
+__install_ports_from_ramdisk() {
+  local ports_to_install="$@"
 
-	mount /ram
-	__install_ports ${ports_to_install}
-	ccache -C
-	umount /ram
+  mount /ram
+  __install_ports ${ports_to_install}
+  ccache -C
+  umount /ram
 }
 
-__install_ports(){
-	local ports_to_install="$@"
+__install_ports() {
+  local ports_to_install="$@"
 
-	# The list of ports must be comma separated with no empty space
-	for port in $(echo ${ports_to_install} | sed "s/,/ /g")
-	do
+  # The list of ports must be comma separated with no empty space
+  for port in $(echo ${ports_to_install} | sed "s/,/ /g"); do
     __check_if_port_installed ${port}
-    if [ $? -eq 0 ]
-    then
+    if [ $? -eq 0 ]; then
       local port_dir=$(__get_port_dir $port)
       cd ${port_dir} && make install clean BATCH=yes
     else
       __log_warn "${port} already installed on the system"
     fi
-	done
+  done
 }
 
-__post_config_java(){
+__post_config_java() {
   local java_port_name="$1"
-	__check_if_port_installed ${java_port_name}
+  __check_if_port_installed ${java_port_name}
 
-	if [ $? -eq 1 ] ; then
-		__check_if_key_in_file /dev/fd /etc/fstab
-    if [ $? -eq 0 ]
-    then
-      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
-		fi
+  if [ $? -eq 1 ]; then
+    __check_if_key_in_file /dev/fd /etc/fstab
+    if [ $? -eq 0 ]; then
+      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >>/etc/fstab
+    fi
 
     __check_if_key_in_file /proc /etc/fstab
-		if [ $? -eq 0 ]
-    then
-      echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+    if [ $? -eq 0 ]; then
+      echo "proc	/proc		procfs		rw	0	0" >>/etc/fstab
     fi
-	else
-		__log_warn "${java_port_name} is not installed on the system"
-	fi
+  else
+    __log_warn "${java_port_name} is not installed on the system"
+  fi
 }
 # End Functions
 
@@ -188,38 +175,34 @@ work_dir=.
 config_file=${work_dir}/openbox_installer.config
 
 while [ "$1" != "" ]; do
-    case $1 in
-	    -c | --config )		    shift
-                                config_file=$1
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+  -c | --config)
     shift
+    config_file=$1
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
 done
 
 # Variable Declaration
-base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
 browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
-is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
 is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 
 __init_ports
 __config_ccache ${ccache_size}
-
-__log_info "Installing base ports..."
-__wait_for_seconds 5
-# The installation of the base ports will trigger the installation of some ports that will kill the ramdisk.
-# The base ports will therefore be installed using the normal filesystem.
-__install_ports ${base_ports}
 
 __log_info "Installing browser ports..."
 __wait_for_seconds 5
@@ -242,33 +225,22 @@ __install_ports_from_ramdisk ${dev_ports}
 # Finalize Java8 Configuration
 __post_config_java openjdk11
 
-if [ "${is_docker_enabled}" == "true" ]
-then
-	__log_info "Installing docker ports..."
-	__wait_for_seconds 5
+if [ "${is_docker_enabled}" == "true" ]; then
+  __log_info "Installing docker ports..."
+  __wait_for_seconds 5
 
-	docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
-	__install_ports_from_ramdisk ${docker_ports}
+  docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
+  __install_ports_from_ramdisk ${docker_ports}
 fi
 
-if [ "${is_setup_vpn_enabled}" == "true" ]
-then
-	__log_info "Installing openvpn ports..."
-	__wait_for_seconds 5
-
-	openvpn_pkgs=openvpn,curl,sudo
-	__install_ports_from_ramdisk ${openvpn_pkgs}
-fi
-
-if [ "${is_virtualbox_guest}" == "true" ]
-then
-	__log_info "Optimizing Virtualbox Guest..."
-	__wait_for_seconds 5
+if [ "${is_virtualbox_guest}" == "true" ]; then
+  __log_info "Optimizing Virtualbox Guest..."
+  __wait_for_seconds 5
 
   openbox_guest_pkgs=virtualbox-ose-additions
-	__install_ports_from_ramdisk ${openbox_guest_pkgs}
+  __install_ports_from_ramdisk ${openbox_guest_pkgs}
 
-  echo 'vboxguest_enable="YES"' >> /etc/rc.conf
+  echo 'vboxguest_enable="YES"' >>/etc/rc.conf
   cp ./virtualbox/xorg/xorg.conf /etc/X11/
 fi
 
