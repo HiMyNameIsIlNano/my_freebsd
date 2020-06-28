@@ -134,7 +134,7 @@ if [ "${is_virtualbox_guest}" == "true" ]; then
   __log_info "Optimizing Virtualbox Guest..."
   __wait_for_seconds 5
 
-  openbox_guest_pkgs=virtualbox-ose-additions
+  openbox_guest_pkgs=virtualbox-ose-additions,arandr
   __install_pkgs ${openbox_guest_pkgs}
 
   echo 'vboxguest_enable="YES"' >>/etc/rc.conf
