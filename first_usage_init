@@ -83,11 +83,6 @@ __docker_setup() {
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./i3gaps/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
 
-  __log_info "Configuring docker..."
-  __wait_for_seconds 5
-  mkdir -p ${HOME}/Development/Vagrant/dockervm
-  cp ./openbox/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
-
   # Do not use this in production. This is just fine for local development
   docker-machine create \
     --driver generic \
@@ -160,7 +155,7 @@ is_setup_vpn_enabled=$(__read_property setup_vpn)
 geany_tag_base_url=http://download.geany.org/contrib/tags
 timestamp=$(date +%s)
 
-__log_info "Start configuring Openbox Desktop Look & Feel..."
+__log_info "Start configuring i3gaps Desktop Look & Feel..."
 
 __pcmanfm_setup
 
@@ -178,10 +173,8 @@ __gtk_theme_setup
 
 __docker_setup
 
-__setup_vim
+#__setup_vim
 
 __setup_user_update_script
-
-cat $timestamp > ~/.config/openbox/init.finished
 
 exit 0
