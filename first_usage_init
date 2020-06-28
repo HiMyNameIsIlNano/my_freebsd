@@ -165,8 +165,6 @@ __shell_setup
 
 __i3gaps_setup
 
-__task_bar_setup
-
 __conky_setup
 
 __gtk_theme_setup
