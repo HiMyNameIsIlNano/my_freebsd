@@ -157,8 +157,6 @@ timestamp=$(date +%s)
 
 __log_info "Start configuring i3gaps Desktop Look & Feel..."
 
-__pcmanfm_setup
-
 __xsession_setup
 
 __shell_setup
