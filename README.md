@@ -19,7 +19,7 @@ tar xvzf /tmp/openbox_freebsd.tar.gz --strip=1 -C /tmp/openbox_freebsd
 cd /tmp/openbox_freebsd
 
 # As root (or a user with install privileges)
-sh openbox_installer
+[sudo] sh openbox_installer
 
 # As normal user
 sh first_usage_init
