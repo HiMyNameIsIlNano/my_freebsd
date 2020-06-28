@@ -91,23 +91,17 @@ while [ "$1" != "" ]; do
 done
 
 # Variable Declaration
-base_pkgs=$(__read_property base_ports)
 desktop_pkgs=$(__read_property desktop_ports)
 dev_pkgs=$(__read_property dev_ports)
 office_pkgs=$(__read_property office_ports)
 browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
-is_setup_vpn_enabled=$(__read_property setup_vpn)
 is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 timestamp=$(date +%s)
 
 __log_info "Initializing PKG System..."
 __log_info "Updating package DB..."
 pkg update
-
-__log_info "Installing base packages..."
-__wait_for_seconds 5
-__install_pkgs ${base_pkgs}
 
 __log_info "Installing browser ports..."
 __wait_for_seconds 5
@@ -125,7 +119,7 @@ __log_info "Installing development packages..."
 __wait_for_seconds 5
 __install_pkgs ${dev_pkgs}
 
-# Finalize Java8 Configuration
+# Finalize Java Configuration
 __post_config_java openjdk11
 
 if [ "${is_docker_enabled}" == "true" ]; then
@@ -134,14 +128,6 @@ if [ "${is_docker_enabled}" == "true" ]; then
 
   docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker,docker-compose,py37-paramiko
   __install_pkgs ${docker_pkgs}
-fi
-
-if [ "${is_setup_vpn_enabled}" == "true" ]; then
-  __log_info "Installing openvpn packages..."
-  __wait_for_seconds 5
-
-  openvpn_pkgs=openvpn,curl,sudo
-  __install_pkgs ${openvpn_pkgs}
 fi
 
 if [ "${is_virtualbox_guest}" == "true" ]; then
