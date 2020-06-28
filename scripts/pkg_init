@@ -3,92 +3,91 @@
 . $(dirname "$0")/utils
 
 __check_if_key_in_file() {
-    local key="$1"
-    local file="$2"
+  local key="$1"
+  local file="$2"
 
-    if [ -f ${file} ]
-    then
-        if grep -Fq "${key}" "${file}"; then
-            return 1
-        else
-            return 0
-        fi
+  if [ -f ${file} ]; then
+    if grep -Fq "${key}" "${file}"; then
+      return 1
+    else
+      return 0
     fi
+  fi
 
-    return 0
+  return 0
 }
 
 __check_if_pkg_installed() {
-    local pkg="$1"
+  local pkg="$1"
 
-    if ! pkg info ${pkg} > /dev/null 2>&1; then
-        return 0
+  if ! pkg info ${pkg} >/dev/null 2>&1; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+__install_pkgs() {
+  pkgs_to_install="$@"
+
+  # The list of ports must be comma separated with no empty space
+  for pkg in $(echo $pkgs_to_install | sed "s/,/ /g"); do
+    __check_if_pkg_installed ${pkg}
+    if [ $? -eq 0 ]; then
+      pkg install -y ${pkg}
     else
-        return 1
+      __log_warn "${pkg} already installed on the system"
     fi
+  done
 }
 
-__install_pkgs(){
-	pkgs_to_install="$@"
-
-	# The list of ports must be comma separated with no empty space
-	for pkg in $(echo $pkgs_to_install | sed "s/,/ /g")
-	do
-	    __check_if_pkg_installed ${pkg}
-	    if [ $? -eq 0 ]
-	    then
-		    pkg install -y ${pkg}
-        else
-          __log_warn "${pkg} already installed on the system"
-	    fi
-	done
+__is_command_installed() {
+  if ! [ -x "$(command -v $1)" ]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
-__is_command_installed(){
-	if ! [ -x "$(command -v $1)" ]; then
-	    return 0
-    else
-        return 1
-	fi
-}
+__post_config_java() {
+  local java_port_name="$1"
+  __check_if_pkg_installed ${java_port_name}
 
-__post_config_java(){
-	local java_port_name="$1"
-	__check_if_pkg_installed ${java_port_name}
-
-	if [ $? -eq 1 ] ; then
-		__check_if_key_in_file /dev/fd /etc/fstab
-    if [ $? -eq 0 ]
-    then
-      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >> /etc/fstab
-		fi
+  if [ $? -eq 1 ]; then
+    __check_if_key_in_file /dev/fd /etc/fstab
+    if [ $? -eq 0 ]; then
+      echo "fdesc	/dev/fd		fdescfs		rw	0	0" >>/etc/fstab
+    fi
 
     __check_if_key_in_file /proc /etc/fstab
-		if [ $? -eq 0 ]
-    then
-      echo "proc	/proc		procfs		rw	0	0" >> /etc/fstab
+    if [ $? -eq 0 ]; then
+      echo "proc	/proc		procfs		rw	0	0" >>/etc/fstab
     fi
-	else
+  else
     __log_warn "${java_port_name} is not installed on the system"
-	fi
+  fi
 }
 # End Functions
 
 work_dir=.
-config_file=${work_dir}/i3gaps_configurer.i3-config
+config_file=${work_dir}/i3gaps_installer.config
 
 while [ "$1" != "" ]; do
-    case $1 in
-	    -c | --i3-config )		    shift
-                                config_file=$1
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+  -c | --i3-config)
     shift
+    config_file=$1
+    ;;
+  -h | --help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+  shift
 done
 
 # Variable Declaration
@@ -129,34 +128,31 @@ __install_pkgs ${dev_pkgs}
 # Finalize Java8 Configuration
 __post_config_java openjdk11
 
-if [ "${is_docker_enabled}" == "true" ]
-then
-	__log_info "Installing docker packages..."
-	__wait_for_seconds 5
+if [ "${is_docker_enabled}" == "true" ]; then
+  __log_info "Installing docker packages..."
+  __wait_for_seconds 5
 
-	docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker,docker-compose,py37-paramiko
-	__install_pkgs ${docker_pkgs}
+  docker_pkgs=virtualbox-ose-nox11,vagrant,docker-machine,docker,docker-compose,py37-paramiko
+  __install_pkgs ${docker_pkgs}
 fi
 
-if [ "${is_setup_vpn_enabled}" == "true" ]
-then
-	__log_info "Installing openvpn packages..."
-	__wait_for_seconds 5
+if [ "${is_setup_vpn_enabled}" == "true" ]; then
+  __log_info "Installing openvpn packages..."
+  __wait_for_seconds 5
 
-	openvpn_pkgs=openvpn,curl,sudo
-	__install_pkgs ${openvpn_pkgs}
+  openvpn_pkgs=openvpn,curl,sudo
+  __install_pkgs ${openvpn_pkgs}
 fi
 
-if [ "${is_virtualbox_guest}" == "true" ]
-then
-	__log_info "Optimizing Virtualbox Guest..."
-	__wait_for_seconds 5
+if [ "${is_virtualbox_guest}" == "true" ]; then
+  __log_info "Optimizing Virtualbox Guest..."
+  __wait_for_seconds 5
 
-    openbox_guest_pkgs=virtualbox-ose-additions
-	__install_pkgs ${openbox_guest_pkgs}
+  openbox_guest_pkgs=virtualbox-ose-additions
+  __install_pkgs ${openbox_guest_pkgs}
 
-    echo 'vboxguest_enable="YES"' >> /etc/rc.conf
-    cp ./virtualbox/xorg/xorg.conf /etc/X11/
+  echo 'vboxguest_enable="YES"' >>/etc/rc.conf
+  cp ./virtualbox/xorg/xorg.conf /etc/X11/
 fi
 
 exit 0

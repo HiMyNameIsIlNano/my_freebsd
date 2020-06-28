@@ -21,7 +21,7 @@ __add_user_to_group(){
 }
 
 work_dir=.
-config_file=${work_dir}/i3gaps_configurer.i3-config
+config_file=${work_dir}/i3gaps_installer.config
 
 while [ "$1" != "" ]; do
     case $1 in
