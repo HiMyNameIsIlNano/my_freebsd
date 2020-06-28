@@ -178,6 +178,8 @@ __gtk_theme_setup
 
 __docker_setup
 
+__setup_vim
+
 __setup_user_update_script
 
 cat $timestamp > ~/.config/openbox/init.finished
