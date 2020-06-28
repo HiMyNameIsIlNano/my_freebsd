@@ -19,7 +19,7 @@ tar xvzf /tmp/i3_freebsd.tar.gz --strip=1 -C /tmp/i3_freebsd
 cd /tmp/i3_freebsd
 
 # As root (or a user with install privileges)
-sh i3gaps_installer
+[sudo] sh i3gaps_installer
 
 # As normal user
 sh first_usage_init
