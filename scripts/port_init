@@ -193,13 +193,11 @@ while [ "$1" != "" ]; do
 done
 
 # Variable Declaration
-base_ports=$(__read_property base_ports)
 desktop_ports=$(__read_property desktop_ports)
 dev_ports=$(__read_property dev_ports)
 office_ports=$(__read_property office_ports)
 browser_ports=$(__read_property browser_ports)
 is_docker_enabled=$(__read_property enable_docker)
-is_setup_vpn_enabled=$(__read_property setup_vpn)
 ccache_size=$(__read_property ccache_size)
 is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 
@@ -208,9 +206,6 @@ __config_ccache ${ccache_size}
 
 __log_info "Installing base ports..."
 __wait_for_seconds 5
-# The installation of the base ports will trigger the installation of some ports that will kill the ramdisk.
-# The base ports will therefore be installed using the normal filesystem.
-__install_ports ${base_ports}
 
 __log_info "Installing browser ports..."
 __wait_for_seconds 5
@@ -239,14 +234,6 @@ if [ "${is_docker_enabled}" == "true" ]; then
 
   docker_ports=virtualbox-ose-nox11,vagrant,docker-machine,docker
   __install_ports_from_ramdisk ${docker_ports}
-fi
-
-if [ "${is_setup_vpn_enabled}" == "true" ]; then
-  __log_info "Installing openvpn ports..."
-  __wait_for_seconds 5
-
-  openvpn_pkgs=openvpn,curl,sudo
-  __install_ports_from_ramdisk ${openvpn_pkgs}
 fi
 
 if [ "${is_virtualbox_guest}" == "true" ]; then
