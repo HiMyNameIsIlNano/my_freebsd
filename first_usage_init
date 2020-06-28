@@ -117,7 +117,7 @@ __setup_user_update_script() {
   fi
 }
 
-__setup_vim {
+__setup_vim() {
   __is_installed curl
   __is_installed vim
 
