@@ -14,7 +14,7 @@ __show_menu() {
   echo -e "${ENTER_LINE}Select ${RED_TEXT}any of the choices. ${NORMAL}"
 }
 
-function __i3gaps_install() {
+__i3gaps_install() {
   fetch --no-verify-hostname --no-verify-peer -o /tmp/i3gaps_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
   mkdir -p /tmp/i3gaps_freebsd
   tar xvzf /tmp/i3gaps_freebsd.tar.gz --strip=1 -C /tmp/i3gaps_freebsd
@@ -23,7 +23,7 @@ function __i3gaps_install() {
   sh i3_installer
 }
 
-function __openbox_install() {
+__openbox_install() {
   fetch --no-verify-hostname --no-verify-peer -o /tmp/openbox_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/openbox-desktop
   mkdir -p /tmp/openbox_freebsd
   tar xvzf /tmp/openbox_freebsd.tar.gz --strip=1 -C /tmp/openbox_freebsd
