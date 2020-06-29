@@ -44,8 +44,14 @@ __add_group installer
 # Users
 if [ "${is_create_users_enabled}" == "true" ]; then
   __wait_for_seconds 5
-  __log_info "Initializing users..."
-  bsdconfig useradd
+  local dummy=Y
+
+  while [ "${dummy}" == "Y" ]; do
+    __log_info "Initializing users..."
+    bsdconfig useradd
+    __log_warn "Do you want to add another user? [Y/n]: "
+    read dummy
+  done
 fi
 
 exit 0
