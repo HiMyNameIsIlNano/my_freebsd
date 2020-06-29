@@ -1,5 +1,6 @@
 # my_freebsd 
-A Simple Script to Configure A Freebsd Desktop Environment with a Nice Look and Feel. The script comes with two flavours: the `openbox-desktop` branch allows the configuration  of an `openbox` desktop.
+A Simple Script to Configure A Freebsd Desktop Environment with a Nice Look and Feel. The script installs a couple of utilities on top of a vanilla `FreeBDS` install.
+The script gives a user the freedom to choose between an `Openbox` based desktop or an `i3` one.
 
 ### Purpose
 The aim of this script is to provide a minimal working desktop without putting too many efforts in the configuration.
@@ -17,16 +18,13 @@ cd /tmp/my_freebsd
 sh freebsd_installer
 ```
 
-Once the base system is installed one can either decide to install `i3`:
+Once the base system has been installed and rebooted, one can either decide to install `i3`:
 
 ```
 ######
 # i3 #
 ######
 
-fetch --no-verify-hostname --no-verify-peer -o /tmp/i3_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
-mkdir -p /tmp/i3_freebsd
-tar xvzf /tmp/i3_freebsd.tar.gz --strip=1 -C /tmp/i3_freebsd
 cd /tmp/i3_freebsd
 
 # As root (or a user with install privileges)
@@ -43,9 +41,6 @@ or `Openbox`:
 # Openbox #
 ###########
 
-fetch --no-verify-hostname --no-verify-peer -o /tmp/openbox_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/openbox-desktop
-mkdir -p /tmp/openbox_freebsd
-tar xvzf /tmp/openbox_freebsd.tar.gz --strip=1 -C /tmp/openbox_freebsd
 cd /tmp/openbox_freebsd
 
 # As root (or a user with install privileges)
