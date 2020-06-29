@@ -20,7 +20,7 @@ __i3gaps_install() {
   tar xvzf /tmp/i3gaps_freebsd.tar.gz --strip=1 -C /tmp/i3gaps_freebsd
   cd /tmp/i3gaps_freebsd
 
-  sh i3_installer
+  sh i3gaps_installer
 }
 
 __openbox_install() {
