@@ -62,11 +62,12 @@ __gtk_theme_setup() {
 }
 
 __i3gaps_setup() {
-  mkdir -p ~/.i3-config/i3/wallpapers/
-  __backup_file ${HOME}/.i3-config/i3/i3-config
-  cp ./i3gaps/i3-config ${HOME}/.i3-config/i3
+  mkdir -p ~/.config/i3/wallpapers/
+  __backup_file ${HOME}/.config/i3/i3-config
+  cp ./i3gaps/i3-config ${HOME}/.config/i3
 
-  cp ./wallpapers/* ${HOME}/.i3-config/i3/wallpapers/
+  cp ./wallpapers/* ${HOME}/.config/i3/wallpapers/
+  mkdir -p ${HOME}/.local/scripts/
   cp -r ./i3gaps-scripts ${HOME}/.local/scripts/
 }
 
@@ -83,6 +84,9 @@ __docker_setup() {
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./i3gaps/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
 
+  cd ${HOME}/Development/Vagrant/dockervm && vagrant up && export_docker
+  eval `docker-machine env boot2docker-vbox`
+
   # Do not use this in production. This is just fine for local development
   docker-machine create \
     --driver generic \
@@ -91,6 +95,8 @@ __docker_setup() {
     --generic-ssh-user docker \
     --generic-ssh-key ~/.vagrant.d/insecure_private_key \
     boot2docker-vbox
+
+  cd ${HOME}/Development/Vagrant/dockervm && vagrant halt
 }
 
 __setup_user_update_script() {
