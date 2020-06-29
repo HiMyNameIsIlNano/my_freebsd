@@ -63,8 +63,8 @@ __gtk_theme_setup() {
 
 __i3gaps_setup() {
   mkdir -p ~/.config/i3/wallpapers/
-  __backup_file ${HOME}/.config/i3/i3-config
-  cp ./i3gaps/i3-config ${HOME}/.config/i3
+  __backup_file ${HOME}/.config/i3/config
+  cp ./i3gaps/i3-config ${HOME}/.config/i3/config
 
   cp ./wallpapers/* ${HOME}/.config/i3/wallpapers/
   mkdir -p ${HOME}/.local/scripts/
@@ -94,8 +94,6 @@ __docker_setup() {
     --generic-ssh-user docker \
     --generic-ssh-key ~/.vagrant.d/insecure_private_key \
     boot2docker-vbox
-
-  cd ${HOME}/Development/Vagrant/dockervm && vagrant halt
 }
 
 __setup_user_update_script() {
@@ -124,10 +122,9 @@ __setup_vim() {
   cp dotfiles/vimrc ~/.vimrc
   mkdir -p ~/.vim/undodir
   mkdir -p ~/.vim/plugged
+  mkdir -p ~/.vim/autoload
 
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
+  fetch --no-verify-hostname --no-verify-peer -o ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   vim +PluginInstall +qall
 }
 
@@ -174,7 +171,7 @@ __gtk_theme_setup
 
 __docker_setup
 
-#__setup_vim
+__setup_vim
 
 __setup_user_update_script
 
