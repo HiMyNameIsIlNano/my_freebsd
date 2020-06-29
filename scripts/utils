@@ -15,9 +15,12 @@ __backup_file() {
 
 __backup_but_keep_file() {
   local file="$@"
-  cp ${file} /tmp/${file}.${timestamp}.cpy
-  __backup_file ${file}
-  mv /tmp/${file}.${timestamp}.cpy ${file}
+  if [ -f "${file}" ]; then
+    __log_info "Backing-up ${file}"
+    cp ${file} ${file}.${timestamp}.bak
+  else
+    __log_info "Nothing to backup. File ${file} does not exist"
+  fi
 }
 
 __log_error() {

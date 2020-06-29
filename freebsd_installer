@@ -36,6 +36,8 @@ sh ./scripts/configure_startup_daemons
 # Configure Groups and Users
 sh ./scripts/configure_groups
 
+sh ./scripts/install_window_manager
+
 __log_warn "### Restart computer now... ###"
 __wait_for_input
 shutdown -r now

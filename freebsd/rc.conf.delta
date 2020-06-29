@@ -12,11 +12,6 @@ powerd_flags="-a hiadaptive -b adaptive"
 performance_cx_lowest="Cmax"
 economy_cx_lowest="Cmax"
 
-# TOR Settings
-#tor_enable="YES"
-#polipo_enable="YES"
-#privoxy_enable="YES"
-
 # Screensaver
 saver="blank"
 blanktime="300"
