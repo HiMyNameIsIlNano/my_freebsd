@@ -176,7 +176,7 @@ config_file=${work_dir}/i3gaps_installer.config
 
 while [ "$1" != "" ]; do
   case $1 in
-  -c | --i3-config)
+  -c | --config)
     shift
     config_file=$1
     ;;
