@@ -45,7 +45,7 @@ __add_group installer
 if [ "${is_create_users_enabled}" == "true" ]; then
   __wait_for_seconds 5
   __log_info "Initializing users..."
-  adduser
+  bsdconfig useradd
 fi
 
 exit 0

@@ -54,22 +54,24 @@ if [ "${configure_groups}" == "false" ]; then
   exit 0
 fi
 
-__log_warn "### IMPORTANT NOTE ###"
-__log_warn "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
-__add_user_to_group video
-clear
+#__log_warn "### IMPORTANT NOTE ###"
+#__log_warn "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
+#__add_user_to_group video
+#clear
+#
+#__log_warn "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
+#__add_user_to_group operator
+#clear
+#
+#__log_warn "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
+#__add_user_to_group vboxusers
+#clear
+#
+#__log_warn "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
+#__add_user_to_group restarter
+#clear
 
-__log_warn "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
-__add_user_to_group operator
-clear
-
-__log_warn "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
-__add_user_to_group vboxusers
-clear
-
-__log_warn "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
-__add_user_to_group restarter
-clear
+bsdconfig usermgmt
 
 if [ ${port_system} == "PKG" ]; then
   __log_warn "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
