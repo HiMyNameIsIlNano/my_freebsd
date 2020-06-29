@@ -84,8 +84,7 @@ __docker_setup() {
   mkdir -p ${HOME}/Development/Vagrant/dockervm
   cp ./i3gaps/Vagrantfile ${HOME}/Development/Vagrant/dockervm/Vagrantfile
 
-  cd ${HOME}/Development/Vagrant/dockervm && vagrant up && export_docker
-  eval `docker-machine env boot2docker-vbox`
+  cd ${HOME}/Development/Vagrant/dockervm && vagrant up
 
   # Do not use this in production. This is just fine for local development
   docker-machine create \
