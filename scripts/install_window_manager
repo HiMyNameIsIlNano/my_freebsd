@@ -14,7 +14,7 @@ __show_menu() {
   echo -e "${ENTER_LINE}Select ${RED_TEXT}any of the choices. ${NORMAL}"
 }
 
-function i3gaps_install() {
+function __i3gaps_install() {
   fetch --no-verify-hostname --no-verify-peer -o /tmp/i3gaps_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/i3gaps-desktop
   mkdir -p /tmp/i3gaps_freebsd
   tar xvzf /tmp/i3gaps_freebsd.tar.gz --strip=1 -C /tmp/i3gaps_freebsd
@@ -23,7 +23,7 @@ function i3gaps_install() {
   sh i3_installer
 }
 
-function openbox_install() {
+function __openbox_install() {
   fetch --no-verify-hostname --no-verify-peer -o /tmp/openbox_freebsd.tar.gz https://api.github.com/repos/HiMyNameIsIlNano/my_freebsd/tarball/openbox-desktop
   mkdir -p /tmp/openbox_freebsd
   tar xvzf /tmp/openbox_freebsd.tar.gz --strip=1 -C /tmp/openbox_freebsd
@@ -36,10 +36,10 @@ __show_menu
 read wm_idx
 
 case $wm in
-1) i3gaps_install ;;
-2) openbox_install ;;
-*)
-  echo "No entry matching by that number!"
-  __show_menu
-  ;;
+  1) __i3gaps_install ;;
+  2) __openbox_install ;;
+  *)
+    echo "No entry matching by that number!"
+    __show_menu
+    ;;
 esac
