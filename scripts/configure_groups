@@ -7,17 +7,20 @@ __add_user_to_group() {
   local user
   local dummy=Y
 
-  while
-    __log_warn "Which user would you like to add to group ${group}?: "
+  while [ "${dummy}" == "Y" ]; do
+    __log_warn "Do you want to add a user to group ${group}? [Y/n]: "
+    read dummy
+
+    if [ "${dummy}" == "n" ]; then
+      break
+    fi
+
+   __log_warn "Which user would you like to add to group ${group}?: "
     read user
 
     __log_info "Adding user ${user} to group ${group}..."
     pw group mod ${group} -m ${user}
-
-    __log_warn "Do you want to add another user to group ${group}? [Y/n]: "
-    read dummy
-    [ "${dummy}" == "Y" ] # test the limit of the loop.
-  do :; done
+  done
 }
 
 work_dir=.
@@ -44,6 +47,12 @@ done
 
 # Variable Declaration
 port_system=$(__read_property port_system)
+configure_groups=$(__read_property configure_groups)
+
+clear
+if [ "${configure_groups}" == "false" ]; then
+  exit 0
+fi
 
 __log_warn "### IMPORTANT NOTE ###"
 __log_warn "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
