@@ -121,7 +121,7 @@ bindsym $mod+w exec chrome
 
 # Set shut down, restart and locking features
 bindsym $mod+0 mode "$mode_system"
-set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+set $mode_system (l)ock, (e)xit, (s)uspend, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3exit lock, mode "default"
     bindsym e exec --no-startup-id i3exit logout, mode "default"
@@ -144,13 +144,7 @@ set $ws3 3:web@3
 set $ws4 4:other@4
 
 # Open applications on specific workspaces
-# Workspace 1
-assign [class="intellij-idea-utlimate-edition"] $ws1
-
-# Workspace 2
-assign [class="VirtualBox Manager"] $ws2
-
-# Workspace 7
+# Workspace 3
 assign [class="(?i)chromium"] $ws3
 
 # Open specific applications in floating mode
