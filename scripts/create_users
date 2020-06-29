@@ -40,7 +40,6 @@ is_create_users_enabled=$(__read_property create_users)
 __log_info "Adding 'restarter', 'installer' and 'vpnstarter' groups..."
 __add_group restarter
 __add_group installer
-__add_group vpnstarter
 
 # Users
 if [ "${is_create_users_enabled}" == "true" ]; then

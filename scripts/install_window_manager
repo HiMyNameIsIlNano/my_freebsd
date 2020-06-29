@@ -11,7 +11,7 @@ __show_menu() {
   echo -e "${MENU}**${NUMBER} 1)${MENU} Install i3gaps ${NORMAL}"
   echo -e "${MENU}**${NUMBER} 2)${MENU} Install openbox ${NORMAL}"
   echo -e "${MENU}*********************************************${NORMAL}"
-  echo -e "${ENTER_LINE}Select ${RED_TEXT}any of the choices. ${NORMAL}"
+  echo -e "${ENTER_LINE}Select ${RED_TEXT}one${NORMAL} of the choices."
 }
 
 __i3gaps_install() {
@@ -35,7 +35,7 @@ __openbox_install() {
 __show_menu
 read wm_idx
 
-case $wm in
+case $wm_idx in
   1) __i3gaps_install ;;
   2) __openbox_install ;;
   *)

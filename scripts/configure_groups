@@ -83,8 +83,4 @@ if [ ${port_system} == "PORT" ]; then
   clear
 fi
 
-__log_warn "Make sure that all the users are part of the 'vpnstarter' group, otherwise it won't be possible for the user(s) to launch openvpn"
-__add_user_to_group vpnstarter
-clear
-
 exit 0

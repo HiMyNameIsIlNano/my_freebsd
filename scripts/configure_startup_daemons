@@ -72,13 +72,6 @@ if [ -f "/usr/local/etc/sudoers" ]; then
     fi
   fi
 
-  __check_if_key_in_file %vpnstarter /usr/local/etc/sudoers
-  if [ $? -eq 0 ]; then
-    echo '' >>/usr/local/etc/sudoers
-    echo '## Members of the Group vpnstarter can run openvpn' >>/usr/local/etc/sudoers
-    echo '%vpnstarter ALL=(ALL) PASSWD: /usr/local/sbin/openvpn' >>/usr/local/etc/sudoers
-  fi
-
   __check_if_key_in_file '## END OF MY RULES ##' /usr/local/etc/sudoers
   if [ $? -eq 0 ]; then
     echo '' >>/usr/local/etc/sudoers
