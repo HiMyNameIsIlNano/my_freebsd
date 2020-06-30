@@ -130,15 +130,4 @@ if [ "${is_docker_enabled}" == "true" ]; then
   __install_pkgs ${docker_pkgs}
 fi
 
-if [ "${is_virtualbox_guest}" == "true" ]; then
-  __log_info "Optimizing Virtualbox Guest..."
-  __wait_for_seconds 5
-
-  openbox_guest_pkgs=virtualbox-ose-additions
-  __install_pkgs ${openbox_guest_pkgs}
-
-  echo 'vboxguest_enable="YES"' >>/etc/rc.conf
-  cp ./virtualbox/xorg/xorg.conf /etc/X11/
-fi
-
 exit 0
