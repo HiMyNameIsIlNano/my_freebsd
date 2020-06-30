@@ -68,7 +68,8 @@ __i3gaps_setup() {
 
   cp ./wallpapers/* ${HOME}/.config/i3/wallpapers/
   mkdir -p ${HOME}/.local/scripts/
-  cp -r ./i3gaps-scripts ${HOME}/.local/scripts/
+  cp ./i3gaps-scripts/i3* ${HOME}/.local/scripts/ && chmod +x ${HOME}/.local/scripts/i3*
+  cp ./i3gaps-scripts/blurlock ${HOME}/.local/scripts/ && chmod +x ${HOME}/.local/scripts/blurlock
 }
 
 __docker_setup() {
