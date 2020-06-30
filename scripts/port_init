@@ -233,15 +233,4 @@ if [ "${is_docker_enabled}" == "true" ]; then
   __install_ports_from_ramdisk ${docker_ports}
 fi
 
-if [ "${is_virtualbox_guest}" == "true" ]; then
-  __log_info "Optimizing Virtualbox Guest..."
-  __wait_for_seconds 5
-
-  openbox_guest_pkgs=virtualbox-ose-additions,arandr
-  __install_ports_from_ramdisk ${openbox_guest_pkgs}
-
-  echo 'vboxguest_enable="YES"' >>/etc/rc.conf
-  cp ./virtualbox/xorg/xorg.conf /etc/X11/
-fi
-
 exit 0
