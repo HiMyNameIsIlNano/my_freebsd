@@ -37,7 +37,7 @@ done
 is_create_users_enabled=$(__read_property create_users)
 
 # Groups
-__log_info "Adding 'restarter', 'installer' and 'vpnstarter' groups..."
+__log_info "Adding 'restarter' and 'installer' groups..."
 __add_group restarter
 __add_group installer
 
