@@ -35,5 +35,6 @@ case $wm_idx in
   *)
     echo "No entry matching by that number!"
     __show_menu
+    read wm_idx
     ;;
 esac
