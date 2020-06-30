@@ -209,8 +209,6 @@ __xsession_setup
 
 __shell_setup
 
-__shell_prompt_setup
-
 __openbox_setup
 
 __task_bar_setup
