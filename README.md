@@ -40,8 +40,5 @@ The differentiation between `desktop_ports`, `office_ports` and `dev_ports` is j
 ## Performance
 Having tested this configuration Script only on a Virtual Machine little I can say about real system Performance. Installing programs using PKG takes up to 1h in total and that would be the recommended way of configuring the desktop. The installation process with the PORT System takes up to 24h on an i5 processor.
 
-## Extra:
-The Extra folder contains some configuration scripts that are not part and cannot be part of the configuration scripts, but some users may find interesting. One of these is for example, the installation script for MS VSCode.
-
 ## TODOs:
 - [ ] There is always something to do
