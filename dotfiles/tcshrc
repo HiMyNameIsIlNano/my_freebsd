@@ -1,50 +1,54 @@
 if ($?prompt) then
-     # An interactive shell -- set some stuff up
-     alias ls 'ls -FG'
-     alias ll 'ls -laFG'
-     alias playdvd 'mplayer dvdnav://0'
-     alias reload 'source ~/.tcshrc'
+ # An interactive shell -- set some stuff up
+ alias ls 'ls -FG'
+ alias ll 'ls -laFG'
+ alias playdvd 'mplayer dvdnav://0'
+ alias reload 'source ~/.tcshrc'
 
-     # Docker alias(es)
-     alias docker_start 'cd ~/Development/Vagrant/dockervm && vagrant up && export_docker'
-     alias docker_stop 'cd ~/Development/Vagrant/dockervm && vagrant halt'
-     alias docker_restart 'docker_stop && docker_start'
-     alias export_docker 'eval `docker-machine env boot2docker-vbox`'
-     alias docker_machine_info 'docker-machine env boot2docker-vbox'
-     alias docker_env_info 'env | grep DOCKER'
-     alias docker_remove_imgs 'docker rmi `docker images -q`'
-     alias docker_remove_vols 'docker volume rm -f `docker volume ls -f dangling=true -q`'
-     alias docker_reset 'docker_remove_imgs && docker_remove_vols'
+ # Docker alias(es)
+ alias docker_start 'cd ~/Development/Vagrant/dockervm && vagrant up && export_docker'
+ alias docker_stop 'cd ~/Development/Vagrant/dockervm && vagrant halt'
+ alias docker_restart 'docker_stop && docker_start'
+ alias export_docker 'eval `docker-machine env boot2docker-vbox`'
+ alias docker_machine_info 'docker-machine env boot2docker-vbox'
+ alias docker_env_info 'env | grep DOCKER'
+ alias docker_remove_imgs 'docker rmi `docker images -q`'
+ alias docker_remove_vols 'docker volume rm -f `docker volume ls -f dangling=true -q`'
+ alias docker_reset 'docker_remove_imgs && docker_remove_vols'
+ alias docker_cfg 'vim ~/Development/Vagrant/dockervm/Vagrantfile'
 
-     set filec
-     set history = 100
-     set savehist = 100
-     set autolist = TAB
-     set LOCAL_SCRIPTS=~/.local/scripts
-     set JAVA_HOME=/usr/local/openjdk11/bin
-     set path = ($path $HOME/bin ${LOCAL_SCRIPTS} ${JAVA_HOME})
-     set mail = (/var/mail/$USER)
+ # Git
+ alias git_ssh = 'eval `ssh-agent` && ssh-add ~/.ssh/id_rsa'
 
-     set green_bg="%{\e[30;42;1m%}"
-     set red_bg="%{\e[30;41;1m%}"
-     set yellow_bg="%{\e[30;43;1m%}"
-     set blue_bg="%{\e[30;44;1m%}"
-     set end_bg="%{\e[0m%}"
+ set filec
+ set history = 100
+ set savehist = 100
+ set autolist = TAB
+ set LOCAL_SCRIPTS=~/.local/scripts
+ set JAVA_HOME=/usr/local/openjdk11/bin
+ set path = ($path $HOME/bin ${LOCAL_SCRIPTS} ${JAVA_HOME})
+ set mail = (/var/mail/$USER)
+ 
+ set green_bg="%{\e[30;42;1m%}"
+ set red_bg="%{\e[30;41;1m%}"
+ set yellow_bg="%{\e[30;43;1m%}"
+ set blue_bg="%{\e[30;44;1m%}"
+ set end_bg="%{\e[0m%}"
 
-     setenv LSCOLORS ExGxdxdxCxDxDxBxBxegeg
-     if ( $?tcsh ) then
-          bindkey "^W" backward-delete-word
-          bindkey -k up history-search-backward
-          bindkey -k down history-search-forward
-          bindkey '\e[1;5D' backward-word
-          bindkey '\e[1;5C' forward-word
-          bindkey "\e[3~" backward-delete-char
-          bindkey "^R" i-search-back
+ setenv LSCOLORS ExGxdxdxCxDxDxBxBxegeg
+ if ( $?tcsh ) then
+  bindkey "^W" backward-delete-word
+  bindkey -k up history-search-backward
+  bindkey -k down history-search-forward
+  bindkey '\e[1;5D' backward-word
+  bindkey '\e[1;5C' forward-word
+  bindkey "\e[3~" backward-delete-char
+  bindkey "^R" i-search-back
 
-          if ($uid) then
-               set prompt="${green_bg} %n ${red_bg} %m ${yellow_bg} %~ ${blue_bg} %# ${end_bg} \n"
-               unset red_bg green_bg yellow_bg blue_bg end_bg
-               pfetch
-          endif
-     endif
+  if ($uid) then
+   set prompt="${green_bg} %n ${red_bg} %m ${yellow_bg} %~ ${blue_bg} %# ${end_bg} \n"
+   unset red_bg green_bg yellow_bg blue_bg end_bg
+   pfetch
+  endif
+ endif
 endif
