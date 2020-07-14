@@ -20,6 +20,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
+__edit_file ${config_file}
 sh ./scripts/install_software
 
 exit 0
