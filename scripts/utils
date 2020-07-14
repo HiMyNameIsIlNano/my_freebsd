@@ -63,3 +63,22 @@ __wait_for_seconds() {
   __log_warn "waiting ${seconds} seconds before continuing..."
   sleep ${seconds}
 }
+
+__edit_file() {
+  local file="$@"
+  read -r -p "Do you want to edit ${file}? [Y/n]" answer
+
+  case $answer in
+  [yY][eE][sS] | [yY])
+    echo "Input not recognised, editing anyway"
+    ee $@
+    ;;
+  [nN][oO] | [nN])
+    return
+    ;;
+  *)
+    echo "Input not recognised, editing anyway"
+    ee $@
+    ;;
+  esac
+}
