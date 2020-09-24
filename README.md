@@ -50,4 +50,4 @@ The `freebsd_installer` is driven by a configuration file named `freebsd_install
 Having tested this configuration Script only on a Virtual Machine little I can say about real system Performance. Installing programs using PKG takes up to 1h in total and that would be the recommended way of configuring the desktop. The installation process with the PORT System takes up to 24h on an i5 processor.
 
 ## TODOs:
-- [ ] There is always something to do!
+- [ ] Make use of sysrc to configure the rc.xml file

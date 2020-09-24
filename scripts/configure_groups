@@ -48,41 +48,30 @@ done
 # Variable Declaration
 port_system=$(__read_property port_system)
 configure_groups=$(__read_property configure_groups)
+is_virtualbox_guest=$(__read_property is_virtualbox_guest)
 
 clear
+
 if [ "${configure_groups}" == "false" ]; then
   exit 0
 fi
 
-#__log_warn "### IMPORTANT NOTE ###"
-#__log_warn "Make sure that all the users are part of the 'video' group, otherwise it won't be possible for the user(s) to start a graphic session"
-#__add_user_to_group video
-#clear
-#
-#__log_warn "Make sure that all the users are part of the 'operator' group, otherwise it won't be possible for the user(s) to automount USB sticks"
-#__add_user_to_group operator
-#clear
-#
-#__log_warn "Add members to the 'vboxusers' group, otherwise it won't be possible for anyone to launch virtualbox"
-#__add_user_to_group vboxusers
-#clear
-#
-#__log_warn "Add members to the 'restarter' group, otherwise it won't be possible for anyone to restart or power down the computer"
-#__add_user_to_group restarter
-#clear
-
-bsdconfig usermgmt
+if [ "${is_virtualbox_guest}" == "true" ]; then
+  virtualbox_group=', 'vboxusers''
+fi
 
 if [ ${port_system} == "PKG" ]; then
-  __log_warn "Add members to the 'installer' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-  __add_user_to_group installer
-  clear
+  installer_group=', 'installer''
 fi
 
 if [ ${port_system} == "PORT" ]; then
-  __log_warn "Add members to the 'wheel' group, otherwise it won't be possible for anyone to install programs apart from the root user"
-  __add_user_to_group wheel
-  clear
+  installer_group=', 'wheel''
 fi
+
+__log_warn "### IMPORTANT NOTE ###"
+__log_warn "Make sure that all the users are part of the 'video', 'operator', 'restart' ${virtualbox_group} ${installer_group} groups"
+__wait_for_input
+
+bsdconfig usermgmt
 
 exit 0

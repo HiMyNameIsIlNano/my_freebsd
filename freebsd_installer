@@ -38,6 +38,7 @@ sh ./scripts/configure_startup_daemons
 # Configure Groups and Users
 sh ./scripts/configure_groups
 
+# TODO: this is just a test
 sh ./scripts/download_window_manager_installer
 
 __log_warn "### Restart computer now... ###"
