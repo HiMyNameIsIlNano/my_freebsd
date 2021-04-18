@@ -169,10 +169,11 @@ __conky_setup
 
 __gtk_theme_setup
 
-__docker_setup
-
 __setup_vim
 
 __setup_user_update_script
+
+# Commented as it seems to be broken...
+#__docker_setup
 
 exit 0
