@@ -219,9 +219,10 @@ __gtk_theme_setup
 
 __geany_setup
 
-__docker_setup
-
 __setup_user_update_script
+
+# Commented as it seems to be broken...
+#__docker_setup
 
 cat $timestamp >~/.config/openbox/init.finished
 
